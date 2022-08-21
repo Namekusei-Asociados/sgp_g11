@@ -1,1 +1,1 @@
-web: gunicorn sgp_g11.wsgi
+web: gunicorn sgp_g11:app
