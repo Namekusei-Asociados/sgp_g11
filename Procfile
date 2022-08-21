@@ -1,1 +1,1 @@
-web: gunicorn sgp_g11:app
+web: gunicorn sgp.wsgi  --log-file=-
