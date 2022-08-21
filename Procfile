@@ -1,0 +1,1 @@
+web:gunicorn sgp_g11.wsgi
