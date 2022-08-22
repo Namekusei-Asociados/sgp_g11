@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
     # Register the oauth_app
     'django.contrib.sites',
-    'oauth_app',
 
     # Register django-allauth
     'allauth',
