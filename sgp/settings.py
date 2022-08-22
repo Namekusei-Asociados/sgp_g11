@@ -180,5 +180,4 @@ SOCIALACCOUNT_PROVIDERS = {
 # To refresh authentication in the background, set AUTH_PARAMS['access_type'] to offline
 SITE_ID =1
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home'
