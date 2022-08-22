@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
+    # Index page
+    path('', TemplateView.as_view(template_name="account/base.html")),
+
+    # Super-admin page
     path('admin/', admin.site.urls),
+
+    # Home page
+    path('home/', TemplateView.as_view(template_name='dashboard/home.html'), name='home'),
 
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),

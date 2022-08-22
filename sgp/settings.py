@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # include the providers you want to enable:
     'allauth.socialaccount.providers.google',
+
+    # Crispy Form
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +63,7 @@ ROOT_URLCONF = 'sgp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +133,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # The SCOPE from Google APIs
 SITE_ID = 1
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
