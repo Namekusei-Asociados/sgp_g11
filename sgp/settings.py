@@ -11,17 +11,26 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.environ.get('DEBUG')) == "True"
 
-ALLOWED_HOSTS = ['localhost']  # For develop
+# SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
+if str(os.environ.get('ENVIRONMENT')) == 'production':
+    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
+elif str(os.environ.get('ENVIRONMENT')) == 'local':
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+else:
+    ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -35,18 +44,18 @@ INSTALLED_APPS = [
 
     # Register the oauth_app
     'django.contrib.sites',
-    # 'django.contrib.sites.models.Site',
+    'oauth_app',
 
     # Register django-allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # include the providers you want to enable:
     'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,7 +69,7 @@ ROOT_URLCONF = 'sgp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,19 +84,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sgp.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sgp_db',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -107,6 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -118,18 +130,26 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# The SCOPE from Google APIs
-SITE_ID = 1
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
@@ -144,16 +164,10 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# AUTHENTICATION_BACKENDS settings
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+# The SCOPE from Google APIs
+# If the scope is not specified, it defaults to profile
+# To refresh authentication in the background, set AUTH_PARAMS['access_type'] to offline
+SITE_ID =1
 
-# Load private settings locales
-try:
-    from conf.local_settings import *
-except ImportError:
-    pass
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
