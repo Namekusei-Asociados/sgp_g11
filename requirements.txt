@@ -23,7 +23,7 @@ MarkupSafe==2.1.1
 oauthlib==3.2.0
 packaging==21.3
 psycopg2==2.9.3
-django-allauth==0.51.0
+
 django-crispy-forms==1.14.0
 psycopg2-binary==2.9.3
 pycparser==2.21
@@ -42,6 +42,5 @@ sphinxcontrib-htmlhelp==2.0.0
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
-sqlparse==0.4.2
 urllib3==1.26.12
 whitenoise==6.2.0
