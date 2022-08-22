@@ -27,6 +27,9 @@ urlpatterns = [
     # Home page
     path('home/', TemplateView.as_view(template_name='dashboard/home.html'), name='home'),
 
+    # Visitor page
+    path('visitor/', TemplateView.as_view(template_name='dashboard/visitor.html'), name='visitor'),
+
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
 ]

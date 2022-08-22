@@ -137,6 +137,9 @@ LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# Custom Redirects
+ACCOUNT_ADAPTER = 'project.users.adapter.MyAccountAdapter'
+
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
