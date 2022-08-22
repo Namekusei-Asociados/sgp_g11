@@ -27,7 +27,7 @@ DEBUG = str(os.environ.get('DEBUG')) == "True"
 if str(os.environ.get('ENVIRONMENT')) == 'production':
     ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
 elif str(os.environ.get('ENVIRONMENT')) == 'local':
-    ALLOWED_HOSTS = ['127.0.0.1']
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 else:
     ALLOWED_HOSTS = []
 
