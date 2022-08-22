@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == "True"
+DEBUG = str(os.environ.get('DEBUG')) == "True"
 
 # SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
-if os.environ.get('ENVIRONMENT') == 'production':
-    ALLOWED_HOSTS = ['sgpg11.herokuapp.com']
-elif os.environ.get('ENVIRONMENT') == 'local':
+if str(os.environ.get('ENVIRONMENT')) == 'production':
+    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com']
+elif str(os.environ.get('ENVIRONMENT')) == 'local':
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
     ALLOWED_HOSTS = []
