@@ -27,7 +27,7 @@ DEBUG = str(os.environ.get('DEBUG')) == "True"
 if str(os.environ.get('ENVIRONMENT')) == 'production':
     ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
 elif str(os.environ.get('ENVIRONMENT')) == 'local':
-    ALLOWED_HOSTS = ['127.0.0.1']
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 else:
     ALLOWED_HOSTS = []
 
@@ -44,13 +44,15 @@ INSTALLED_APPS = [
 
     # Register the oauth_app
     'django.contrib.sites',
-    'oauth_app',
 
     # Register django-allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
+    # Crispy Form
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -69,8 +71,7 @@ ROOT_URLCONF = 'sgp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -178,5 +179,4 @@ SOCIALACCOUNT_PROVIDERS = {
 # To refresh authentication in the background, set AUTH_PARAMS['access_type'] to offline
 SITE_ID =1
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home'
