@@ -4,4 +4,5 @@ pip==22.2.2
 setuptools==65.1.0
 sqlparse==0.4.2
 wheel==0.37.1
+django-allauth==0.51.0
 psycopg2==2.9.3
