@@ -2,3 +2,4 @@ venv/
 .idea/
 conf/clientOAuth.json
 conf/local_settings.py
+docs/_build/
