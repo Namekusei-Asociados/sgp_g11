@@ -1,5 +1,7 @@
 venv/
 .idea/
-conf/clientOAuth.json
+conf/Heroku.json
+conf/Localhost.json
 conf/local_settings.py
-.env
+docs/_build/
+docs/
