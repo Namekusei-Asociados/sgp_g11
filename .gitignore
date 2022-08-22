@@ -5,3 +5,4 @@ conf/Localhost.json
 conf/local_settings.py
 docs/_build/
 .env
+staticfiles/
