@@ -25,7 +25,7 @@ DEBUG = str(os.environ.get('DEBUG')) == "True"
 
 # SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
 if str(os.environ.get('ENVIRONMENT')) == 'production':
-    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com']
+    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
 elif str(os.environ.get('ENVIRONMENT')) == 'local':
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
@@ -176,7 +176,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # The SCOPE from Google APIs
 # If the scope is not specified, it defaults to profile
 # To refresh authentication in the background, set AUTH_PARAMS['access_type'] to offline
-SITE_ID = 1
+SITE_ID =1
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
