@@ -53,6 +53,9 @@ INSTALLED_APPS = [
 
     # Crispy Form
     'crispy_forms',
+
+    # App para gestionar los roles
+    'gestionar_roles',
 ]
 
 MIDDLEWARE = [
