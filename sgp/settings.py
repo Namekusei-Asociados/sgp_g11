@@ -25,7 +25,7 @@ DEBUG = str(os.environ.get('DEBUG')) == "True"
 
 # SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
 if str(os.environ.get('ENVIRONMENT')) == 'production':
-    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
+    ALLOWED_HOSTS = ['127.0.0.1','https://sgpg11.herokuapp.com','localhost']
 elif str(os.environ.get('ENVIRONMENT')) == 'local':
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 else:
