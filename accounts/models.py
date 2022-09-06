@@ -4,7 +4,13 @@ from django.db import models
 
 # Create your models here.
 class User(AbstractUser):
-    role_sys = models.CharField(max_length=50, default='user')
+    ROLE_SYS = (
+        ('user', 'user'),
+        ('admin', 'admin'),
+        ('visitor', 'visitor'),
+    )
+    role_sys = models.CharField(max_length=7, choices=ROLE_SYS, default='visitor')
+    role_project = models.CharField(max_length=50, default='develop')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
