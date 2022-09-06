@@ -5,7 +5,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required()
 def home(request):
-    if request.user.role_sys == 'visitor':
+    user = request.user
+    if user.role_sys == 'visitor':
         return render(request, 'dashboard/visitor.html')
+    elif user.role_sys == 'user':
+        return render(request, 'dashboard/user.html')
     else:
-        return render(request, 'dashboard/home.html')
+        return render(request, 'dashboard/admin.html')
