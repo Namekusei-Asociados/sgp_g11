@@ -16,4 +16,4 @@ class User(AbstractUser):
     deleted_at = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f'''Name: {self.first_name}'''
+        return f'''Username: {self.username}'''
