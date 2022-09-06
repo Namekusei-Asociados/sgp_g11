@@ -35,6 +35,9 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    # Projects management
+    'projects',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +56,8 @@ INSTALLED_APPS = [
 
     # Crispy Form
     'crispy_forms',
+
+
 ]
 
 MIDDLEWARE = [

@@ -25,6 +25,9 @@ urlpatterns = [
     # Index page
     path('', TemplateView.as_view(template_name="account/base.html")),
 
+    # Projects urls
+    path('projects/', include('projects.urls')),
+
     # Super-admin page
     path('admin/', admin.site.urls),
 
