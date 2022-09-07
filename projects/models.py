@@ -14,3 +14,4 @@ class Project(models.Model):
     # def __str__(self) -> str:
     #     text = "{0}"
     #     return text.format(self.name)
+
