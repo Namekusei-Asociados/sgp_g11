@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+from sphinx.util.tags import env
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -25,12 +26,11 @@ DEBUG = str(os.environ.get('DEBUG')) == "True"
 
 # SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
 if str(os.environ.get('ENVIRONMENT')) == 'production':
-    ALLOWED_HOSTS = ['127.0.0.1','sgpg11.herokuapp.com','localhost']
+    ALLOWED_HOSTS = ['127.0.0.1', 'sgpg11.herokuapp.com', 'localhost']
 elif str(os.environ.get('ENVIRONMENT')) == 'local':
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 else:
     ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -53,6 +53,9 @@ INSTALLED_APPS = [
 
     # Crispy Form
     'crispy_forms',
+
+    # Account
+    'accounts',
     #libreria [ara uso de roles
     'guardian',
     # App para gestionar los roles
@@ -90,7 +93,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sgp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -104,7 +106,6 @@ DATABASES = {
         'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -124,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -135,7 +135,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -155,7 +154,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
 
 # The line allauth.socialaccount.providers.google specifies the OAuth provider since django-allauth supports many
 # OAuth providers. We will also set django-allauth as the authentication backend for our application in the
@@ -182,6 +180,16 @@ SOCIALACCOUNT_PROVIDERS = {
 # The SCOPE from Google APIs
 # If the scope is not specified, it defaults to profile
 # To refresh authentication in the background, set AUTH_PARAMS['access_type'] to offline
-SITE_ID =1
+SITE_ID = 1
 
-LOGIN_REDIRECT_URL = 'home'
+# ================ ALLAUTH ==================== #
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_UNIQUE = True
+AUTH_USER_MODEL = "accounts.User"
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
+LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "account_login"
