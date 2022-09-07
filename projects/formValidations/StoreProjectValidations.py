@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from projects.models import Project
-from django.contrib.auth.models import User
+from accounts.models import User
 
 
 # define the class of a form

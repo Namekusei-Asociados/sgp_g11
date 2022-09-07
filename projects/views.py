@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Project
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from .formValidations import StoreProjectValidations
+from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
 # Create your views here.
