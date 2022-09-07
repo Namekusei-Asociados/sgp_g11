@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from accounts.forms import SignupForm
+from accounts.forms import SignupForm, UserForm
 
 
 @login_required()
@@ -18,3 +18,24 @@ def home(request):
 def create_user(request):
     form = SignupForm()
     return render(request, 'user/create_user.html', {'form': form})
+
+
+def validate_user(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = UserForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            print('---------ISVALID--------------')
+            newUser = form.save(commit=False)
+            newUser.save()
+            print('---------USERNAME ERROR--------------')
+            return render(request, 'thanks.html', {'info': 'second save'})
+        else:
+            print('---------USERNAME ERROR--------------')
+            return render(request, 'error.html', {'info': 'else isn\'n valid'})
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        print('---------USERNAME ERROR--------------')
+        return render(request, 'error.html', {'info': 'else reques method'})
