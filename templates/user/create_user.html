@@ -1,0 +1,24 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Hello {{ user.first_name }}!</h2>
+    <p>Create User</p>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form class="signup" id="signup_form" method="post" action="">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button type="submit">Create User</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

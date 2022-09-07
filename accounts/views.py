@@ -1,8 +1,9 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from accounts.forms import SignupForm
 
 
-# Create your views here.
 @login_required()
 def home(request):
     user = request.user
@@ -12,3 +13,8 @@ def home(request):
         return render(request, 'dashboard/user.html')
     else:
         return render(request, 'dashboard/visitor.html')
+
+
+def create_user(request):
+    form = SignupForm()
+    return render(request, 'user/create_user.html', {'form': form})
