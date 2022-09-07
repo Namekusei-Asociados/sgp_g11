@@ -185,3 +185,5 @@ SOCIALACCOUNT_PROVIDERS = {
 SITE_ID =1
 
 LOGIN_REDIRECT_URL = 'home'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
