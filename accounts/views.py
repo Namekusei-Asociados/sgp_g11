@@ -26,11 +26,7 @@ def validate_user(request):
         form = UserForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            print('---------ISVALID--------------')
-            newUser = form.save(commit=False)
-            newUser.save()
-            print('---------USERNAME ERROR--------------')
-            return render(request, 'thanks.html', {'info': 'second save'})
+            return render(request, 'thanks.html', {'info': request.POST['username']})
         else:
             print('---------USERNAME ERROR--------------')
             return render(request, 'error.html', {'info': 'else isn\'n valid'})
