@@ -45,3 +45,4 @@ sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
 urllib3==1.26.12
 whitenoise==6.2.0
+django-guardian=2.4.0

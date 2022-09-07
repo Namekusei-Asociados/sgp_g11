@@ -53,7 +53,8 @@ INSTALLED_APPS = [
 
     # Crispy Form
     'crispy_forms',
-
+    #libreria [ara uso de roles
+    'guardian',
     # App para gestionar los roles
     'gestionar_roles',
 ]
@@ -161,7 +162,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # AUTHENTICATION_BACKEND configurations.
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
 ]
 
 # Set Google as the OAuth provider in the SOCIALACCOUNT_PROVIDERS settings.
