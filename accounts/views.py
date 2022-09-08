@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from accounts.models import User
 
 
@@ -16,22 +19,32 @@ def home(request):
 
 
 def create_user(request):
-    # usernames = User.objects.all().values_list('username', flat=True)
-    # print(usernames)
     return render(request, 'create_user.html')
+
+
+def edit_user(request):
+    return render(request, 'edit_user.html')
 
 
 def validate_user(request):
     username = request.POST['username']
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
     email = request.POST['email']
-    pass1 = request.POST['password1']
-    pass2 = request.POST['password2']
+    password = request.POST['password']
 
-    form = (
-        ('email', email)
-    )
+    if username_exists(username):
+        messages.success(request, 'El username ya existe')
+        return redirect(reverse('accounts.create_user'), request)
 
-    return render(request, 'thanks.html', {'form': form})
+    if email_exists(email):
+        messages.success(request, 'El email ya existe')
+        return redirect(reverse('accounts.create_user'), request)
+
+    User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
+                             password=password)
+
+    return redirect(home)
 
 
 def username_exists(username):
