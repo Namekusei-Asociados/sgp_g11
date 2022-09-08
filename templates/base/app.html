@@ -96,14 +96,30 @@
             <ul class="nav nav-treeview">
               {% if user.role_sys == 'admin' %}
               <li class="nav-item">
-                <a href="{% url 'accounts.create_user' %}" class="nav-link active">
+                <a href="{% url 'home' %}" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List Users</p>
+                </a>
+              </li>
+              {% endif %}
+              {% if user.role_sys == 'admin' %}
+              <li class="nav-item">
+                <a href="{% url 'accounts.create_user' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create Users</p>
                 </a>
               </li>
               {% endif %}
+              {% if user.role_sys == 'admin' %}
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="{% url 'projects.create' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create Projects</p>
+                </a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a href="./index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Dashboard v1</p>
                 </a>

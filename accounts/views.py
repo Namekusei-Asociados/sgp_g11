@@ -11,6 +11,7 @@ def home(request):
         return render(request, 'visitor.html')
     else:
         users = User.objects.all()
+        users = filter(lambda x: not x.is_staff and user.username != x.username, users)
         return render(request, 'user.html', {'users': users})
 
 

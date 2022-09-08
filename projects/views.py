@@ -14,7 +14,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
-    users = filter(lambda x: x.role_sys != 'visitor', users)
+    users = filter(lambda x: x.role_sys != 'visitor' and not x.is_staff, users)
     return render(request, 'create.html', {"users": users})
 
 
