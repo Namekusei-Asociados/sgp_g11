@@ -32,6 +32,7 @@ def validate_user(request):
     last_name = request.POST['last_name']
     email = request.POST['email']
     password = request.POST['password']
+    role_sys = request.POST['role_sys']
 
     if username_exists(username):
         messages.success(request, 'El username ya existe')
@@ -42,7 +43,7 @@ def validate_user(request):
         return redirect(reverse('accounts.create_user'), request)
 
     User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
-                             password=password)
+                             password=password, role_sys=role_sys)
 
     return redirect(home)
 
