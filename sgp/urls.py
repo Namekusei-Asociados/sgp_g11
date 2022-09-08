@@ -38,4 +38,6 @@ urlpatterns = [
 
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
+    # Register Role
+    path('role/', include('gestionar_roles.urls')),
 ]
