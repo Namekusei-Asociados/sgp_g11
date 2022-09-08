@@ -1,13 +1,70 @@
 {% extends 'account/base.html' %}
 
 {% block content %}
+
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+    </style>
+
     <div class="text-center">
         <h2>Home</h2>
         <p>Hello {{ user.first_name }}!</p>
         <p>Your Username : {{ user }}</p>
         <p>This is page for admin</p>
     </div>
-    <div class="toggle-nav-sidebar">
 
+
+
+    {% block list_user %}
+
+            {% if users %}
+                <br>
+                <h2 align="center">System Users</h2>
+
+
+
+                <div class="container mt-4" >
+                <table style="width: 90%">
+
+                  <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>System Role</th>
+                    <th colspan="2">Action</th>
+                  </tr>
+                    {% for user in users %}
+                      <tr>
+                        <td>  {{ user.username }}  </td>
+                        <td>  {{ user.first_name }}  </td>
+                        <td>  {{ user.last_name }}  </td>
+                        <td>  {{ user.email }}  </td>
+                        <td>  {{ user.role_sys }}  </td>
+                        <td> <button>Edit</button> <button>Delete</button> </td>
+                      </tr>
+                    {% endfor %}
+                </table>
+
+            {% endif %}
+
+        </div>
     </div>
+
+
+
+    {% endblock %}
+
 {% endblock %}
