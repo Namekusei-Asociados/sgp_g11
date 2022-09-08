@@ -74,3 +74,5 @@ def username_exists(username):
 
 def email_exists(email):
     return User.objects.filter(email=email).exists()
+
+
