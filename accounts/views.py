@@ -26,6 +26,15 @@ def edit_user(request):
     return render(request, 'edit_user.html')
 
 
+def edit_user(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'edit_user.html', {'u': user})
+
+
+def validate_edit_user(request):
+    return redirect(home)
+
+
 def validate_user(request):
     username = request.POST['username']
     first_name = request.POST['first_name']

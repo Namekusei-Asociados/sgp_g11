@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-| Create User
+| Edit User
 {% endblock %}
 
 {% block content %}
@@ -16,56 +16,55 @@
                 <!-- jquery validation -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Create New User</small></h3>
+                        <h3 class="card-title"><small>Edit User</small></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form id="create_user_form" method="post" action="{% url 'accounts.validate_user' %}">
+                    <form id="edit_user_form" method="post" action="{% url 'accounts.validate_edit_user' %}">
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="id_username">Username</label>
                                 <input type="text" name="username" class="form-control" id="id_username"
-                                       placeholder="Enter Username">
+                                       placeholder="Enter Username" disabled value="{{ u.username }}">
                             </div>
                             <div class="form-group">
                                 <label for="id_first_name">First Name</label>
                                 <input type="text" name="first_name" class="form-control" id="id_first_name"
-                                       placeholder="Enter First Name">
+                                       placeholder="Enter First Name" value="{{ u.first_name }}">
                             </div>
                             <div class="form-group">
                                 <label for="id_last_name">Last Name</label>
                                 <input type="text" name="last_name" class="form-control" id="id_last_name"
-                                       placeholder="Enter Last Name">
+                                       placeholder="Enter Last Name" value="{{ u.last_name }}">
                             </div>
                             <div class="form-group">
                                 <label for="id_email">Email</label>
                                 <input type="email" name="email" class="form-control" id="id_email"
-                                       placeholder="Enter Email">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password1">Password1</label>
-                                <input type="password" name="password1" class="form-control" id="id_password1"
-                                       placeholder="Enter Password">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_password2">Password2</label>
-                                <input type="password" name="password2" class="form-control" id="id_password2"
-                                       placeholder="Enter Password">
+                                       placeholder="Enter Email" disabled value="{{ u.email }}">
                             </div>
                             <div class="form-group">
                                 <label>Role System</label>
                                 <select class="form-control select2bs4" style="width: 100%;" id="id_role_sys"
                                         name="role_sys">
-                                    <option selected="selected">visitor</option>
-                                    <option>admin</option>
-                                    <option>user</option>
+                                    <option selected="selected">{{ u.role_sys }}</option>
+                                    {% if user.role_sys == 'visitor' %}
+                                        <option>admin</option>
+                                        <option>user</option>
+                                    {% elif user.role_sys == 'user' %}
+                                        <option>admin</option>
+                                        <option>visitor</option>
+                                    {% else %}
+                                        <option>user</option>
+                                        <option>visitor</option>
+                                    {% endif %}
+
                                 </select>
                             </div>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
