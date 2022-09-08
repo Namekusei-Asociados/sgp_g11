@@ -1,6 +1,5 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 from accounts.models import User
 
 
@@ -10,7 +9,8 @@ def home(request):
     if user.role_sys == 'visitor':
         return render(request, 'visitor.html')
     else:
-        return render(request, 'user.html')
+        users = User.objects.all()
+        return render(request, 'user.html', {'users': users})
 
 
 def create_user(request):

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Register the oauth_app
-    'django.contrib.sites',
+   # 'django.contrib.sites',
 
     # Register django-allauth
     'allauth',
