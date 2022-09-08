@@ -15,3 +15,9 @@ def home(request):
         return render(request, 'dashboard/user.html')
     else:
         return render(request, 'dashboard/visitor.html')
+
+
+@login_required()
+def admin_index(request):
+    users = User.objects.all()
+    return render(request, 'account/index.html', {'users': users})

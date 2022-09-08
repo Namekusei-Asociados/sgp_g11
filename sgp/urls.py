@@ -21,6 +21,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+import accounts.views
 from accounts import views
 
 urlpatterns = [
@@ -38,4 +39,8 @@ urlpatterns = [
 
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
+
+    # Admin index
+    path('adminindex/', views.admin_index, name='index')
+
 ]
