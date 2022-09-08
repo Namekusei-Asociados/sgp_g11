@@ -42,7 +42,7 @@ class RoleManager(models.Manager):
             return False
 
     # funcion para asignar rol a usuario
-    def assign_role_to_user(self, id_role, user):
+    def assing_role_to_user(self, id_role, user):
         try:
             role = Role.objects.get(id=id_role)
             group_role = Group.objects.get(name=role.role_name)
@@ -52,7 +52,7 @@ class RoleManager(models.Manager):
 
 
     # funcion para asignar rol a usuarioFo
-    def unassign_role_to_user(self, id_role, user):
+    def unassing_role_to_user(self, id_role, user):
         try:
             role = Role.objects.get(id=id_role)
             group_role = Group.objects.get(name=role.role_name)
@@ -90,7 +90,10 @@ class RoleManager(models.Manager):
             else:
                 print("el permiso no existe")
 
-
+    ######LISTAS######
+    #Roles a los que pertenece un usuario
+    def list_user_roles(self, user):
+        return user.groups.all()
 
     # funcion para listar los roles existentes
     def list_roles(self):
