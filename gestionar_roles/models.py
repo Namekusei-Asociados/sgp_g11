@@ -32,7 +32,7 @@ class RoleManager(models.Manager):
         role = Role.objects.get(id=id_role)
         group_role = Group.objects.get(name=role.role_name)
         for permiso_temp in permissions_list:
-            remove_perm(permiso_temp, group_role)
+            group_role.permissions.remove(permiso_temp)
 
     #verifica la existencia de un permiso en la base de datos
     def exist_perm(self, perm):
