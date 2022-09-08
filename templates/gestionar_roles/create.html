@@ -35,14 +35,14 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="createProjectForm" action="{% url 'projects.store' %}" method="post">
+            <form id="createProjectForm" action="{% url 'gestionar_roles.store' %}" method="post">
                 {% csrf_token %}
 
 
                 <div class="card-body">
                     <div class="form-group">
                         <label for="name" class="required">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Escriba un nombre referente al rol">
                     </div>
 
                     <div class="form-group">
@@ -53,20 +53,27 @@
 
                     <div class="form-group">
                         <label>Seleccionar permisos</label>
-                        <select class="form-control" name="user">
-                            <option value="">Seleccione un valor</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.username }}</option>
+
+                        <div class="row">
+
+                            {% for permiso in permissions %}
+                                <!-- checkbox -->
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="perms[]" type="checkbox" value="{{ permiso.codename }}">
+                                        <label class="form-check-label" style="font-size: 1.2em">{{ permiso.codename }}</label>
+                                    </div>
+                                </div>
                             {% endfor %}
-                        </select>
+                        </div>
+
                     </div>
 
-                </div>
-                <!-- /.card-body -->
+                    <!-- /.card-body -->
 
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
             </form>
         </div>
         <!-- /.card -->

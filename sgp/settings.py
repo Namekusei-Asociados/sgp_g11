@@ -37,7 +37,8 @@ else:
 INSTALLED_APPS = [
     # Projects management
     'projects',
-
+    # App para gestionar los roles
+    'gestionar_roles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,8 +62,7 @@ INSTALLED_APPS = [
     'accounts',
     #libreria [ara uso de roles
     'guardian',
-    # App para gestionar los roles
-    'gestionar_roles',
+
 ]
 
 MIDDLEWARE = [

@@ -24,7 +24,7 @@ class RoleManager(models.Manager):
         nombre=role.role_name
         group_role = Group.objects.get(name=nombre)
         for permiso_temp in permissions_list:
-            assign_perm(permiso_temp, group_role)
+            group_role.permissions.add(permiso_temp)
 
 
     # funcion encargada de asignar permisos a los grupos de roles
