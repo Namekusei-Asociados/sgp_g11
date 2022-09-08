@@ -44,9 +44,9 @@ class RoleManager(models.Manager):
     # funcion para asignar rol a usuario
     def assign_role_to_user(self, id_role, user):
         try:
-            rol = Role.objects.filter(id=id_role)
-            grupo = Group.objects.get(id=self.role_group.id)
-            grupo.user_set.add(user)
+            role = Role.objects.get(id=id_role)
+            group_role = Group.objects.get(name=role.role_name)
+            group_role.user_set.add(user)
         except Role.DoesNotExist as error:
             print("El rol no existe" + id_role)
 
@@ -54,9 +54,10 @@ class RoleManager(models.Manager):
     # funcion para asignar rol a usuarioFo
     def unassign_role_to_user(self, id_role, user):
         try:
-            role = Role.objects.filter(id=id_role)
-            group_role = Group.objects.get(id=role.role_group.id)
+            role = Role.objects.get(id=id_role)
+            group_role = Group.objects.get(name=role.role_name)
             group_role.user_set.remove(user)
+            print("Rol eliminado")
         except Role.DoesNotExist as error:
             print("El rol no existe" + id_role)
 
@@ -64,8 +65,9 @@ class RoleManager(models.Manager):
     # funcion para eliminar un rol
     def delete_role(self, id_role):
         try:
-            role = Role.objects.filter(id=id_role)
-            group_role = Group.objects.filter(id=role.role_group.id)
+            role = Role.objects.get(id=id_role)
+            group_role = Group.objects.get(name=role.role_name)
+            group_role.delete()
         except Role.DoesNotExist as error:
             print("El rol no existe" + id_role)
 
