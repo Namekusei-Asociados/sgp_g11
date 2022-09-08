@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
-from .models import Project
-from accounts.models import User
 from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.urls import reverse
+
+from accounts.models import User
+from .models import Project
+
+
 # Create your views here.
 def create(request):
     """
@@ -11,6 +14,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
+    users = filter(lambda x: x.role_sys != 'visitor', users)
     return render(request, 'create.html', {"users": users})
 
 
@@ -38,5 +42,5 @@ def store(request):
     project.members.add(scrum_master)
 
     # redirect back with success message
-    messages.success(request, 'EL proyecto fue creado con exito')
+    messages.success(request, 'El proyecto fue creado con exito')
     return redirect(reverse('projects.create'), request)

@@ -33,9 +33,6 @@ urlpatterns = [
     # Super-admin page
     path('admin/', admin.site.urls),
 
-    # Home page
-    path('home/', views.home, name='home'),
-
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
 

@@ -3,26 +3,24 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from accounts.forms import SignupForm, UserForm, username_exists, email_exists
-from accounts.models import User
 
 
 @login_required()
 def home(request):
     user = request.user
-    if user.role_sys == 'admin':
-        return render(request, 'dashboard/admin.html')
-    elif user.role_sys == 'user':
-        return render(request, 'dashboard/user.html')
+    if user.role_sys == 'visitor':
+        return render(request, 'visitor.html')
     else:
-        return render(request, 'dashboard/visitor.html')
+        return render(request, 'user.html')
+
 
 
 def create_user(request):
     form = SignupForm()
-    return render(request, 'user/create_user.html', {'form': form})
+    return render(request, 'create_user.html', {'form': form})
 
 
-def validate_user(request):
+def user(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = UserForm(request.POST)
