@@ -9,6 +9,11 @@ from accounts.models import User
 # Create your views here.
 @login_required()
 def home(request):
+    """
+        Retorna el template home correspondiente al tipo de user logueado
+        :param request: user
+        :return:documento html
+    """
     user = request.user
     if user.role_sys == 'visitor':
         return render(request, 'visitor.html')
@@ -27,6 +32,12 @@ def edit_user(request):
 
 
 def validate_user(request):
+    """
+        Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
+        en caso contrario envia un mensaje del tipo de error
+        :param request: formulario
+        :return:documento html
+    """
     username = request.POST['username']
     first_name = request.POST['first_name']
     last_name = request.POST['last_name']
