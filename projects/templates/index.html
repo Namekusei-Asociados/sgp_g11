@@ -1,0 +1,189 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Proyectos
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!--MESSAGES-->
+        {% if messages %}
+            <ul class="messages my-2">
+                {% for message in messages %}
+                    <div {% if message.tags %}
+                        class="{{ message.tags }} text-white alert-dismissible fade show alert alert-success"{% endif %}
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!--MESSAGES END-->
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Proyectos</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped projects">
+                        <thead>
+                        <tr>
+                            <th style="width: 1%">
+                                #
+                            </th>
+                            <th style="width: 20%">
+                                Nombre del Proyecto
+                            </th>
+                            <th style="width: 30%">
+                                Miembros
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for project in projects %}
+                                <td>
+                                    #
+                                </td>
+
+                                <td>
+                                    <a>
+                                        {{ project.name }}
+                                    </a>
+                                    <br/>
+                                    <small>
+                                        Created {{ project.created_at.date }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <ul class="list-inline">
+                                        {% for user in project.members.values %}
+                                            <li class="list-inline-item">
+                                                <img alt="Avatar" class="table-avatar"
+                                                     src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </td>
+
+                                <td class="project-actions text-right">
+                                    {#                                    <a class="btn btn-primary btn-sm" href="#">#}
+                                    {#                                        <i class="fas fa-folder">#}
+                                    {#                                        </i>#}
+                                    {#                                        View#}
+                                    {#                                    </a>#}
+                                    <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Editar
+                                    </a>
+{#                                    <a class="btn btn-danger btn-sm" href="#">#}
+{#                                        <i class="fas fa-trash">#}
+{#                                        </i>#}
+{#                                        Delete#}
+{#                                    </a>#}
+                                </td>
+                                </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </section>
+        <!-- /.content -->
+
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+
+            $('#createProjectForm').validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 4
+                    },
+                    description: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 500
+                    },
+                    user: {
+                        required: true
+                    },
+
+                },
+                messages: {
+                    name: {
+                        required: "El nombre es obligatorio",
+                        minlength: "Ingrese un minimo de 4 caracteres"
+                    },
+                    description: {
+                        required: "La descripcion del proyecto es obligatoria",
+                        minlength: "Ingrese un minimo de 4 caracteres",
+                        maxLength: "Ingrese un maximo de 500 caracteres"
+                    },
+                    user: {
+                        required: "Debe seleccionar un usuario"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
+{% endblock %}
