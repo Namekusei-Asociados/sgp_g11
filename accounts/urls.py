@@ -6,5 +6,5 @@ urlpatterns = [
     # Home page
     path('home/', views.home, name='home'),
     path('create_user/', views.create_user, name='accounts.create_user'),
-    path('user/', views.user, name='accounts.user'),
+    path('validate_user/', views.validate_user, name='accounts.validate_user'),
 ]

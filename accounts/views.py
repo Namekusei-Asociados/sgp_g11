@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from accounts.forms import SignupForm, UserForm, username_exists, email_exists
+from accounts.models import User
 
 
 @login_required()
@@ -14,42 +13,28 @@ def home(request):
         return render(request, 'user.html')
 
 
-
 def create_user(request):
-    form = SignupForm()
-    return render(request, 'create_user.html', {'form': form})
+    # usernames = User.objects.all().values_list('username', flat=True)
+    # print(usernames)
+    return render(request, 'create_user.html')
 
 
-def user(request):
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = UserForm(request.POST)
-        # check whether it's valid:
-        print(form)
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            username = request.POST['username']
-            email = request.POST['email']
-            pass1 = request.POST['password1']
-            pass2 = request.POST['password2']
-            if username_exists(username):
-                return render(request, 'error.html', {'info': username})
+def validate_user(request):
+    username = request.POST['username']
+    email = request.POST['email']
+    pass1 = request.POST['password1']
+    pass2 = request.POST['password2']
 
-            if email_exists(email):
-                return render(request, 'error.html', {'info': email})
+    form = (
+        ('email', email)
+    )
 
-            if pass1 != pass2:
-                return render(request, 'error.html', {'info': f'{pass1} | {pass2}'})
+    return render(request, 'thanks.html', {'form': form})
 
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
-        else:
-            print('---------USERNAME ERROR--------------')
-            return render(request, 'error.html', {'info': 'else isn\'n valid'})
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = UserForm()
+def username_exists(username):
+    return User.objects.filter(username=username).exists()
 
-    return render(request, 'error.html', {'form': form})
 
+def email_exists(email):
+    return User.objects.filter(email=email).exists()
