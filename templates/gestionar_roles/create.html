@@ -1,0 +1,83 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Roles
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <section class="content">
+
+        <!--MESSAGES-->
+        {% if messages %}
+            <ul class="messages my-2">
+                {% for message in messages %}
+                    <div {% if message.tags %}
+                        class="{{ message.tags }} text-white alert-dismissible fade show alert alert-success"{% endif %}
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!--MESSAGES END-->
+
+
+        <div class="card card-primary m-2">
+            <div class="card-header">
+                <h3 class="card-title">Crear Rol</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="createProjectForm" action="{% url 'gestionar_roles.store' %}" method="post">
+                {% csrf_token %}
+
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name" class="required">Nombre</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Escriba un nombre referente al rol">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripcion del rol</label>
+                        <textarea class="form-control" name="description" id="projectDescription" cols="30" rows="3"
+                                  maxlength="500" placeholder="Este rol es el encargado de..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seleccionar permisos</label>
+
+                        <div class="row">
+
+                            {% for permiso in permissions %}
+                                <!-- checkbox -->
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="perms[]" type="checkbox" value="{{ permiso.codename }}">
+                                        <label class="form-check-label" style="font-size: 1.2em">{{ permiso.codename }}</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+            </form>
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+{% endblock %}

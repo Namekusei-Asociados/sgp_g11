@@ -11,6 +11,7 @@ class Project(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     ended_at = models.DateTimeField(null=True)
     members = models.ManyToManyField(User)
+    status = models.CharField(max_length=50)
     # def __str__(self) -> str:
     #     text = "{0}"
     #     return text.format(self.name)
