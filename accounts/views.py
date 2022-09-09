@@ -29,11 +29,22 @@ def create_user(request):
 
 
 def edit_user(request, username):
+    """
+    Retorna una página para editar un usuario en cuestión
+    :param request: user
+    :param username: usuario a ser modificado
+    :return: documento HTML con la información del usuario a ser actualizado
+    """
     user = User.objects.get(username=username)
     return render(request, 'accounts/edit_user.html', {'u': user})
 
 
 def validate_edit_user(request):
+    """
+    Valida el usuario a ser actualizado y realiza la actualización de los datos
+    :param request:
+    :return: HTML con los datos del usuario actualizado
+    """
     username = request.POST['user_username']
     first_name = request.POST['first_name']
     last_name = request.POST['last_name']
@@ -85,6 +96,12 @@ def email_exists(email):
 
 
 def destroy(request, username):
+    """
+    Elimina un usuario
+    :param request:
+    :param username: usuario a ser eliminado
+    :return: Documento HTML del home
+    """
     user = User.objects.get(username=username)
     user.delete()
     messages.success(request, 'El usuario fue eliminado con éxito')
