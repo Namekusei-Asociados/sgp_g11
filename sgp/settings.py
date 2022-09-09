@@ -37,7 +37,8 @@ else:
 INSTALLED_APPS = [
     # Projects management
     'projects',
-
+    # App para gestionar los roles
+    'gestionar_roles',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,6 +60,9 @@ INSTALLED_APPS = [
 
     # Account
     'accounts',
+    #libreria [ara uso de roles
+    'guardian',
+
 ]
 
 MIDDLEWARE = [
@@ -159,7 +163,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # AUTHENTICATION_BACKEND configurations.
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
 ]
 
 # Set Google as the OAuth provider in the SOCIALACCOUNT_PROVIDERS settings.
