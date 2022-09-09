@@ -1,4 +1,5 @@
 from allauth.account import forms
+from accounts.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
