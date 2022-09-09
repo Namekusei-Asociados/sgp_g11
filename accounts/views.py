@@ -16,24 +16,24 @@ def home(request):
     """
     user = request.user
     if user.role_sys == 'visitor':
-        return render(request, 'visitor.html')
+        return render(request, 'accounts/visitor.html')
     else:
         users = User.objects.all()
         users = filter(lambda x: not x.is_staff and user.username != x.username, users)
-        return render(request, 'user.html', {'users': users})
+        return render(request, 'accounts/user.html', {'users': users})
 
 
 def create_user(request):
-    return render(request, 'create_user.html')
+    return render(request, 'accounts/create_user.html')
 
 
 def edit_user(request):
-    return render(request, 'edit_user.html')
+    return render(request, 'accounts/edit_user.html')
 
 
 def edit_user(request, username):
     user = User.objects.get(username=username)
-    return render(request, 'edit_user.html', {'u': user})
+    return render(request, 'accounts/edit_user.html', {'u': user})
 
 
 def validate_edit_user(request):
