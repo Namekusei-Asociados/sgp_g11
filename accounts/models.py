@@ -2,9 +2,19 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
+from accounts.manager import CustomUserManager
+
+"""
+    Este modulo tiene el modelo de user personalizado de nuestro sistema
+    Para manejo de roles y campos de formularios
+"""
 
 
 class User(AbstractUser):
+    """
+    El User hereda el AbstractUser de DJango.
+    Se personaliza atributos
+    """
     ROLE_SYS = (
         ('user', 'user'),
         ('admin', 'admin'),
@@ -19,6 +29,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
 
+    objects = CustomUserManager()
+
     def __str__(self):
         return f'''Username: {self.username}'''
-
