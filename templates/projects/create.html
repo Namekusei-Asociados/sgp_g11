@@ -1,0 +1,130 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Proyectos
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!--MESSAGES-->
+        {% if messages %}
+            <ul class="messages my-2">
+                {% for message in messages %}
+                    <div {% if message.tags %}
+                        class="{{ message.tags }} text-white alert-dismissible fade show alert alert-success"{% endif %}
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!--MESSAGES END-->
+
+
+        <div class="card card-primary m-2">
+            <div class="card-header">
+                <h3 class="card-title">Crear Proyecto</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="createProjectForm" action="{% url 'projects.store' %}" method="post">
+                {% csrf_token %}
+
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name" class="required">Nombre</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Petropar">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripcion del proyecto</label>
+                        <textarea class="form-control" name="description" id="projectDescription" cols="30" rows="3"
+                                  maxlength="500" placeholder="Este proyecto pertenece..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asignar Scrum Master</label>
+                        <select class="form-control" name="user">
+                            <option value="">Seleccione un valor</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+
+            $('#createProjectForm').validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 4
+                    },
+                    description: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 500
+                    },
+                    user: {
+                        required: true
+                    },
+
+                },
+                messages: {
+                    name: {
+                        required: "El nombre es obligatorio",
+                        minlength: "Ingrese un minimo de 4 caracteres"
+                    },
+                    description: {
+                        required: "La descripcion del proyecto es obligatoria",
+                        minlength: "Ingrese un minimo de 4 caracteres",
+                        maxLength: "Ingrese un maximo de 500 caracteres"
+                    },
+                    user: {
+                        required: "Debe seleccionar un usuario"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
+{% endblock %}

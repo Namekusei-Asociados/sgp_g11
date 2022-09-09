@@ -21,19 +21,23 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from accounts import views
+
 urlpatterns = [
     # Index page
     path('', TemplateView.as_view(template_name="account/base.html")),
 
+    # Projects urls
+    path('projects/', include('projects.urls')),
+
+    # Register Role
+    path('role/', include('gestionar_roles.urls')),
+
     # Super-admin page
     path('admin/', admin.site.urls),
 
-    # Home page
-    path('home/', TemplateView.as_view(template_name='dashboard/home.html'), name='home'),
-
-    # Visitor page
-    path('visitor/', TemplateView.as_view(template_name='dashboard/visitor.html'), name='visitor'),
-
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
+
+    path('', include('accounts.urls'))
 ]
