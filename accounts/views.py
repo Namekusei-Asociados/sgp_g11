@@ -27,10 +27,6 @@ def create_user(request):
     return render(request, 'accounts/create_user.html')
 
 
-def edit_user(request):
-    return render(request, 'accounts/edit_user.html')
-
-
 def edit_user(request, username):
     user = User.objects.get(username=username)
     return render(request, 'accounts/edit_user.html', {'u': user})
