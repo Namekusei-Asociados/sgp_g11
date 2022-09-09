@@ -4,8 +4,17 @@ from django.db import models
 # Create your models here.
 from accounts.manager import CustomUserManager
 
+"""
+    Este modulo tiene el modelo de user personalizado de nuestro sistema
+    Para manejo de roles y campos de formularios
+"""
+
 
 class User(AbstractUser):
+    """
+    El User hereda el AbstractUser de DJango.
+    Se personaliza atributos
+    """
     ROLE_SYS = (
         ('user', 'user'),
         ('admin', 'admin'),
