@@ -19,6 +19,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
+    users = filter(lambda x: x.role_sys != 'visitor' and not x.is_staff, users)
     return render(request, 'projects/create.html', {"users": users})
 
 
@@ -46,7 +47,7 @@ def store(request):
     project.members.add(scrum_master)
 
     # redirect back with success message
-    messages.success(request, 'EL proyecto fue creado con exito')
+    messages.success(request, 'El proyecto fue creado con exito')
     return redirect(reverse('projects.create'), request)
 
 

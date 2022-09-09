@@ -1,0 +1,101 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+| Create User
+{% endblock %}
+
+{% block content %}
+<!--MESSAGES-->
+        {% if messages %}
+            <ul class="messages my-2">
+                {% for message in messages %}
+                    <div {% if message.tags %}
+                        class="{{ message.tags }} text-white alert-dismissible fade show alert alert-success"{% endif %}
+                        role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!--MESSAGES END-->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Create New User</small></h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form id="create_user_form" method="post" action="{% url 'accounts.validate_user' %}">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="id_username">Username</label>
+                                <input type="text" name="username" class="form-control" id="id_username"
+                                       placeholder="Enter Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_first_name">First Name</label>
+                                <input type="text" name="first_name" class="form-control" id="id_first_name"
+                                       placeholder="Enter First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_last_name">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" id="id_last_name"
+                                       placeholder="Enter Last Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_email">Email</label>
+                                <input type="email" name="email" class="form-control" id="id_email"
+                                       placeholder="Enter Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password">Password</label>
+                                <input type="password" name="password" class="form-control" id="id_password"
+                                       placeholder="Enter Password">
+                            </div>
+                            <div class="form-group">
+                                <label>Role System</label>
+                                <select class="form-control select2bs4" style="width: 100%;" id="id_role_sys"
+                                        name="role_sys">
+                                    <option selected="selected">visitor</option>
+                                    <option>admin</option>
+                                    <option>user</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+{% endblock %}
+
+
+<!--        <form class="signup" id="signup_form" method="post" action="{% url 'accounts.user' %}">-->
+<!--            {% csrf_token %}-->
+<!--            {% if redirect_field_value %}-->
+<!--            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>-->
+<!--            {% endif %}-->
+<!--            <button type="submit">Create User</button>-->
+<!--        </form>-->
