@@ -7,8 +7,12 @@
 {% endblock %}
 
 {% block content %}
+
 <!-- Main content -->
 <section class="content">
+
+    {% include 'base/components/success-message.html' %}
+
     <div class="container-fluid">
         <div class="row">
             <!-- left column -->
@@ -21,6 +25,7 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form id="edit_user_form" method="post" action="{% url 'accounts.validate_edit_user' %}">
+                        <input type="hidden" name="user_username" value="{{ u.username }}">
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="id_username">Username</label>
@@ -47,10 +52,10 @@
                                 <select class="form-control select2bs4" style="width: 100%;" id="id_role_sys"
                                         name="role_sys">
                                     <option selected="selected">{{ u.role_sys }}</option>
-                                    {% if user.role_sys == 'visitor' %}
+                                    {% if u.role_sys == 'visitor' %}
                                         <option>admin</option>
                                         <option>user</option>
-                                    {% elif user.role_sys == 'user' %}
+                                    {% elif u.role_sys == 'user' %}
                                         <option>admin</option>
                                         <option>visitor</option>
                                     {% else %}

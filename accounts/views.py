@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -12,7 +13,7 @@ def home(request):
     """
         Retorna el template home correspondiente al tipo de user logueado
         :param request: user
-        :return:documento html
+        :return: documento html
     """
     user = request.user
     if user.role_sys == 'visitor':
@@ -33,7 +34,18 @@ def edit_user(request, username):
 
 
 def validate_edit_user(request):
-    return redirect(home)
+    username = request.POST['user_username']
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
+    role_sys = request.POST['role_sys']
+    user = User.objects.get(username=username)
+    user.first_name = first_name
+    user.last_name = last_name
+    user.role_sys = role_sys
+    user.save()
+    messages.success(request, 'El usuario fue actualizado con éxito')
+    return redirect(reverse('accounts.edit_user', kwargs={'username': user.username}), request)
+
 
 
 def validate_user(request):
@@ -72,3 +84,8 @@ def email_exists(email):
     return User.objects.filter(email=email).exists()
 
 
+def destroy(request, username):
+    user = User.objects.get(username=username)
+    user.delete()
+    messages.success(request, 'El usuario fue eliminado con éxito')
+    return redirect(reverse('home'), request)
