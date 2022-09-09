@@ -8,22 +8,8 @@
 
 {% block content %}
 <!--MESSAGES-->
-        {% if messages %}
-            <ul class="messages my-2">
-                {% for message in messages %}
-                    <div {% if message.tags %}
-                        class="{{ message.tags }} text-white alert-dismissible fade show alert alert-success"{% endif %}
-                        role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-
-                    </div>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <!--MESSAGES END-->
+{% include 'base/components/success-message.html' %}
+<!--MESSAGES END-->
 
 <!-- Main content -->
 <section class="content">
@@ -34,11 +20,12 @@
                 <!-- jquery validation -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Create New User</small></h3>
+                        <h3 class="card-title"><small>Create New User</small></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form id="create_user_form" method="post" action="{% url 'accounts.validate_user' %}">
+                        {% csrf_token %}
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="id_username">Username</label>
@@ -77,7 +64,6 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            {% csrf_token %}
                             <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </form>
@@ -90,12 +76,3 @@
 </section>
 <!-- /.content -->
 {% endblock %}
-
-
-<!--        <form class="signup" id="signup_form" method="post" action="{% url 'accounts.user' %}">-->
-<!--            {% csrf_token %}-->
-<!--            {% if redirect_field_value %}-->
-<!--            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>-->
-<!--            {% endif %}-->
-<!--            <button type="submit">Create User</button>-->
-<!--        </form>-->
