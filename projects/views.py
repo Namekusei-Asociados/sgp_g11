@@ -3,13 +3,13 @@ from .models import Project
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
-
+from utilities.UProject import UProject
 
 # Create your views here.
 def index(request):
     # get all projects
     projects = Project.objects.all()
-    return render(request, 'index.html', {"projects": projects})
+    return render(request, 'projects/index.html', {"projects": projects})
 
 
 def create(request):
@@ -19,7 +19,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
-    return render(request, 'create.html', {"users": users})
+    return render(request, 'projects/create.html', {"users": users})
 
 
 def store(request):
@@ -42,7 +42,7 @@ def store(request):
         return redirect(reverse('projects.create'), request)
 
     # create project record and then attach scrum master
-    project = Project.objects.create(name=name, description=description)
+    project = Project.objects.create(name=name, description=description, status = UProject.STATUS_PENDING)
     project.members.add(scrum_master)
 
     # redirect back with success message
@@ -61,7 +61,7 @@ def edit(request, id):
     project = Project.objects.get(id=id)
     users = User.objects.all()
     members = project.members.all()
-    return render(request, 'edit.html', {'project': project, 'users': users, 'members': members})
+    return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
 
 
 def update(request):
