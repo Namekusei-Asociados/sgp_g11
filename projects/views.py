@@ -11,7 +11,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
-    return render(request, 'create.html', {"users": users})
+    return render(request, 'projects/create.html', {"users": users})
 
 
 def store(request):

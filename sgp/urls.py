@@ -30,6 +30,9 @@ urlpatterns = [
     # Projects urls
     path('projects/', include('projects.urls')),
 
+    # Register Role
+    path('role/', include('gestionar_roles.urls')),
+
     # Super-admin page
     path('admin/', admin.site.urls),
 
@@ -38,4 +41,5 @@ urlpatterns = [
 
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
+
 ]
