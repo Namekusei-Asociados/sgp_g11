@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
+from accounts.manager import CustomUserManager
 
 
 class User(AbstractUser):
@@ -19,6 +20,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
 
+    objects = CustomUserManager()
+
     def __str__(self):
         return f'''Username: {self.username}'''
-
