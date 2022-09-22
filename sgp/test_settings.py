@@ -209,3 +209,5 @@ LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+print('entro')
