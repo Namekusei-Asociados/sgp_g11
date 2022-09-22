@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get('DEBUG')) == "True"
+# DEBUG = str(os.environ.get('DEBUG')) == "True"
+DEBUG = True
 
 # SEND ALLOWED HOST FOR THE CURRENT ENVIRONMENT
 if str(os.environ.get('ENVIRONMENT')) == 'production':
@@ -166,7 +167,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'ASDFAGASFSAS'
 
 # The line allauth.socialaccount.providers.google specifies the OAuth provider since django-allauth supports many
 # OAuth providers. We will also set django-allauth as the authentication backend for our application in the
@@ -208,5 +209,3 @@ LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
-
-print('entro')
