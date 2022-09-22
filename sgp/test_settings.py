@@ -166,7 +166,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "fdsfdsgsgfdhgdgfd"
 
 # The line allauth.socialaccount.providers.google specifies the OAuth provider since django-allauth supports many
 # OAuth providers. We will also set django-allauth as the authentication backend for our application in the
