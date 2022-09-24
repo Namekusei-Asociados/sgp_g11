@@ -1,0 +1,79 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Roles
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <section class="content">
+
+        {% include 'base/components/success-message.html' %}
+        <div class="card card-primary m-2">
+
+            <div class="card-header">
+                <h3 class="card-title">Editar Rol</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="editProjectForm" action="{% url 'gestionar_roles.update' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="role_id" value="{{ role.id }}">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name" class="required">Nombre</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Develop"
+                               value="{{ role.role_name }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripcion del proyecto</label>
+                        <textarea class="form-control" name="description" id="role_description" cols="30" rows="3"
+                                  maxlength="500"
+                                  placeholder="Este proyecto pertenece...">{{ role.description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seleccionar permisos</label>
+
+                        <div class="row">
+
+                            {% for perm in permissions %}
+                                <!-- checkbox -->
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="perms[]" type="checkbox"
+                                               value="{{ perm.id }}"
+                                        {% if perm in perms_role %}
+                                            checked
+                                        {% endif %}
+                                        >
+                                        <label class="form-check-label" style="font-size: 1.2em">{{ perm.name }}</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+
+    </section>
+
+{% endblock %}

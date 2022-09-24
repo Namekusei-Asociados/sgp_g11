@@ -1,129 +1,156 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from guardian.shortcuts import assign_perm, remove_perm
+from accounts.models import User
+from django.db.models import Q
 
-class RoleManager(models.Manager):
+class Permissions(models.Model):
+    name = models.CharField(max_length=40, null=True)
+    description = models.CharField(max_length=250, null=True)
+
+class RoleSystemManager(models.Manager):
     # funcion para crear roles permisos por modelo
-    def create_role(self, name, description, type_role, permissions_list):
-        group_role = Group.objects.create(name=name)
-        role = Role.objects.create(
+    def create_role(self, name, description, permissions_list):
+        """
+        Crear un nuevo rol del sistema
+
+        :param name: nombre del rol
+        :param description: descripcion del rol
+        :param permissions_list: lista de permisos a ser asignados al rol
+        """
+        role = RoleSystem.objects.create(
             role_name=name,
-            description=description,
-            type_role=type_role,
-            role_group=group_role
+            description=description
         )
         role.save()
         self.attach_permissions(role.id, permissions_list)
         print('rol creado exitosamente')
 
-    # funcion encargada de asignar permisos a los grupos de roles
+    # funcion encargada de asignar permisos a los roles
     def attach_permissions(self, id_role, permissions_list):
-        role = Role.objects.get(id=id_role)
-        print(role)
-        nombre=role.role_name
-        group_role = Group.objects.get(name=nombre)
+        """
+        Asignar peromisos al rol
+
+        :param id_role: id del rol al cual seran asignados los permisos
+        :param permissions_list: lista de permisos a ser asignados
+        """
+        role = self.get_role_by_id(id_role=id_role)
         for permiso_temp in permissions_list:
-            group_role.permissions.add(permiso_temp)
+            role.perms.add(permiso_temp)
 
+    # funcion para verificar si el usuario tiene los permisos requeridos
+    @staticmethod
+    def has_permissions(user_id, perm):
+        """
+        Funcion para verificar si el usuario posee un permiso
 
-    # funcion encargada de asignar permisos a los grupos de roles
-    def dettach_permissions(self, id_role, permissions_list):
-        role = Role.objects.get(id=id_role)
-        group_role = Group.objects.get(name=role.role_name)
-        for permiso_temp in permissions_list:
-            group_role.permissions.remove(permiso_temp)
+        :param user_id: id del usuario
+        :param perm: permiso a ser consultado
+        :return:
+        """
+        return RoleSystem.objects.filter(user=user_id, perms__name__in=perm).exists()
 
-    #verifica la existencia de un permiso en la base de datos
-    def exist_perm(self, perm):
-        if Permission.objects.filter(codename=perm).exists():
-            return True
-        else:
-            return False
+    def has_role(self, user_id, id_role):
+        """
+        Funcion para verificar si un usuario posee un rol
 
-    # funcion para asignar rol a usuario
-    def assing_role_to_user(self, id_role, user):
-        try:
-            role = Role.objects.get(id=id_role)
-            group_role = Group.objects.get(name=role.role_name)
-            group_role.user_set.add(user)
-        except Role.DoesNotExist as error:
-            print("El rol no existe" + id_role)
+        :param user_id: id del usuario
+        :param role_name: nombre del rol a ser buscado
+        :return:
+        """
+        return RoleSystem.objects.filter(user=user_id, id=id_role).exists()
 
+    def get_role_by_id(self, id_role):
+        """
+        Obtiene el rol segun  el id
+        :param id_role: id del rol
+        """
+        return RoleSystem.objects.get(id=id_role)
 
-    # funcion para asignar rol a usuarioFo
-    def unassing_role_to_user(self, id_role, user):
-        try:
-            role = Role.objects.get(id=id_role)
-            group_role = Group.objects.get(name=role.role_name)
-            group_role.user_set.remove(user)
-            print("Rol eliminado")
-        except Role.DoesNotExist as error:
-            print("El rol no existe" + id_role)
+    @staticmethod
+    def assing_role_to_user(role, user):
+        """
+        Asignar rol a usuario
+        :param role: rol a ser asignado
+        :param user: usuario al cual sera asignado el rol
+        """
+        role.user.add(user)
 
-
-    # funcion para eliminar un rol
-    def delete_role(self, id_role):
-        try:
-            role = Role.objects.get(id=id_role)
-            group_role = Group.objects.get(name=role.role_name)
-            group_role.delete()
-        except Role.DoesNotExist as error:
-            print("El rol no existe" + id_role)
-
-
-    # funcion para crear roles de permisos por objeto
-    def create_role_per_object(self, name, description, type, *permissions, object):
-        # rellenamos los campos
-        self.role_name = name;
-        self.description = description;
-        self.type = type;
-        group_role, created = Group.objects.get_or_create(name=f'{id}+{object.id}')
-        if created:
-            self.attach_permissions(group_role, permissions, object)
-
-    # funcion encargada de asignar permisos a los grupos de roles
-    def attach_permissions_per_object(self, group_role, *permissions, object):
-        for permiso_temp in permissions:
-            if Permission.objects.filter(name=permiso_temp).exists():
-                assign_perm(permiso_temp, group_role, object)
-            else:
-                print("el permiso no existe")
-
-    ######LISTAS######
-    #Roles a los que pertenece un usuario
-    def list_user_roles(self, user):
-        return user.groups.all()
-
-    # funcion para listar los roles existentes
     def list_roles(self):
-        return Role.objects.all()
+        """
+        Funcion para listar todos los roles del sistema
+        """
+        return RoleSystem.objects.all()
 
-    # funcion para listar permisos del rol
-    def list_roles_perms(self, id_role):
-        try:
-            role = Role.objects.get(id=id_role)
-            group_role = Group.objects.get(namei=role.role_name)
-            return group_role.permissions.all()
-        except Role.DoesNotExist as error:
-            print("El rol no existe" + id_role)
+    @staticmethod
+    def delete_role(id_role):
+        """
+        Eliminar un rol de sistema
+
+        :param id_role: id del rol a ser eliminado
+        """
+        role=RoleSystem.objects.get(id=id_role)
+        role.delete()
+
+    @staticmethod
+    def update_role(id_role, name, description, perms):
+        """
+        Funcion para editar un rol de sistema
+
+        :param id_role: id del rol a editar
+        :param name: nombre actualizado
+        :param description: descripcion actualizada
+        :param perms: lista de permisos actualizados
+
+        :return: None
+        """
+        role = RoleSystem.objects.get(id=id_role)  # rol a actualizar
+        selected_id_permissions = [item.id for item in perms]  # permisos elegidos por el usuario
+        original_permissions = role.perms.all()
+        print("Permisos originales: ", original_permissions)
+        original_permissions_id = [item.id for item in original_permissions]  # permisos anteriores
+        # permisos a eliminar
+        perms_to_remove = list(set(original_permissions_id) - set(selected_id_permissions))
+        print("permisos a eliminar: ", perms_to_remove)
+        role.perms.add(*perms)
+
+        for perm in original_permissions:
+            if perm.id in perms_to_remove:
+                role.perms.remove(perm)
+
+        if name:
+            role.role_name = name
+        if description:
+            role.description = description
+        #guardamos los cambios
+        role.save()
+        print("Editado exitosamente")
+
+    def list_role_permission(self,id_role):
+        """
+        Funcion para listar los permisos de un rol
+
+        :param id_role: id del rol a editar
+
+        """
+        role = RoleSystem.objects.get(id=id_role)  # rol a listar
+        permissions = role.perms.all()
+        return permissions
 
 # Create your models here.
-class Role(models.Model):
-
+class RoleSystem(models.Model):
+    """
+    Roles de sistema
+    """
     # campos de los roles en la base de datos
     role_name = models.CharField(max_length=40, null=True)
     description = models.CharField(max_length=250, null=True)
-    # asociamos el rol a la tabla de grupos
-    type_role = models.IntegerField()    #1- Sistema, 2- Proyecto
-    role_group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    # asociamos el rol a la tabla de usuarios
+    user = models.ManyToManyField('accounts.User', related_name='role')
+    # asociamos los roles a permisos
+    perms = models.ManyToManyField(Permissions)
 
-    objects=RoleManager()
+    objects = RoleSystemManager()
 
     def __str__(self):
-        return self.role_name
-
-    class Meta:
-        permissions = (
-            ('list_role', 'Can list role'),
-        )
+        return f'{self.role_name}'
