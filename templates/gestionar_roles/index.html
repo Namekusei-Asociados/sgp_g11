@@ -85,11 +85,11 @@
                                         </i>
                                         Editar
                                     </a>
-                                    {#                                    <a class="btn btn-danger btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-trash">#}
-                                    {#                                        </i>#}
-                                    {#                                        Delete#}
-                                    {#                                    </a>#}
+                                    <a class="btn btn-danger btn-sm" href="{% url 'gestionar_roles.delete' role.id %}">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Eliminar
+                                    </a>
                                 </td>
                                 </tr>
                             {% endfor %}

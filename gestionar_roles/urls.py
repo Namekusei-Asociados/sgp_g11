@@ -5,5 +5,6 @@ urlpatterns = [
     path('create', views.create, name='gestionar_roles.create'),
     path('store', views.store, name='gestionar_roles.store'),
     path('edit/<int:id>', views.edit, name='gestionar_roles.edit'),
-    path('update', views.update, name='gestionar_roles.update')
+    path('update', views.update, name='gestionar_roles.update'),
+    path('delete/<int:id>', views.delete, name='gestionar_roles.delete')
 ]

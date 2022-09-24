@@ -67,6 +67,7 @@ class RoleSystemManager(models.Manager):
         """
         return RoleSystem.objects.get(id=id_role)
 
+
     @staticmethod
     def assing_role_to_user(role, user):
         """
@@ -75,6 +76,20 @@ class RoleSystemManager(models.Manager):
         :param user: usuario al cual sera asignado el rol
         """
         role.user.add(user)
+
+    @staticmethod
+    def update_role_user(new_role, user):
+        """
+        Asignar rol a usuario
+        :param role: rol a ser deasignado
+        :param user: usuario al cual sera asignado el rol
+        """
+        role=RoleSystem.objects.get(user=user)
+        role.user.remove(user)
+        new_role.user.add(user)
+        print("Actualizado exitosamente")
+
+
 
     def list_roles(self):
         """
@@ -91,6 +106,7 @@ class RoleSystemManager(models.Manager):
         """
         role=RoleSystem.objects.get(id=id_role)
         role.delete()
+        print("Eliminado exitosamente")
 
     @staticmethod
     def update_role(id_role, name, description, perms):

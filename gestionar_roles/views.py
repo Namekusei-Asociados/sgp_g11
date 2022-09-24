@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-
+from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem, Permissions
 
 
@@ -18,6 +18,12 @@ def create(request):
 
 
 def store(request):
+    """
+    Funcion para guardar los un rol
+
+    :param request: request post
+    :return:
+    """
     name = request.POST['name']
     description = request.POST['description']
     perms = request.POST.getlist('perms[]')
@@ -30,6 +36,7 @@ def store(request):
     return redirect(reverse('gestionar_roles.create'), request)
 
 
+@permission_sys_required('CRUD roles')
 def index(request):
     # get all Roles
     roles = RoleSystem.objects.all()
@@ -68,11 +75,24 @@ def update(request):
     description = request.POST['description']
     perms = request.POST.getlist('perms[]')
     role_id = request.POST['role_id']
-    permissions=[Permissions.objects.get(id=item) for item in perms]
-    #permissions=Permissions.objects.get(id__in=perms)
-    #print(permissions)
+    permissions = [Permissions.objects.get(id=item) for item in perms]
+    # permissions=Permissions.objects.get(id__in=perms)
+    # print(permissions)
     role = RoleSystem.objects.get(id=role_id)
     # get project and update
     RoleSystem.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
 
     return redirect(reverse('gestionar_roles.edit', kwargs={'id': role.id}), request)
+
+
+def delete(request, id):
+    """
+    Elimina un recurso del modelo roles
+    :param request: posee los campos a modificar
+    :param id: campo del modelo roles
+    :return: formulario de eliminacion de rol
+    """
+    role = RoleSystem.objects.get(id=id)
+    RoleSystem.objects.delete_role(id)
+    messages.success(request, 'El rol fue eliminado con éxito')
+    return redirect(reverse('gestionar_roles.index'), request)

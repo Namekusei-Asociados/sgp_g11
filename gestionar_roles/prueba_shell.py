@@ -6,12 +6,12 @@ from accounts.models import User
 users=User.objects.all()
 usuario = User.objects.get(username='romina_belen')
 roles=RoleSystem.objects.all()
-role=RoleSystem.objects.get(role_name='prueba1').first()
+role=RoleSystem.objects.get(role_name='AnonyimousUser')
 RoleSystem.objects.assing_role_to_user(role, usuario)
 Role.objects.create_role(name='rolprueba29',description='porfa funciona', type_role=1, permissions_list=['gestionar_roles.list_role'])
 Role.objects.list_roles_perms(8)
 RoleSystem.objects.delete_role(18)
-RoleSystem.objects.create_role(name='develop',description='soy una prueba',permissions_list=[2])
+RoleSystem.objects.create_role(name='Visitante',description='soy una visita',permissions_list=[])
 RoleSystem.objects.filter(user__username='romina').exists()
 RoleSystem.objects.get(id=1)
 
@@ -85,3 +85,4 @@ def permission_sys_required(perm, url=None, raise_exception=False):
         return wrap
 
     return decorator
+
