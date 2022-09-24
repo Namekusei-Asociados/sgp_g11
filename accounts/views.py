@@ -58,7 +58,6 @@ def validate_edit_user(request):
     return redirect(reverse('accounts.edit_user', kwargs={'username': user.username}), request)
 
 
-
 def validate_user(request):
     """
         Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,

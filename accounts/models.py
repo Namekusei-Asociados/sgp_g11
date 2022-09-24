@@ -33,3 +33,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'''Username: {self.username}'''
+
+    def is_user(self):
+        if self.role_sys == 'user':
+            return True
+        else:
+            return False
+
+    def is_admin(self):
+        if self.role_sys == 'admin':
+            return True
+        else:
+            return False
