@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'projects',
     # App para gestionar los roles
     'gestionar_roles',
+    # App para gestionar los sprints
+    'sprints',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
