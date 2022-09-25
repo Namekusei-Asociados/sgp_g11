@@ -22,7 +22,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="createProjectForm" action="{% url 'projects.store' %}" method="post">
+            <form id="form" action="{% url 'type_us.store' %}" method="post">
                 {% csrf_token %}
 
 
@@ -53,9 +53,9 @@
                                  id="custom-field-clone">
                                 <input type="text" class="form-control" placeholder="Nombre de empresa externa">
                                 <select class="form-select form-control">
-                                    <option value="text">Texto</option>
-                                    <option value="date">Fecha</option>
-                                    <option value="number">Numero</option>
+                                    {% for type in type_custom_fields %}
+                                        <option value="{{ type }}">{{ type }}</option>
+                                    {% endfor %}
                                 </select>
                                 <button class="btn btn-danger btn-delete-custom-field" type="button">
                                     Borrar
@@ -63,7 +63,7 @@
                             </div>
                         </div>
 
-                        <div class="border p-2 mt-2 d-none" id="custom-field-container">
+                        <div class="border rounded p-2 mt-2 d-none" id="custom-field-container">
                             <div class="d-flex justify-content-around">
                                 <label for="type_us_name">Nombre</label>
                                 <label for="type_us_name">Tipo</label>
@@ -94,9 +94,26 @@
                             </div>
                         </div>
 
-                        <div class="border p-2 mt-2 d-none" id="columns-container">
+                        <div class="border rounded p-2 mt-2" id="columns-container">
                             <label for="type_us_name">Nombre</label>
-
+                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
+                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="To do" name="flow[]">
+                                <button class="btn btn-danger btn-delete-column" type="button">
+                                    Borrar
+                                </button>
+                            </div>
+                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
+                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Doing" name="flow[]">
+                                <button class="btn btn-danger btn-delete-column" type="button">
+                                    Borrar
+                                </button>
+                            </div>
+                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
+                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Done" name="flow[]">
+                                <button class="btn btn-danger btn-delete-column" type="button">
+                                    Borrar
+                                </button>
+                            </div>
                         </div>
 
                     </div>
@@ -105,7 +122,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Crear</button>
                 </div>
             </form>
         </div>
@@ -122,19 +139,15 @@
         //validations rules
         $(function () {
 
-            $('#createProjectForm').validate({
+            $('#form').validate({
                 rules: {
                     name: {
                         required: true,
                         minlength: 4
                     },
-                    description: {
+                    prefix: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 500
-                    },
-                    user: {
-                        required: true
+                        minlength: 1,
                     },
 
                 },
@@ -143,14 +156,11 @@
                         required: "El nombre es obligatorio",
                         minlength: "Ingrese un minimo de 4 caracteres"
                     },
-                    description: {
-                        required: "La descripcion del proyecto es obligatoria",
-                        minlength: "Ingrese un minimo de 4 caracteres",
-                        maxLength: "Ingrese un maximo de 500 caracteres"
+                    prefix: {
+                        required: "El campo prefijo obligatorio",
+                        minlength: "Ingrese un minimo de 1 caracteres",
                     },
-                    user: {
-                        required: "Debe seleccionar un usuario"
-                    }
+
                 },
                 errorElement: 'span',
                 errorPlacement: function (error, element) {
@@ -174,7 +184,7 @@
 
                 //modify attr
                 clone.removeAttribute('id');
-                $(clone).children('input').attr('name', 'flow[]')
+                $(clone).children('input').attr('name', 'flow[]').attr('required','required')
                 container.append(clone)
 
                 //add item to the container
@@ -199,8 +209,8 @@
 
                 //modify attr
                 clone.removeAttribute('id');
-                 $(clone).children('input').attr('name', 'custom_fields[name]')
-                 $(clone).children('select').attr('name', 'custom_fields[type]')
+                 $(clone).children('input').attr('name', 'custom_fields[name]').attr('required','required')
+                 $(clone).children('select').attr('name', 'custom_fields[type]').attr('required','required')
                 container.append(clone)
 
                 //add item to the container
