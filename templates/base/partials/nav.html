@@ -27,6 +27,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="{% url 'sprints.create_sprint' %}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Create Sprint</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{% url 'projects.index' %} " class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>Proyectos</p>
@@ -37,6 +44,13 @@
                 <a href="{% url 'gestionar_roles.create' %} " class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>Crear Rol</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'sprints.index' %} " class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Sprints</p>
                 </a>
             </li>
 

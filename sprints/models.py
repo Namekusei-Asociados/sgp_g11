@@ -13,8 +13,17 @@ SPRINT_STATUSES = (
 
 
 class Sprint(models.Model):
-    sprint_id = models.AutoField(primary_key=True)
+    number = models.IntegerField()
+    project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
     sprint_name = models.CharField(max_length=50)
-    start_at = models.DateField()
-    end_at = models.DateField()
-    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default='Planificacion')
+    capacity = models.IntegerField(verbose_name='Capacidad en horas')
+    duration = models.IntegerField(verbose_name='Duración en días')
+    start_at = models.DateField(null=True, verbose_name='Fecha de inicio')
+    end_at = models.DateField(null=True, verbose_name='Fecha de finalización')
+    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default='Planificacion', verbose_name='Estado')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"Sprint {self.number} - {self.project.name}"

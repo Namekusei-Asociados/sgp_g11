@@ -1,0 +1,82 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Create Sprint
+{% endblock %}
+
+{% block content %}
+    <!--MESSAGES-->
+    {% include 'base/components/success-message.html' %}
+    <!--MESSAGES END-->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><small>Create New Sprint</small></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="create_sprint_form" method="post" action="{% url 'sprints.validate_create_sprint' %}">
+                            {% csrf_token %}
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="id_sprint_name">Sprint Name</label>
+                                    <input type="text" name="sprint_name" class="form-control" id="id_sprint_name"
+                                           placeholder="Enter Sprint Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_capacity">Capacity</label>
+                                    <input type="number" name="capacity" class="form-control" id="id_capacity"
+                                           placeholder="Enter Sprint Capacity in hours">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_duration">Duration</label>
+                                    <input type="number" name="duration" class="form-control" id="id_duration"
+                                           placeholder="Enter Sprint Duration in days">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_start_at">Start Date</label>
+                                    <input type="date" name="start_at" class="form-control" id="id_start_at"
+                                           placeholder="Enter Start Date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_end_at">End Date</label>
+                                    <input type="date" name="end_at" class="form-control" id="id_end_at"
+                                           placeholder="Enter End Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>User Stories</label>
+                                    <select class="select2" multiple="multiple" data-placeholder="Select a State"
+                                            name="user_stories[]"
+                                            data-dropdown-css-class="select2-purple"
+                                            style="width: 100%;">
+                                        {% for user_story in user_stories %}
+                                            <option
+                                                    value="{{ user_story.id }}">{{ user_story.username }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
