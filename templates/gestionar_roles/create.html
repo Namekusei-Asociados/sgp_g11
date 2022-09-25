@@ -56,12 +56,12 @@
 
                         <div class="row">
 
-                            {% for permiso in permissions %}
+                            {% for perm in permissions %}
                                 <!-- checkbox -->
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="perms[]" type="checkbox" value="{{ permiso.codename }}">
-                                        <label class="form-check-label" style="font-size: 1.2em">{{ permiso.codename }}</label>
+                                        <input class="form-check-input" name="perms[]" type="checkbox" value="{{ perm.id }}">
+                                        <label class="form-check-label" style="font-size: 1.2em">{{ perm.name }}</label>
                                     </div>
                                 </div>
                             {% endfor %}
