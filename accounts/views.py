@@ -42,7 +42,9 @@ def edit_user(request, username):
 def validate_edit_user(request):
     """
     Valida el usuario a ser actualizado y realiza la actualización de los datos
-    :param request:
+
+    :param request: formulario para edit user
+
     :return: HTML con los datos del usuario actualizado
     """
     username = request.POST['user_username']
@@ -60,10 +62,12 @@ def validate_edit_user(request):
 
 def validate_user(request):
     """
-        Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
-        en caso contrario envia un mensaje del tipo de error
-        :param request: formulario
-        :return:documento html
+    Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
+    en caso contrario envia un mensaje del tipo de error
+
+    :param request: formulario
+
+    :return: documento html
     """
     username = request.POST['username']
     first_name = request.POST['first_name']

@@ -20,12 +20,12 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>CREATE NEW USER STORY</small></h3>
+                            <h3 class="card-title"><small>EDIT USER STORY</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form id="create_user_story_form" method="post"
-                              action="{% url 'user_story.validate_create_user_story' %}">
+                              action="{% url 'user_story.validate_edit_user_story' %}">
                             {% csrf_token %}
                             <!-- TEST -->
                             <!-- /.card-header -->

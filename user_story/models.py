@@ -7,10 +7,11 @@ from projects.models import Project
 class UserStory(models.Model):
     code = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    description = models.TextField(max_length=100)
     business_value = models.IntegerField()
     technical_priority = models.IntegerField()
     estimation_time = models.IntegerField()
+    current_status = models.CharField(max_length=20)
     # us_type = models.ForeignKey(UserStoryType, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)

@@ -24,3 +24,7 @@ def cancel_user_story(request):
 
 def validate_cancel_user_story(request):
     return None
+
+
+def backlog(request):
+    return render(request, 'user_story/backlog.html')
