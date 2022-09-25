@@ -37,6 +37,8 @@ else:
 INSTALLED_APPS = [
     # Projects management
     'projects',
+    #TypeUS
+    'type_us',
     # App para gestionar los roles
     'gestionar_roles',
     'django.contrib.admin',

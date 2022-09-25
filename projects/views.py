@@ -7,8 +7,10 @@ from utilities.UProject import UProject
 
 # Create your views here.
 def index(request):
-    # get all projects
-    projects = Project.objects.all()
+    # get all projects related to the current user
+    user = request.user
+
+    projects = user.project_set.all()
     return render(request, 'projects/index.html', {"projects": projects})
 
 
