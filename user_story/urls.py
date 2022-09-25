@@ -8,7 +8,6 @@ urlpatterns = [
     path('validate_create_user_story/', views.validate_create_user_story, name='user_story.validate_create_user_story'),
     path('edit_user_story/', views.edit_user_story, name='user_story.edit_user_story'),
     path('validate_edit_user_story/', views.validate_edit_user_story, name='user_story.validate_edit_user_story'),
-    path('delete_user_story/', views.delete_user_story, name='user_story.delete_user_story'),
-    path('validate_delete_user_story/', views.validate_delete_user_story, name='user_story.validate_delete_user_story'),
-
+    path('cancel_user_story/', views.cancel_user_story, name='user_story.cancel_user_story'),
+    path('validate_cancel_user_story/', views.validate_cancel_user_story, name='user_story.validate_cancel_user_story'),
 ]
