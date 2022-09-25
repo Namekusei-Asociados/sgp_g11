@@ -113,11 +113,11 @@
                                 </td>
 
                                 <td class="project-actions text-right">
-                                    {#                                    <a class="btn btn-primary btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-folder">#}
-                                    {#                                        </i>#}
-                                    {#                                        View#}
-                                    {#                                    </a>#}
+                                    <a class="btn btn-primary btn-sm" href="{% url 'projects.dashboard' project.id %}">
+                                        <i class="fas fa-folder">
+                                        </i>
+                                        Ver
+                                    </a>
                                     <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
                                         <i class="fas fa-pencil-alt">
                                         </i>
@@ -132,6 +132,13 @@
                                 </tr>
                             {% endfor %}
 
+                        {% if projects.count == 0 %}
+                            <tr>
+                            <td>
+                                <span class="text-danger">No posee ningun proyecto</span>
+                            </td>
+                            </tr>
+                        {% endif %}
 
                         </tbody>
                     </table>

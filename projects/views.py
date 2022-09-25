@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Project
+
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from .models import Project, RoleProject
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
 from utilities.UProject import UProject
+
 
 # Create your views here.
 def index(request):
@@ -30,8 +33,6 @@ def store(request):
     Intenta crear un nuevo recurso del modelo Project
 
     :param request:
-
-    :return:
     """
     # getting attributes
     name = request.POST['name']
@@ -47,8 +48,7 @@ def store(request):
         return redirect(reverse('projects.create'), request)
 
     # create project record and then attach scrum master
-    project = Project.objects.create(name=name, description=description, status = UProject.STATUS_PENDING)
-    project.members.add(scrum_master)
+    project = Project.objects.create_project(name=name, description=description, scrum_master=scrum_master)
 
     # redirect back with success message
     messages.success(request, 'El proyecto fue creado con exito')
@@ -60,7 +60,6 @@ def edit(request, id):
     Retorna la vista de edicion del projecto actual
 
     :param request:
-
     :param id: campo del modelo Project
 
     :return: formulario de edicion de proyecto
@@ -77,7 +76,6 @@ def update(request):
     Actualiza un recurso del modelo Project
 
     :param request: posee los campos a modificar
-
     :param id: campo del modelo Project
 
     :return: formulario de edicion de proyecto
@@ -93,18 +91,27 @@ def update(request):
 
     # detach members
     members = project.members.values_list('id', flat=True)
-    print(users)
+
     for member in members:
         if str(member) not in users:
             project.members.remove(str(member))
 
-    # attach members
-    project.members.add(*users)
+    # attach members with default role
+    role = RoleProject.objects.get(project=project, role_name=UProjectDefaultRoles.DEVELOPER)
 
-    # update fields
+    current_members = list(project.members.values_list('id', flat=True))
+    for user in users:
+        if int(user) not in current_members:
+            Project.objects.add_member(user, [role], project)
+
+    # # update fields
     project.name = name
     project.description = description
     project.save()
 
-    messages.success(request, 'EL proyecto fue actualizado con exito')
+    messages.success(request, 'El proyecto fue actualizado con exito')
     return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
+
+
+def dashboard(request, id_project):
+    return render(request, 'projects/base/app.html', {'id_project': id_project})

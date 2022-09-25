@@ -41,6 +41,4 @@ urlpatterns = [
 
     path('', include('accounts.urls')),
 
-    # Sprints urls
-    path('sprints/', include('sprints.urls')),
 ]

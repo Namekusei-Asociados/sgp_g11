@@ -1,0 +1,129 @@
+{% extends 'projects/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Create User Story
+{% endblock %}
+
+{% block content %}
+    <!--MESSAGES-->
+    {% include 'base/components/success-message.html' %}
+    <!--MESSAGES END-->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><small>CREATE NEW USER STORY</small></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="create_user_story_form" method="post"
+                              action="{% url 'user_story.validate_create_user_story' id_project %}">
+                            {% csrf_token %}
+                            <!-- TEST -->
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_title">Title</label>
+                                            <input type="text" name="title" class="form-control" id="id_title"
+                                                   placeholder="Enter Title" maxlength="100">
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_business_value">Business Value</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="business_value" class="form-control"
+                                                   id="id_business_value"
+                                                   placeholder="Enter Business Value">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label>Assigned to</label>
+                                            <select class="form-control select2" style="width: 100%;"
+                                                    id="id_assigned_to"
+                                                    name="assigned_to">
+                                                <option>Alabama</option>
+                                                <option>Alaska</option>
+                                                <option>California</option>
+                                                <option>Delaware</option>
+                                                <option>Tennessee</option>
+                                                <option>Texas</option>
+                                                <option>Washington</option>
+                                            </select>
+                                        </div>
+                                         <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_estimation_time">Business Value</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="estimation_time" class="form-control"
+                                                   id="id_estimation_time"
+                                                   placeholder="Enter Estimation Time">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-md-6">
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_description">Description</label>
+                                            <input type="text" name="first_name" class="form-control"
+                                                   id="id_description"
+                                                   placeholder="Enter Description" maxlength="100">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_technical_priority">Technical Priority</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="technical_priority" class="form-control"
+                                                   id="id_technical_priority"
+                                                   placeholder="Enter Technical Priority">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label>User Type</label>
+                                            <select class="form-control select2" style="width: 100%;" id="id_us_type"
+                                                    name="us_type">
+                                                <option>Alabama</option>
+                                                <option>Alaska</option>
+                                                <option>California</option>
+                                                <option>Delaware</option>
+                                                <option>Tennessee</option>
+                                                <option>Texas</option>
+                                                <option>Washington</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.card -->
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}

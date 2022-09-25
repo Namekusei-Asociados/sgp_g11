@@ -1,0 +1,18 @@
+[
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 1,
+    "fields": {
+      "name":"CRUD roles",
+      "description":"Puede gestionar los roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 2,
+    "fields": {
+      "name":"Configurar proyectos",
+      "description":"Puede configurar los proyectos"
+    }
+  }
+]
