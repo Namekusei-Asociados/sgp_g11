@@ -1,6 +1,7 @@
-from django.conf import settings
 from django.db import models
 from accounts.models import User
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from utilities.UProject import UProject
 
 
 #########################################################
@@ -159,6 +160,62 @@ class RoleProjectManager(models.Manager):
         return ProjectMember.objects.filter(user_id=user_id, project_id=project_id,
                                             roles__perms__name__in=perm).exists()
 
+    @staticmethod
+    def get_scrum_master():
+        name = UProjectDefaultRoles.SCRUM_MASTER
+        description = "Este rol es de Scrum Master"
+        permissions_list = [1, 2]
+        rol = RoleProject.objects.create(role_name=name, description=description, project=None)
+        rol.perms.set(permissions_list)
+        return rol
+    @staticmethod
+    def get_developer():
+        name = UProjectDefaultRoles.DEVELOPER
+        description = "Este rol es de Developer"
+        permissions_list = [2]
+        rol = RoleProject.objects.create(role_name=name, description=description, project=None)
+        rol.perms.set(permissions_list)
+        return rol
+
+
+class ProjectManager(models.Manager):
+
+    def create_project(self, name, description, scrum_master):
+        # create project
+        project = Project.objects.create(name=name, description=description, status=UProject.STATUS_PENDING)
+
+        # attach default roles
+        self.create_default_roles(project)
+
+        # assign scrum master
+        role = RoleProject.objects.get(project=project, role_name=UProjectDefaultRoles.SCRUM_MASTER)
+        member = ProjectMember.objects.create(
+            project=project,
+            user=scrum_master
+        )
+        member.roles.add(role)
+
+        return project
+
+    def create_default_roles(self, project):
+        # scrum master
+        role_scrum_master = RoleProject.objects.get_scrum_master()
+        role_scrum_master.project = project
+        role_scrum_master.save()
+        # developer
+        role_developer = RoleProject.objects.get_developer()
+        role_developer.project = project
+        role_developer.save()
+
+    def add_member(self, user_id, roles, project):
+
+        member = ProjectMember.objects.create(
+            project=project,
+            user_id=user_id
+        )
+        member.roles.add(*roles)
+
+
 
 #########################################################
 ####################### MODELS ##########################
@@ -181,6 +238,7 @@ class Project(models.Model):
     roles = models.ManyToOneRel('projects.RoleProject', on_delete=models.CASCADE, to='projects.Project',
                                 field_name='project')
     status = models.CharField(max_length=50)
+    objects = ProjectManager()
     # def __str__(self) -> str:
     #     text = "{0}"
     #     return text.format(self.name)
