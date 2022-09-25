@@ -11,11 +11,8 @@
     {% if user.role_sys == 'admin' %}
         <br>
         <section class="content">
-
             {% include 'base/components/success-message.html' %}
-
             <div class="container-fluid">
-
                 <!-- /.row -->
                 <div class="row">
                     <div class="col-12">
@@ -77,7 +74,6 @@
                                                     </button>
 
                                                 </form>
-
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -93,5 +89,4 @@
             </div>
         </section>
     {% endif %}
-
 {% endblock %}

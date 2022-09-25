@@ -39,5 +39,6 @@ urlpatterns = [
     # Register OAuth URLs
     path('accounts/', include('allauth.urls')),
 
-    path('', include('accounts.urls'))
+    path('', include('accounts.urls')),
+
 ]

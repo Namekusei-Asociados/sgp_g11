@@ -168,6 +168,7 @@ class RoleProjectManager(models.Manager):
         rol = RoleProject.objects.create(role_name=name, description=description, project=None)
         rol.perms.set(permissions_list)
         return rol
+
     @staticmethod
     def get_developer():
         name = UProjectDefaultRoles.DEVELOPER
@@ -208,13 +209,11 @@ class ProjectManager(models.Manager):
         role_developer.save()
 
     def add_member(self, user_id, roles, project):
-
         member = ProjectMember.objects.create(
             project=project,
             user_id=user_id
         )
         member.roles.add(*roles)
-
 
 
 #########################################################
