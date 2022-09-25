@@ -99,7 +99,7 @@ def update(request):
     # attach members with default role
     role = RoleProject.objects.get(project=project, role_name=UProjectDefaultRoles.DEVELOPER)
 
-    current_members =list(project.members.values_list('id', flat=True))
+    current_members = list(project.members.values_list('id', flat=True))
     for user in users:
         if int(user) not in current_members:
             Project.objects.add_member(user, [role], project)
@@ -109,5 +109,9 @@ def update(request):
     project.description = description
     project.save()
 
-    messages.success(request, 'EL proyecto fue actualizado con exito')
+    messages.success(request, 'El proyecto fue actualizado con exito')
     return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
+
+
+def dashboard(request, id_project):
+    return render(request, 'projects/base/app.html', {'id_project': id_project})

@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 
 # Create your views here.
-def create_user_story(request):
-    return render(request, 'user_story/create_user_story.html')
+def create_user_story(request, id_project):
+    return render(request, 'user_story/create_user_story.html', {'id_project': id_project})
 
 
 def validate_create_user_story(request):
@@ -26,5 +26,5 @@ def validate_cancel_user_story(request):
     return None
 
 
-def backlog(request):
-    return render(request, 'user_story/backlog.html')
+def backlog(request, id_project):
+    return render(request, 'user_story/backlog.html', {'id_project': id_project})

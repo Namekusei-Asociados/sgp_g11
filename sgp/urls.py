@@ -41,6 +41,4 @@ urlpatterns = [
 
     path('', include('accounts.urls')),
 
-    # Users Story urls
-    path('user_story/', include('user_story.urls'))
 ]

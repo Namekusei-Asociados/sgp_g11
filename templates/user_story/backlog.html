@@ -1,4 +1,4 @@
-{% extends 'base/app.html' %}
+{% extends 'projects/base/app.html' %}
 
 {% load static %}
 
@@ -20,7 +20,7 @@
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <div class="input-group-append">
-                                        <a href="{% url 'user_story.create_user_story' %}">
+                                        <a href="{% url 'user_story.create_user_story' id_project %}">
                                             <button class="btn btn-default">
                                                 Create User Story
                                             </button>
@@ -54,13 +54,13 @@
                                         <td> {{ user.role_sys }}</td>
                                         <td class="d-flex" style="gap: 5px">
                                             <a class="btn btn-info btn-sm"
-                                               href="{% url 'accounts.edit_user' user.username %}">
+                                               href="#">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Editar
                                             </a>
                                             <form class="m-0 p-0"
-                                                  action="{% url 'accounts.delete' user.username %}">
+                                                  action="#">
                                                 <button type="submit" class="btn btn-danger btn-sm">
                                                     <i class="fas fa-trash">
                                                     </i>
