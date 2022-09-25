@@ -43,6 +43,7 @@
                                         <th>Last Name</th>
                                         <th>Email Address</th>
                                         <th>System Role</th>
+                                        <th>System Role</th>
                                         <th colspan="2">Action</th>
                                     </tr>
                                     </thead>
@@ -54,6 +55,9 @@
                                             <td> {{ user.last_name }}</td>
                                             <td> {{ user.email }}</td>
                                             <td> {{ user.role_sys }}</td>
+                                            {% for rol in user.role.all %}
+                                                <td> {{ rol }}</td>
+                                            {% endfor %}
                                             <td class="d-flex" style="gap: 5px">
                                                 <a class="btn btn-info btn-sm"
                                                    href="{% url 'accounts.edit_user' user.username %}">

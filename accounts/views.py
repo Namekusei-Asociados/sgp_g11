@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from accounts.models import User
+from gestionar_roles.models import RoleSystem
 
 
 # Create your views here.
@@ -25,7 +26,8 @@ def home(request):
 
 
 def create_user(request):
-    return render(request, 'accounts/create_user.html')
+    roles = RoleSystem.objects.all()
+    return render(request, 'accounts/create_user.html', {'roles': roles})
 
 
 def edit_user(request, username):
@@ -35,8 +37,10 @@ def edit_user(request, username):
     :param username: usuario a ser modificado
     :return: documento HTML con la información del usuario a ser actualizado
     """
+    roles = RoleSystem.objects.all()
     user = User.objects.get(username=username)
-    return render(request, 'accounts/edit_user.html', {'u': user})
+    role_system=RoleSystem.objects.get(user=user)
+    return render(request, 'accounts/edit_user.html', {'u': user,'roles':roles,'role_system':role_system})
 
 
 def validate_edit_user(request):
@@ -55,19 +59,26 @@ def validate_edit_user(request):
     user.first_name = first_name
     user.last_name = last_name
     user.role_sys = role_sys
+    roles = request.POST['role_system']
+
+   # RoleSystem.objects.update_role_user(roles,user)
+
     user.save()
+    user = User.objects.get(username=username)
+    role = RoleSystem.objects.get(id=roles)
+    RoleSystem.objects.update_role_user(role, user)
     messages.success(request, 'El usuario fue actualizado con éxito')
     return redirect(reverse('accounts.edit_user', kwargs={'username': user.username}), request)
 
 
 def validate_user(request):
     """
-    Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
-    en caso contrario envia un mensaje del tipo de error
+        Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
+        en caso contrario envia un mensaje del tipo de error
 
-    :param request: formulario
+        :param request: formulario
 
-    :return: documento html
+        :return:documento html
     """
     username = request.POST['username']
     first_name = request.POST['first_name']
@@ -75,6 +86,7 @@ def validate_user(request):
     email = request.POST['email']
     password = request.POST['password']
     role_sys = request.POST['role_sys']
+    id_role = request.POST['role_system']
 
     if username_exists(username):
         messages.success(request, 'El username ya existe')
@@ -86,6 +98,9 @@ def validate_user(request):
 
     User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
                              password=password, role_sys=role_sys)
+    user=User.objects.get(username=username)
+    role=RoleSystem.objects.get(id=id_role)
+    RoleSystem.objects.assing_role_to_user(role,user)
 
     return redirect(home)
 
