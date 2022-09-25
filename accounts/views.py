@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -13,7 +12,9 @@ from gestionar_roles.models import RoleSystem
 def home(request):
     """
         Retorna el template home correspondiente al tipo de user logueado
+
         :param request: user
+
         :return: documento html
     """
     user = request.user
@@ -33,20 +34,24 @@ def create_user(request):
 def edit_user(request, username):
     """
     Retorna una página para editar un usuario en cuestión
+
     :param request: user
     :param username: usuario a ser modificado
+
     :return: documento HTML con la información del usuario a ser actualizado
     """
     roles = RoleSystem.objects.all()
     user = User.objects.get(username=username)
-    role_system=RoleSystem.objects.get(user=user)
-    return render(request, 'accounts/edit_user.html', {'u': user,'roles':roles,'role_system':role_system})
+    role_system = RoleSystem.objects.get(user=user)
+    return render(request, 'accounts/edit_user.html', {'u': user, 'roles': roles, 'role_system': role_system})
 
 
 def validate_edit_user(request):
     """
     Valida el usuario a ser actualizado y realiza la actualización de los datos
-    :param request:
+
+    :param request: formulario para edit user
+
     :return: HTML con los datos del usuario actualizado
     """
     username = request.POST['user_username']
@@ -59,7 +64,7 @@ def validate_edit_user(request):
     user.role_sys = role_sys
     roles = request.POST['role_system']
 
-   # RoleSystem.objects.update_role_user(roles,user)
+    # RoleSystem.objects.update_role_user(roles,user)
 
     user.save()
     user = User.objects.get(username=username)
@@ -96,9 +101,9 @@ def validate_user(request):
 
     User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
                              password=password, role_sys=role_sys)
-    user=User.objects.get(username=username)
-    role=RoleSystem.objects.get(id=id_role)
-    RoleSystem.objects.assing_role_to_user(role,user)
+    user = User.objects.get(username=username)
+    role = RoleSystem.objects.get(id=id_role)
+    RoleSystem.objects.assing_role_to_user(role, user)
 
     return redirect(home)
 
@@ -114,8 +119,10 @@ def email_exists(email):
 def destroy(request, username):
     """
     Elimina un usuario
+
     :param request:
     :param username: usuario a ser eliminado
+
     :return: Documento HTML del home
     """
     user = User.objects.get(username=username)

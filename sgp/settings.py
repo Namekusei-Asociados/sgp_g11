@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     #libreria [ara uso de roles
     'guardian',
 
+    # App of the User Story
+    'user_story'
 ]
 
 MIDDLEWARE = [

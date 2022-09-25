@@ -1,0 +1,85 @@
+{% extends 'projects/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Backlog
+{% endblock %}
+
+{% block content %}
+    <br>
+    <section class="content">
+        {% include 'base/components/success-message.html' %}
+        <div class="container-fluid">
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Backlog</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <div class="input-group-append">
+                                        <a href="{% url 'user_story.create_user_story' id_project %}">
+                                            <button class="btn btn-default">
+                                                Create User Story
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Business Value</th>
+                                    <th>Technical Priority</th>
+                                    <th>Final Priority</th>
+                                    <th>User Type</th>
+                                    <th>Assigned to</th>
+                                    <th colspan="2">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user_story in users_stories %}
+                                    <tr>
+                                        <td> {{ user.username }}</td>
+                                        <td> {{ user.first_name }}</td>
+                                        <td> {{ user.last_name }}</td>
+                                        <td> {{ user.email }}</td>
+                                        <td> {{ user.role_sys }}</td>
+                                        <td class="d-flex" style="gap: 5px">
+                                            <a class="btn btn-info btn-sm"
+                                               href="#">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Editar
+                                            </a>
+                                            <form class="m-0 p-0"
+                                                  action="#">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Eliminar
+                                                </button>
+
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </section>
+{% endblock %}
