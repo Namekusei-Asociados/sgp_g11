@@ -88,8 +88,10 @@ def update(request):
 def delete(request, id):
     """
     Elimina un recurso del modelo roles
+
     :param request: posee los campos a modificar
     :param id: campo del modelo roles
+
     :return: formulario de eliminacion de rol
     """
     role = RoleSystem.objects.get(id=id)

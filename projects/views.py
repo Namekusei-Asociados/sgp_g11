@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from utilities.UProject import UProject
 
+
 # Create your views here.
 def index(request):
     # get all projects
@@ -15,7 +16,9 @@ def index(request):
 def create(request):
     """
     Retorna un formulario de creacion para proyectos
+
     :param request:
+
     :return:documento html
     """
     users = User.objects.all()
@@ -26,8 +29,8 @@ def create(request):
 def store(request):
     """
     Intenta crear un nuevo recurso del modelo Project
+
     :param request:
-    :return:
     """
     # getting attributes
     name = request.POST['name']
@@ -43,7 +46,7 @@ def store(request):
         return redirect(reverse('projects.create'), request)
 
     # create project record and then attach scrum master
-    project = Project.objects.create(name=name, description=description, status = UProject.STATUS_PENDING)
+    project = Project.objects.create(name=name, description=description, status=UProject.STATUS_PENDING)
     project.members.add(scrum_master)
 
     # redirect back with success message
@@ -54,8 +57,10 @@ def store(request):
 def edit(request, id):
     """
     Retorna la vista de edicion del projecto actual
+
     :param request:
     :param id: campo del modelo Project
+
     :return: formulario de edicion de proyecto
     """
     # get project
@@ -68,8 +73,10 @@ def edit(request, id):
 def update(request):
     """
     Actualiza un recurso del modelo Project
+
     :param request: posee los campos a modificar
     :param id: campo del modelo Project
+
     :return: formulario de edicion de proyecto
     """
     # get fields from edit form
