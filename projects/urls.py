@@ -11,5 +11,7 @@ urlpatterns = [
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),
 
     # Users Story urls
-    path('<int:id_project>/user_story/', include('user_story.urls'))
+    path('<int:id_project>/user_story/', include('user_story.urls')),
+    # Sprint urls
+    path('<int:id_project>/sprint/', include('sprints.urls'))
 ]
