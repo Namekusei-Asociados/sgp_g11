@@ -9,12 +9,30 @@ from user_story.models import UserStory
 
 # Create your views here.
 def create_user_story(request, id_project):
+    """
+    Retorna el template para crear una nueva historia de usuario
+
+    :param request:
+
+    :param id_project: id del proyecto en el que se crea la historia de usuario
+
+    :return: template para crear una nueva historia de usuario
+    """
     context = get_user_story_context(id_project)
 
     return render(request, 'user_story/create_user_story.html', context)
 
 
 def validate_create_user_story(request, id_project):
+    """
+    Valida los datos y crea la historia de usuario
+
+    :param request:
+
+    :param id_project: id del proyecto en el que se crea la historia de usuario
+
+    :return: template para crear una nueva historia de usuario
+    """
     title = request.POST['title']
     description = request.POST['description']
     business_value = int(request.POST['business_value'])
@@ -35,6 +53,15 @@ def validate_create_user_story(request, id_project):
 
 
 def edit_user_story(request, id_project):
+    """
+    Retorna el template para editar una historia de usuario
+
+    :param request:
+
+    :param id_project: id del proyecto al que pertenece la historia de usuario
+
+    :return: template para editar una historia de usuario
+    """
     context = get_user_story_context(id_project)
 
     user_story_id = int(request.POST['id_user_story'])
@@ -45,6 +72,13 @@ def edit_user_story(request, id_project):
 
 
 def get_user_story_context(id_project):
+    """
+    Retorna el contexto a ser enviado para crear o editar una historia de usuario
+
+    :param id_project: id del proyecto al que pertenece o pertenecerá la historia de usuario
+
+    :return: contexto a ser enviado
+    """
     users = User.objects.filter(projectmember__project_id=id_project)
 
     try:
@@ -81,6 +115,15 @@ def validate_cancel_user_story(request):
 
 
 def backlog(request, id_project):
+    """
+    Retorna el template del backlog de un proyecto
+
+    :param request:
+
+    :param id_project: id del proyecto del que se quiere su backlog
+
+    :return: template del backlog de un proyecto
+    """
     user_stories = UserStory.objects.filter(project_id=id_project)
     context = {
         'id_project': id_project,
