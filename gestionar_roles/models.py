@@ -1,8 +1,9 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
 from accounts.models import User
-from django.db.models import Q
+
 
 class Permissions(models.Model):
     name = models.CharField(max_length=40, null=True)

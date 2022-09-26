@@ -14,7 +14,7 @@ urlpatterns = [
     path('<int:id_project>/user_story/', include('user_story.urls')),
 
     # Type Users Stories urls
-    path('<int:id_project>/type-us/', include('type_us.urls'))
+    path('<int:id_project>/type-us/', include('type_us.urls')),
 
     # Sprint urls
     path('<int:id_project>/sprint/', include('sprints.urls'))

@@ -1,6 +1,7 @@
 from django.db import models
 
 from projects.models import Project, ProjectMember
+from sprints.models import Sprint
 from type_us.models import TypeUS
 
 
@@ -15,7 +16,7 @@ class UserStory(models.Model):
     current_status = models.CharField(max_length=20)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
     assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
