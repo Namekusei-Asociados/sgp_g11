@@ -2,10 +2,12 @@ import json
 
 from django.db import models
 
+from projects.models import Project
+
 
 class TypeUSManager(models.Manager):
     @staticmethod
-    def create_type_us(name, prefix, custom_fields_type, custom_fields_name, flow):
+    def create_type_us(name, prefix, custom_fields_type, custom_fields_name, flow, project_id):
         """
         Crea un registro en la base de datos con el modelo TypeUS y adjunta los custom fields
         :param name: string
@@ -16,7 +18,7 @@ class TypeUSManager(models.Manager):
         :return: Retorna una instancia del modelo TypeUS
         """
         # create model
-        type_us = TypeUS.objects.create(name=name, prefix=prefix, flow=json.dumps(flow))
+        type_us = TypeUS.objects.create(name=name, prefix=prefix, flow=json.dumps(flow),project_id=project_id)
 
         # attach custom fields
         for i, custom_field_name in enumerate(custom_fields_name):
@@ -42,4 +44,5 @@ class TypeUS(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     flow = models.JSONField()
     custom_fields = models.ManyToManyField(CustomFields)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     objects = TypeUSManager()

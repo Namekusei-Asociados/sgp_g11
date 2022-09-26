@@ -1,4 +1,4 @@
-{% extends 'base/app.html' %}
+{% extends 'projects/base/app.html' %}
 
 {% load static %}
 
@@ -22,7 +22,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="form" action="{% url 'type_us.store' %}" method="post">
+            <form id="form" action="{% url 'type_us.store' id_project %}" method="post">
                 {% csrf_token %}
 
 

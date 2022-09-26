@@ -30,8 +30,6 @@ urlpatterns = [
     # Projects urls
     path('projects/', include('projects.urls')),
 
-    # TypeUS urls
-    path('type-us/', include('type_us.urls')),
 
     # Register Role
     path('role/', include('gestionar_roles.urls')),

@@ -11,5 +11,10 @@ urlpatterns = [
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),
 
     # Users Story urls
-    path('<int:id_project>/user_story/', include('user_story.urls'))
+    path('<int:id_project>/user_story/', include('user_story.urls')),
+
+    # Type Users Stories urls
+    path('<int:id_project>/type-us/', include('type_us.urls'))
+
+
 ]
