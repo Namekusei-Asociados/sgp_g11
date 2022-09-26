@@ -48,6 +48,20 @@
             </ul>
           </li>
 
+        <li class="nav-item">
+            <a href="{% url 'sprints.index' id_project %}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Sprints</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'sprints.create_sprint' id_project %}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Crear Sprint</p>
+            </a>
+        </li>
+
     </ul>
 </nav>
 <!-- /.sidebar-menu -->
