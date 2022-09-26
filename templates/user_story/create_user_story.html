@@ -54,18 +54,14 @@
                                             <select class="form-control select2" style="width: 100%;"
                                                     id="id_assigned_to"
                                                     name="assigned_to">
-                                                <option>Alabama</option>
-                                                <option>Alaska</option>
-                                                <option>California</option>
-                                                <option>Delaware</option>
-                                                <option>Tennessee</option>
-                                                <option>Texas</option>
-                                                <option>Washington</option>
+                                                {% for user in users %}
+                                                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} | {{ user.email }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
-                                         <!-- /.form-group -->
+                                        <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label for="id_estimation_time">Business Value</label>
+                                            <label for="id_estimation_time">Estimation Time</label>
                                             <input type="number" ondrop="return false;" onpaste="return false;"
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="estimation_time" class="form-control"
@@ -79,7 +75,7 @@
                                         <!-- /.form-group -->
                                         <div class="form-group">
                                             <label for="id_description">Description</label>
-                                            <input type="text" name="first_name" class="form-control"
+                                            <input type="text" name="description" class="form-control"
                                                    id="id_description"
                                                    placeholder="Enter Description" maxlength="100">
                                             </select>
