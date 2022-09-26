@@ -1,4 +1,4 @@
-{% extends 'base/app.html' %}
+{% extends 'projects/base/app.html' %}
 
 {% load static %}
 
@@ -21,11 +21,11 @@
         <div class="card card-primary m-2">
 
             <div class="card-header">
-                <h3 class="card-title">Editar Rol</h3>
+                <h3 class="card-title">Editar Rol de Proyecto</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="editProjectForm" action="{% url 'gestionar_roles.update' %}" method="post">
+            <form id="editProjectForm" action="{% url 'projects.update_role' id_project id %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="role_id" value="{{ role.id }}">
                 <div class="card-body">

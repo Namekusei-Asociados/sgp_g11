@@ -215,6 +215,8 @@ class ProjectManager(models.Manager):
         )
         member.roles.add(*roles)
 
+    def get_project_members(self,id_project):
+        return ProjectMember.objects.filter(project_id=id_project)
 
 #########################################################
 ####################### MODELS ##########################

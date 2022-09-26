@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 
+from utilities.UPermissionsProj import UPermissionProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
-from .models import Project, RoleProject
+from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
+from .decorators import permission_proj_required
 from utilities.UProject import UProject
 
 
@@ -117,3 +119,162 @@ def update(request):
 
 def dashboard(request, id_project):
     return render(request, 'projects/base/app.html', {'id_project': id_project})
+
+
+def members(request, id_project):
+    members = Project.objects.get_project_members(id_project)
+    print(members)
+    return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
+
+
+def create_member(request, id_project):
+    project = Project.objects.get(id=id_project)
+    roles = project.roleproject_set.all()
+
+    # get all users that has not been attached to this project
+    current_members = project.members.all()
+    all_users = User.objects.all()
+
+    users = list(set(all_users) - set(current_members))
+    print(users)
+    return render(request, 'projects/members/create.html', {"roles": roles, 'id_project': id_project, 'users': users})
+
+
+def edit_member(request, id_project, member_id):
+    project = Project.objects.get(id=id_project)
+    roles = project.roleproject_set.all()
+
+    member = User.objects.get(id=member_id)
+    current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
+    return render(request, 'projects/members/edit.html', {"roles": roles, "current_roles":current_roles,'id_project': id_project, 'member': member})
+
+
+def update_member(request, id_project, member_id):
+    roles_id = request.POST.getlist('roles[]')
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    roles = [RoleProject.objects.get(id=item) for item in roles_id]
+    RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
+
+    messages.success(request, 'El miembro se actualizo con exito')
+    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}), request)
+
+
+def store_member(request, id_project):
+    """
+    Agrega un nuevo miembro al proyecto actual
+
+    :param request:
+    :param id_project:
+
+    :return: Documento html
+    """
+    user_id = request.POST['user_id']
+    roles = request.POST.getlist('roles[]')
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    Project.objects.add_member(user_id=user_id, roles=roles, project=project)
+
+    messages.success(request, 'El miembro se agrego al proyecto con exito')
+    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
+
+
+###########ROLES#############
+def create_role(request, id_project):
+    """
+    Retorna un formulario de creacion de roles
+
+    :param id_project:  id del proyecto
+    :param request:
+
+    :return: documento html
+    """
+    permission = PermissionsProj.objects.all()
+    return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
+
+
+def store_role(request, id_project):
+    """
+    Funcion para guardar los un rol
+
+    :param request: request post
+    :return:
+    """
+    name = request.POST['name']
+    description = request.POST['description']
+    perms = request.POST.getlist('perms[]')
+    print(name, description, perms)
+    print(perms)
+
+    RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
+
+    messages.success(request, 'El rol fue creado con exito')
+    return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
+
+@permission_proj_required(UPermissionProject.Role_CRUD)
+def index_role(request, id_project):
+    # get all Roles
+    roles = RoleProject.objects.get_project_roles(id_project)
+
+    return render(request, 'roles/index.html', {"roles": roles, "id_project": id_project})
+
+
+def edit_role(request, id_project, id):
+    """
+    Retorna la vista de edicion del rol actual
+
+    :param request:
+    :param id: campo del modelo rol
+    :param id_project: id del proyecto actual
+
+    :return: formulario de edicion de rol
+    """
+    # get project
+    role = RoleProject.objects.get(id=id)
+    permissions = PermissionsProj.objects.all()
+    perms_role = role.perms.all()
+    return render(request, 'roles/edit.html',
+                  {'role': role, 'permissions': permissions, 'perms_role': perms_role, "id_project": id_project,
+                   'id': id})
+
+
+def update_role(request, id_project, id):
+    """
+        Actualiza un recurso del modelo rol
+
+        :param id_project: id del proyecto actual
+        :param request: posee los campos a modificar
+
+        :return: formulario de edicion de rol
+        """
+    # get fields from edit form
+    name = request.POST['name']
+    description = request.POST['description']
+    perms = request.POST.getlist('perms[]')
+    role_id = request.POST['role_id']
+    permissions = [PermissionsProj.objects.get(id=item) for item in perms]
+    # permissions=Permissions.objects.get(id__in=perms)
+    # print(permissions)
+    role = RoleProject.objects.get(id=role_id)
+    # get project and update
+    RoleProject.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
+    messages.success(request, 'El rol fue actualizado con éxito')
+
+    return redirect(reverse('projects.edit_role', kwargs={'id': role.id, "id_project": id_project}), request)
+
+
+def delete_role(request, id_project, id):
+    """
+    Elimina un recurso del modelo roles
+
+    :param request: posee los campos a modificar
+    :param id: campo del modelo roles
+
+    :return: formulario de eliminacion de rol
+    """
+    role = RoleProject.objects.get(id=id)
+    RoleProject.objects.delete_role(id)
+    messages.success(request, 'El rol fue eliminado con éxito')
+    return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
