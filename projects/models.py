@@ -162,6 +162,11 @@ class RoleProjectManager(models.Manager):
 
     @staticmethod
     def get_scrum_master():
+        """
+        Funcion para obtener un rol scrum master
+
+        :return: Rol Scrum Master
+        """
         name = UProjectDefaultRoles.SCRUM_MASTER
         description = "Este rol es de Scrum Master"
         permissions_list = [1, 2]
@@ -171,6 +176,11 @@ class RoleProjectManager(models.Manager):
 
     @staticmethod
     def get_developer():
+        """
+        Funcion para obtener un rol scrum develop
+
+        :return: Rol Develop
+        """
         name = UProjectDefaultRoles.DEVELOPER
         description = "Este rol es de Developer"
         permissions_list = [2]
@@ -222,6 +232,9 @@ class ProjectManager(models.Manager):
 ####################### MODELS ##########################
 #########################################################
 class PermissionsProj(models.Model):
+    """
+    Permisos de proyecto
+    """
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, null=True)
 
@@ -262,6 +275,9 @@ class RoleProject(models.Model):
 
 
 class ProjectMember(models.Model):
+    """
+    Miembros de Proyecto
+    """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     roles = models.ManyToManyField(RoleProject)

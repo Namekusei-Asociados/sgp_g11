@@ -139,12 +139,28 @@ def dashboard(request, id_project):
 
 
 def members(request, id_project):
+    """
+    Muestra la lista de miembros de un proyecto
+
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: documento html
+    """
     members = Project.objects.get_project_members(id_project)
     print(members)
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 
 
 def create_member(request, id_project):
+    """
+    Crea un miembro del proyecto
+
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: documento html
+    """
     project = Project.objects.get(id=id_project)
     roles = project.roleproject_set.all()
 
@@ -158,6 +174,15 @@ def create_member(request, id_project):
 
 
 def edit_member(request, id_project, member_id):
+    """
+    Muestra los datos para la edicion de un miembro
+
+    :param request:
+    :param id_project: id del proyecto
+    :param member_id: id del miembro a editar
+
+    :return: Documento HTML
+    """
     project = Project.objects.get(id=id_project)
     roles = project.roleproject_set.all()
 
@@ -232,6 +257,14 @@ def store_role(request, id_project):
 
 @permission_proj_required(UPermissionProject.Role_CRUD)
 def index_role(request, id_project):
+    """
+    Muestra la lista de usuarios de un proyecto
+
+    :param request:
+    :param id_project: id del proyecto
+
+    :return: Documento HTML
+    """
     # get all Roles
     roles = RoleProject.objects.get_project_roles(id_project)
 
