@@ -1,0 +1,73 @@
+{% extends 'projects/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Miembros del Proyecto
+{% endblock %}
+
+{% block content %}
+    <br>
+    <section class="content">
+        {% include 'base/components/success-message.html' %}
+        <div class="container-fluid">
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <!-- Content Header (Page header) -->
+                            <section class="content-header">
+                                <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-6">
+                                            <h1>Miembros del Proyecto</h1>
+                                        </div>
+
+                                    </div>
+                                </div><!-- /.container-fluid -->
+                            </section>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th colspan="2">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for member in members %}
+                                    <tr>
+                                        <td> {{ member }}</td>
+                                        {% for rol in member.roles.all %}
+                                            <td> {{ rol }}</td>
+                                        {% endfor %}
+                                        <td class="d-flex" style="gap: 5px">
+                                            <a class="btn btn-info btn-sm">
+                                                {#                                                   href="{% url 'projects.edit_user_role' user.username %}">#}
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Editar
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </section>
+
+{% endblock %}
