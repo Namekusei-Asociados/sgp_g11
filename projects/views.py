@@ -117,6 +117,12 @@ def dashboard(request, id_project):
     return render(request, 'projects/base/app.html', {'id_project': id_project})
 
 
+def members(request, id_project):
+    members = Project.objects.get_project_members(id_project)
+    print(members)
+    return render(request, 'projects/members.html', {"members": members,'id_project':id_project})
+
+
 ###########ROLES#############
 def create_role(request, id_project):
     """
@@ -157,7 +163,7 @@ def index_role(request, id_project):
     return render(request, 'roles/index.html', {"roles": roles, "id_project": id_project})
 
 
-def edit_role(request, id_project,id):
+def edit_role(request, id_project, id):
     """
     Retorna la vista de edicion del rol actual
 
@@ -172,7 +178,8 @@ def edit_role(request, id_project,id):
     permissions = PermissionsProj.objects.all()
     perms_role = role.perms.all()
     return render(request, 'roles/edit.html',
-                  {'role': role, 'permissions': permissions, 'perms_role': perms_role,"id_project": id_project,'id':id})
+                  {'role': role, 'permissions': permissions, 'perms_role': perms_role, "id_project": id_project,
+                   'id': id})
 
 
 def update_role(request, id_project, id):
@@ -197,10 +204,10 @@ def update_role(request, id_project, id):
     RoleProject.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
     messages.success(request, 'El rol fue actualizado con éxito')
 
-    return redirect(reverse('projects.edit_role', kwargs={'id': role.id,"id_project": id_project}), request)
+    return redirect(reverse('projects.edit_role', kwargs={'id': role.id, "id_project": id_project}), request)
 
 
-def delete_role(request,id_project, id):
+def delete_role(request, id_project, id):
     """
     Elimina un recurso del modelo roles
 

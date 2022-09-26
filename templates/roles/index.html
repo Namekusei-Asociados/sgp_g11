@@ -21,6 +21,7 @@
                     <div class="col-sm-6">
                         <h1>Roles</h1>
                     </div>
+
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -56,7 +57,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% for role in roles%}
+                            {% for role in roles %}
                                 <td>
                                     {{ role.id }}
                                 </td>
@@ -80,12 +81,14 @@
                                     {#                                        </i>#}
                                     {#                                        View#}
                                     {#                                    </a>#}
-                                    <a class="btn btn-info btn-sm" href="{% url 'projects.edit_role' id_project role.id  %}">
+                                    <a class="btn btn-info btn-sm"
+                                       href="{% url 'projects.edit_role' id_project role.id %}">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Editar
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{% url 'projects.delete_role' id_project role.id %}">
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{% url 'projects.delete_role' id_project role.id %}">
                                         <i class="fas fa-trash">
                                         </i>
                                         Eliminar

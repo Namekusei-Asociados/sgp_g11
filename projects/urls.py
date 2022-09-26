@@ -9,6 +9,7 @@ urlpatterns = [
     path('update', views.update, name='projects.update'),
 
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),
+    path('<int:id_project>/members', views.members, name='projects.members'),
     # Roles
     path('<int:id_project>/role/create', views.create_role, name='projects.create_role'),
     path('<int:id_project>/role/store', views.store_role, name='projects.store_role'),
