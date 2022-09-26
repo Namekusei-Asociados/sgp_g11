@@ -29,7 +29,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
 
-    objects = CustomUserManager()
+    # objects = CustomUserManager()
 
     def __str__(self):
         return f'''Username: {self.username}'''

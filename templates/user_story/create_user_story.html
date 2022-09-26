@@ -55,7 +55,8 @@
                                                     id="id_assigned_to"
                                                     name="assigned_to">
                                                 {% for user in users %}
-                                                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} | {{ user.email }}</option>
+                                                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}
+                                                        | {{ user.email }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -95,13 +96,10 @@
                                             <label>User Type</label>
                                             <select class="form-control select2" style="width: 100%;" id="id_us_type"
                                                     name="us_type">
-                                                <option>Alabama</option>
-                                                <option>Alaska</option>
-                                                <option>California</option>
-                                                <option>Delaware</option>
-                                                <option>Tennessee</option>
-                                                <option>Texas</option>
-                                                <option>Washington</option>
+                                                {% for type in type_us %}
+                                                    <option value="{{ type.id }}">{{ type.name }}
+                                                        | {{ type.prefix }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -111,9 +109,16 @@
                             </div>
                             <!-- /.card -->
                             <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Create</button>
-                            </div>
+                            {% if type_us == None %}
+                                <div class="card-footer">
+                                    <p>Debe crear al menos un Type US para poder crear un US</p>
+                                    <button type="submit" class="btn btn-primary" disabled>Create</button>
+                                </div>
+                            {% else %}
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

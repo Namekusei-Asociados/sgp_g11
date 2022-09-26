@@ -1,6 +1,6 @@
 from gestionar_roles.models import RoleSystem
 from accounts.models import User
-usuario = User.objects.get(username='romina_belen')
+usuario = User.objects.get(username='victor')
 role=RoleSystem.objects.get(role_name='develop')
 RoleSystem.objects.assing_role_to_user(role, usuario)
 

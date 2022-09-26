@@ -10,19 +10,21 @@ class TypeUSManager(models.Manager):
     def create_type_us(name, prefix, custom_fields_type, custom_fields_name, flow, project_id):
         """
         Crea un registro en la base de datos con el modelo TypeUS y adjunta los custom fields
+
         :param name: string
         :param prefix: string
         :param custom_fields_type: string
         :param custom_fields_name: string
         :param flow: json
+
         :return: Retorna una instancia del modelo TypeUS
         """
         # create model
-        type_us = TypeUS.objects.create(name=name, prefix=prefix, flow=json.dumps(flow),project_id=project_id)
+        type_us = TypeUS.objects.create(name=name, prefix=prefix, flow=json.dumps(flow), project_id=project_id)
 
         # attach custom fields
         for i, custom_field_name in enumerate(custom_fields_name):
-            custom_field= CustomFields.objects.create(name=custom_field_name, type_field=custom_fields_type[i])
+            custom_field = CustomFields.objects.create(name=custom_field_name, type_field=custom_fields_type[i])
             type_us.custom_fields.add(custom_field)
 
         return type_us

@@ -45,26 +45,36 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for user_story in users_stories %}
+                                {% for user_story in user_stories %}
                                     <tr>
-                                        <td> {{ user.username }}</td>
-                                        <td> {{ user.first_name }}</td>
-                                        <td> {{ user.last_name }}</td>
-                                        <td> {{ user.email }}</td>
-                                        <td> {{ user.role_sys }}</td>
+                                        <td>{{ user_story.title }}</td>
+                                        <td>{{ user_story.description }}</td>
+                                        <td>{{ user_story.business_value }}</td>
+                                        <td>{{ user_story.technical_priority }}</td>
+                                        <td>X</td>
+                                        <td>{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}</td>
+                                        <td>{{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}
+                                            | {{ user_story.assigned_to.user.email }}</td>
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm"
-                                               href="#">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </a>
-                                            <form class="m-0 p-0"
-                                                  action="#">
+                                            <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                  action="{% url 'user_story.edit_user_story' id_project %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ user_story.id }}" name="id_user_story">
+                                                <button type="submit" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-pencil-alt">
+                                                    </i>
+                                                    Editar
+                                                </button>
+
+                                            </form>
+                                            <form id="cancelled_user_story" class="m-0 p-0"
+                                                  action="{% url 'user_story.cancel_user_story' id_project %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" value="{{ user_story.id }}" name="id_user_story">
                                                 <button type="submit" class="btn btn-danger btn-sm">
                                                     <i class="fas fa-trash">
                                                     </i>
-                                                    Eliminar
+                                                    Cancelar
                                                 </button>
 
                                             </form>
