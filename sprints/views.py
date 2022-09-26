@@ -10,6 +10,7 @@ def index(request, id_project):
     """
     Devuelve la lista de sprints del proyecto
 
+    :param id_project:
     :param request:
 
     :return: documento HTML

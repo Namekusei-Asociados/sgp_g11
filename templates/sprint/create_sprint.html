@@ -1,4 +1,4 @@
-{% extends 'base/app.html' %}
+{% extends 'projects/base/app.html' %}
 
 {% load static %}
 
@@ -20,54 +20,57 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Create New Sprint</small></h3>
+                            <h3 class="card-title"><small>Crear Nuevo Sprint</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form id="create_sprint_form" method="post" action="{% url 'sprints.validate_create_sprint' %}">
+                        <form id="create_sprint_form" method="post"
+                              action="{% url 'sprints.validate_create_sprint' id_project %}">
                             {% csrf_token %}
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="id_sprint_name">Sprint Name</label>
+                                    <label for="id_sprint_name">Nombre del Sprint</label>
                                     <input type="text" name="sprint_name" class="form-control" id="id_sprint_name"
                                            placeholder="Enter Sprint Name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_capacity">Capacity</label>
+                                    <label for="id_capacity">Capacidad en Horas</label>
                                     <input type="number" name="capacity" class="form-control" id="id_capacity"
                                            placeholder="Enter Sprint Capacity in hours">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_duration">Duration</label>
+                                    <label for="id_duration">Duración en Días</label>
                                     <input type="number" name="duration" class="form-control" id="id_duration"
                                            placeholder="Enter Sprint Duration in days">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_start_at">Start Date</label>
+                                    <label for="id_start_at">Fecha de Inicio</label>
                                     <input type="date" name="start_at" class="form-control" id="id_start_at"
                                            placeholder="Enter Start Date">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_end_at">End Date</label>
+                                    <label for="id_end_at">Fecha de Finalización</label>
                                     <input type="date" name="end_at" class="form-control" id="id_end_at"
                                            placeholder="Enter End Date">
                                 </div>
 
                                 <div class="form-group">
-                                    <label>User Stories</label>
+                                    <label>Historias de Usuario</label>
                                     <select class="select2" multiple="multiple" data-placeholder="Select a State"
                                             name="user_stories[]"
                                             data-dropdown-css-class="select2-purple"
                                             style="width: 100%;">
-                                        {% for user_story in user_stories %}
-                                            <option
-                                                    value="{{ user_story.id }}">{{ user_story.username }}</option>
+                                        {% for user in user_stories %}
+                                            <option {% if user in x %}
+                                                selected
+                                            {% endif %}
+                                                value="{{ user.id }}">{{ user.username }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </div>
                         </form>

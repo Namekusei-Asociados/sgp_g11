@@ -1,5 +1,6 @@
 from django.db import models
 
+from accounts.models import User
 
 """
 Posibles estados de Sprint: Planificación, Ejecución, Finalizado, Cancelado
@@ -27,3 +28,12 @@ class Sprint(models.Model):
 
     def __str__(self):
         return f"Sprint {self.number} - {self.project.name}"
+
+
+class SprintMember(models.Model):
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workload = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True)
