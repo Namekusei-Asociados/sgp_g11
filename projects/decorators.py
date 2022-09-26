@@ -14,7 +14,7 @@ def permission_proj_required(perm, url=None, raise_exception=False):
             else:
                 perms = perm
 
-            if RoleProject.objects.has_permissions(request.user.id, kwargs['id'], perms):
+            if RoleProject.objects.has_permissions(request.user.id, kwargs['id_project'], perms):
                 return view_func(request, *args, **kwargs)
             else:
                 return render(request, 'redirect/forbidden.html')
