@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 
+from utilities.UPermissionsProj import UPermissionProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
+from .decorators import permission_proj_required
 from utilities.UProject import UProject
 
 
@@ -122,7 +124,61 @@ def dashboard(request, id_project):
 def members(request, id_project):
     members = Project.objects.get_project_members(id_project)
     print(members)
-    return render(request, 'projects/members.html', {"members": members,'id_project':id_project})
+    return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
+
+
+def create_member(request, id_project):
+    project = Project.objects.get(id=id_project)
+    roles = project.roleproject_set.all()
+
+    # get all users that has not been attached to this project
+    current_members = project.members.all()
+    all_users = User.objects.all()
+
+    users = list(set(all_users) - set(current_members))
+    print(users)
+    return render(request, 'projects/members/create.html', {"roles": roles, 'id_project': id_project, 'users': users})
+
+
+def edit_member(request, id_project, member_id):
+    project = Project.objects.get(id=id_project)
+    roles = project.roleproject_set.all()
+
+    member = User.objects.get(id=member_id)
+    current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
+    return render(request, 'projects/members/edit.html', {"roles": roles, "current_roles":current_roles,'id_project': id_project, 'member': member})
+
+
+def update_member(request, id_project, member_id):
+    roles_id = request.POST.getlist('roles[]')
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    roles = [RoleProject.objects.get(id=item) for item in roles_id]
+    RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
+
+    messages.success(request, 'El miembro se actualizo con exito')
+    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}), request)
+
+
+def store_member(request, id_project):
+    """
+    Agrega un nuevo miembro al proyecto actual
+
+    :param request:
+    :param id_project:
+
+    :return: Documento html
+    """
+    user_id = request.POST['user_id']
+    roles = request.POST.getlist('roles[]')
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    Project.objects.add_member(user_id=user_id, roles=roles, project=project)
+
+    messages.success(request, 'El miembro se agrego al proyecto con exito')
+    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
 
 
 ###########ROLES#############
@@ -157,7 +213,7 @@ def store_role(request, id_project):
     messages.success(request, 'El rol fue creado con exito')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
-
+@permission_proj_required(UPermissionProject.Role_CRUD)
 def index_role(request, id_project):
     # get all Roles
     roles = RoleProject.objects.get_project_roles(id_project)

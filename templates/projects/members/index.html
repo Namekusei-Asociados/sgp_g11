@@ -20,15 +20,17 @@
                             <!-- Content Header (Page header) -->
                             <section class="content-header">
                                 <div class="container-fluid">
-                                    <div class="row mb-2">
+                                    <div class="d-flex mb-2 justify-content-between">
                                         <div class="col-sm-6">
                                             <h1>Miembros del Proyecto</h1>
                                         </div>
 
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-plus"></i>
+                                        <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
+                                            <i class="fas fa-plus">
+                                            </i>
                                             Agregar
-                                        </button>
+                                        </a>
+
                                     </div>
                                 </div><!-- /.container-fluid -->
                             </section>
@@ -40,6 +42,7 @@
                                 <thead>
                                 <tr>
                                     <th>Username</th>
+                                    <th>Email</th>
                                     <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
@@ -47,9 +50,10 @@
                                 {% for member in members %}
                                     <tr>
                                         <td> {{ member.user.username }}</td>
+                                        <td> {{ member.user.email }}</td>
 
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm">
+                                            <a class="btn btn-info btn-sm" href="{% url 'projects.members.edit' id_project member.user.id %}">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Editar

@@ -8,8 +8,13 @@ urlpatterns = [
     path('store', views.store, name='projects.store'),
     path('update', views.update, name='projects.update'),
 
+
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),
-    path('<int:id_project>/members', views.members, name='projects.members'),
+    path('<int:id_project>/members', views.members, name='projects.members.index'),
+    path('<int:id_project>/members/create', views.create_member, name='projects.members.create'),
+    path('<int:id_project>/members/edit/<int:member_id>', views.edit_member, name='projects.members.edit'),
+    path('<int:id_project>/members/update/<int:member_id>', views.update_member, name='projects.members.update'),
+    path('<int:id_project>/members/store', views.store_member, name='projects.members.store'),
     # Roles
     path('<int:id_project>/role/create', views.create_role, name='projects.create_role'),
     path('<int:id_project>/role/store', views.store_role, name='projects.store_role'),
