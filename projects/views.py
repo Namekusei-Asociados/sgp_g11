@@ -116,6 +116,23 @@ def update(request):
     messages.success(request, 'El proyecto fue actualizado con exito')
     return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
 
+def cancel(request, id):
+    """
+    Intenta cancelar un proyecto
+
+    :param request:
+    :param project_id: id del registro proyecto
+
+    :return: documento html
+    """
+
+    project = Project.objects.get(id=id)
+    project.status = UProject.STATUS_CANCELED
+    project.save()
+
+    messages.success(request, 'El proyecto fue cancelado con exito')
+    return redirect(reverse('projects.index'), request)
+
 
 def dashboard(request, id_project):
     return render(request, 'projects/base/app.html', {'id_project': id_project})
