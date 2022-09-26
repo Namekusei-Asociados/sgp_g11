@@ -2,25 +2,28 @@
 <!-- Sidebar Menu -->
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
         <li class="nav-item">
-            <a href="{% url 'gestionar_roles.create' %} " class="nav-link">
+            <a href="{% url 'projects.members.index' id_project %}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
-                <p>Crear Rol</p>
+                <p>Miembros</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="{% url 'gestionar_roles.index' %} " class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Listar Roles</p>
-            </a>
-        </li>
-
-
         <li class="nav-item">
             <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>Backlog</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'projects.index_role' id_project %}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Roles</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'projects.create_role' id_project %}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Crear Rol</p>
             </a>
         </li>
 
