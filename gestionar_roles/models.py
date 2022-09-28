@@ -1,7 +1,6 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from accounts.models import User
 from django.db.models import Q
 
 class Permissions(models.Model):
@@ -81,11 +80,15 @@ class RoleSystemManager(models.Manager):
     def update_role_user(new_role, user):
         """
         Asignar rol a usuario
-        :param role: rol a ser deasignado
+
+        :param new_role: rol a ser deasignado
         :param user: usuario al cual sera asignado el rol
         """
-        role=RoleSystem.objects.get(user=user)
-        role.user.remove(user)
+        try:
+            role=RoleSystem.objects.get(user=user)
+            role.user.remove(user)
+        except RoleSystem.DoesNotExist:
+            pass
         new_role.user.add(user)
         print("Actualizado exitosamente")
 
@@ -163,6 +166,7 @@ class RoleSystem(models.Model):
     description = models.CharField(max_length=250, null=True)
     # asociamos el rol a la tabla de usuarios
     user = models.ManyToManyField('accounts.User', related_name='role')
+
     # asociamos los roles a permisos
     perms = models.ManyToManyField(Permissions)
 

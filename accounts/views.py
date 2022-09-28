@@ -42,7 +42,11 @@ def edit_user(request, username):
     """
     roles = RoleSystem.objects.all()
     user = User.objects.get(username=username)
-    role_system = RoleSystem.objects.get(user=user)
+    try:
+        role_system = RoleSystem.objects.get(user=user)
+    except RoleSystem.DoesNotExist:
+        role_system = None
+
     return render(request, 'accounts/edit_user.html', {'u': user, 'roles': roles, 'role_system': role_system})
 
 

@@ -1,7 +1,6 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
-
 {% block title %}
     | {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
@@ -39,11 +38,11 @@
                                     <thead>
                                     <tr>
                                         <th>Username</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email Address</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Email</th>
                                         <th>System Role</th>
-                                        <th>System Role</th>
+                                        <th>Rol de Sistema</th>
                                         <th colspan="2">Action</th>
                                     </tr>
                                     </thead>
@@ -55,9 +54,14 @@
                                             <td> {{ user.last_name }}</td>
                                             <td> {{ user.email }}</td>
                                             <td> {{ user.role_sys }}</td>
+                                            {% if user.role.all.count == 0 %}
+                                                <td>Sin Rol</td>
+                                            {% else %}
                                             {% for rol in user.role.all %}
-                                                <td> {{ rol }}</td>
+                                                <td>{{ rol }}</td>
                                             {% endfor %}
+                                            {% endif %}
+
                                             <td class="d-flex" style="gap: 5px">
                                                 <a class="btn btn-info btn-sm"
                                                    href="{% url 'accounts.edit_user' user.username %}">

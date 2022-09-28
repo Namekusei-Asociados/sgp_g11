@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from utilities.UPermissionsProj import UPermissionProject
+from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
@@ -116,6 +116,7 @@ def update(request):
     messages.success(request, 'El proyecto fue actualizado con exito')
     return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
 
+
 def cancel(request, id):
     """
     Intenta cancelar un proyecto
@@ -188,7 +189,8 @@ def edit_member(request, id_project, member_id):
 
     member = User.objects.get(id=member_id)
     current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
-    return render(request, 'projects/members/edit.html', {"roles": roles, "current_roles":current_roles,'id_project': id_project, 'member': member})
+    return render(request, 'projects/members/edit.html',
+                  {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
 
 def update_member(request, id_project, member_id):
@@ -200,7 +202,8 @@ def update_member(request, id_project, member_id):
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
 
     messages.success(request, 'El miembro se actualizo con exito')
-    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}), request)
+    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}),
+                    request)
 
 
 def store_member(request, id_project):
@@ -255,7 +258,7 @@ def store_role(request, id_project):
     messages.success(request, 'El rol fue creado con exito')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
-@permission_proj_required(UPermissionProject.Role_CRUD)
+
 def index_role(request, id_project):
     """
     Muestra la lista de usuarios de un proyecto

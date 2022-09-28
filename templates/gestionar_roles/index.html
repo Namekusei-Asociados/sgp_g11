@@ -1,4 +1,5 @@
 {% extends 'base/app.html' %}
+{% load has_perm_system %}
 
 {% load static %}
 
@@ -56,7 +57,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% for role in roles%}
+                            {% for role in roles %}
                                 <td>
                                     {{ role.id }}
                                 </td>
@@ -75,16 +76,15 @@
                                 </td>
 
                                 <td class="roles-actions text-right">
-                                    {#                                    <a class="btn btn-primary btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-folder">#}
-                                    {#                                        </i>#}
-                                    {#                                        View#}
-                                    {#                                    </a>#}
-                                    <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Editar
-                                    </a>
+                                    {% has_perm_system user 'Update role' as ban %}
+                                    <p>{{ ban }}<p>
+                                    {% if ban %}
+                                        <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Editar
+                                        </a>
+                                    {% endif %}
                                     <a class="btn btn-danger btn-sm" href="{% url 'gestionar_roles.delete' role.id %}">
                                         <i class="fas fa-trash">
                                         </i>

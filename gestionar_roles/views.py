@@ -36,7 +36,6 @@ def store(request):
     return redirect(reverse('gestionar_roles.create'), request)
 
 
-@permission_sys_required('CRUD roles')
 def index(request):
     # get all Roles
     roles = RoleSystem.objects.all()

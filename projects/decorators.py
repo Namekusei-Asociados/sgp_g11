@@ -5,7 +5,7 @@ from projects.models import RoleProject
 
 
 def permission_proj_required(perm, url=None, raise_exception=False):
-    """Decorador para verificar si un usuario posee el permiso de sistema solicitado"""
+    """Decorador para verificar si un usuario posee el permiso de proyecto solicitado"""
 
     def decorator(view_func):
         def wrap(request, *args, **kwargs):
