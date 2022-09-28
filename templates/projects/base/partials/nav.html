@@ -9,21 +9,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Backlog</p>
-            </a>
-        </li>
-        <li class="nav-item">
             <a href="{% url 'projects.index_role' id_project %}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
-                <p>Roles</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{% url 'projects.create_role' id_project %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Crear Rol</p>
+                <p>Roles de proyecto</p>
             </a>
         </li>
 
@@ -34,29 +22,29 @@
             </a>
         </li>
 
-         <li class="nav-item">
+        <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="far fa-id-card"></i>
-              <p>
-                Tipos de US
-                <i class="fas fa-angle-left right"></i>
-              </p>
+                <i class="far fa-id-card"></i>
+                <p>
+                    Tipos de US
+                    <i class="fas fa-angle-left right"></i>
+                </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{% url 'type_us.index' id_project %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'type_us.create' id_project %}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Crear</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                    <a href="{% url 'type_us.index' id_project %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Listar</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'type_us.create' id_project %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Crear</p>
+                    </a>
+                </li>
             </ul>
-          </li>
+        </li>
 
     </ul>
 </nav>

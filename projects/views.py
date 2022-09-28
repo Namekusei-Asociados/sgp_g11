@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 
+from gestionar_roles.models import RoleSystem
 from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
 from .decorators import permission_proj_required
+from gestionar_roles.decorators import permission_sys_required
 from utilities.UProject import UProject
 
 
@@ -14,11 +17,15 @@ from utilities.UProject import UProject
 def index(request):
     # get all projects related to the current user
     user = request.user
+    if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
+        projects = Project.objects.all()
+    else:
+        projects = user.project_set.all()
 
-    projects = user.project_set.all()
     return render(request, 'projects/index.html', {"projects": projects})
 
 
+@permission_sys_required(UPermissions.CREATE_PROJECT)
 def create(request):
     """
     Retorna un formulario de creacion para proyectos
@@ -59,7 +66,8 @@ def store(request):
     return redirect(reverse('projects.create'), request)
 
 
-def edit(request, id):
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
+def edit(request, id_project):
     """
     Retorna la vista de edicion del projecto actual
 
@@ -69,7 +77,7 @@ def edit(request, id):
     :return: formulario de edicion de proyecto
     """
     # get project
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=id_project)
     users = User.objects.all()
     members = project.members.all()
     return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
@@ -114,10 +122,10 @@ def update(request):
     project.save()
 
     messages.success(request, 'El proyecto fue actualizado con exito')
-    return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
+    return redirect(reverse('projects.edit', kwargs={'id_project': project.id}), request)
 
 
-def cancel(request, id):
+def cancel(request, id_project):
     """
     Intenta cancelar un proyecto
 
@@ -127,7 +135,7 @@ def cancel(request, id):
     :return: documento html
     """
 
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=id_project)
     project.status = UProject.STATUS_CANCELED
     project.save()
 

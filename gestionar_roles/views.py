@@ -3,8 +3,10 @@ from django.urls import reverse
 from django.contrib import messages
 from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem, Permissions
+from utilities.UPermissions import UPermissions
 
 
+@permission_sys_required(UPermissions.CREATE_ROLE)
 # Create your views here.
 def create(request):
     """
@@ -17,6 +19,7 @@ def create(request):
     return render(request, 'gestionar_roles/create.html', {"permissions": permission})
 
 
+@permission_sys_required(UPermissions.CREATE_ROLE)
 def store(request):
     """
     Funcion para guardar los un rol
@@ -36,6 +39,7 @@ def store(request):
     return redirect(reverse('gestionar_roles.create'), request)
 
 
+@permission_sys_required(UPermissions.READ_ROLE)
 def index(request):
     # get all Roles
     roles = RoleSystem.objects.all()
@@ -43,6 +47,7 @@ def index(request):
     return render(request, 'gestionar_roles/index.html', {"roles": roles})
 
 
+@permission_sys_required(UPermissions.UPDATE_ROLE)
 def edit(request, id):
     """
     Retorna la vista de edicion del rol actual
@@ -60,6 +65,7 @@ def edit(request, id):
                   {'role': role, 'permissions': permissions, 'perms_role': perms_role})
 
 
+@permission_sys_required(UPermissions.UPDATE_ROLE)
 def update(request):
     """
         Actualiza un recurso del modelo rol
@@ -84,6 +90,7 @@ def update(request):
     return redirect(reverse('gestionar_roles.edit', kwargs={'id': role.id}), request)
 
 
+@permission_sys_required(UPermissions.DELETE_ROLE)
 def delete(request, id):
     """
     Elimina un recurso del modelo roles

@@ -1,7 +1,5 @@
 from django.contrib.auth.models import BaseUserManager
 
-from gestionar_roles.models import RoleSystem
-
 
 class CustomUserManager(BaseUserManager):
     """
@@ -12,8 +10,6 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.role=RoleSystem.objects.get(role_name='Visitante')
-        print(user.role)
         user.set_password(password)
         user.save()
         print(user)

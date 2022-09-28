@@ -18,10 +18,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="d-flex mb-2 justify-content-between">
                     <div class="col-sm-6">
                         <h1>Roles</h1>
                     </div>
+
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -32,7 +33,11 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-
+                    <a class="btn btn-primary btn-sm" href="{% url 'gestionar_roles.create' %}">
+                        <i class="fas fa-plus">
+                        </i>
+                        Crear
+                    </a>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -74,7 +79,6 @@
                                     </a>
 
                                 </td>
-
                                 <td class="roles-actions text-right">
                                     {% has_perm_system user 'Update role' as ban %}
                                     {% if ban %}

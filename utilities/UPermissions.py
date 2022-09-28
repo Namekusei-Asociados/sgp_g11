@@ -7,7 +7,8 @@ class UPermissions:
     DELETE_ROLE = 'Delete role'
 
     # PROJECTS
-    CREATE_PROJECTS = 'Create project'
+    CREATE_PROJECT = 'Create project'
+    READ_ALL_PROJECT= 'Read all project'
 
     # USERS
     CREATE_USER = 'Create user'

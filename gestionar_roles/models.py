@@ -47,7 +47,11 @@ class RoleSystemManager(models.Manager):
         :param perm: permiso a ser consultado
         :return:
         """
-        return RoleSystem.objects.filter(user=user_id, perms__name__in=perm).exists()
+        if isinstance(perm, str):
+            perms = (perm,)
+        else:
+            perms = perm
+        return RoleSystem.objects.filter(user=user_id, perms__name__in=perms).exists()
 
     def has_role(self, user_id, id_role):
         """
@@ -131,7 +135,11 @@ class RoleSystemManager(models.Manager):
         # permisos a eliminar
         perms_to_remove = list(set(original_permissions_id) - set(selected_id_permissions))
         print("permisos a eliminar: ", perms_to_remove)
-        role.perms.add(*perms)
+        perms_to_add= list(set(selected_id_permissions) - set(original_permissions_id))
+
+        for perm in perms:
+            if perm.id in perms_to_add:
+                role.perms.add(perm)
 
         for perm in original_permissions:
             if perm.id in perms_to_remove:

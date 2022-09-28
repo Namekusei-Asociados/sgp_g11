@@ -1,55 +1,36 @@
 {% load static %}
+{% load has_perm_system %}
 <!-- Sidebar Menu -->
 <nav class="mt-2">
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    {% if user.role.all.count != 0 %}
 
-        {% if user.role_sys == 'admin' %}
-
-            <li class="nav-item">
-                <a href="{% url 'home' %}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>List Users</p>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="{% url 'accounts.create_user' %}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Create Users</p>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="{% url 'projects.create' %}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Create Projects</p>
-                </a>
-            </li>
-
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            {% has_perm_system user 'Read user' as ban %}
+            {% if ban %}
+                <li class="nav-item">
+                    <a href="{% url 'accounts.index' %}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Usuarios</p>
+                    </a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a href="{% url 'projects.index' %} " class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>Proyectos</p>
                 </a>
             </li>
+            {% has_perm_system user 'Read role' as ban %}
+            {% if ban %}
+                <li class="nav-item">
+                    <a href="{% url 'gestionar_roles.index' %} " class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Roles de sistema</p>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
 
-            <li class="nav-item">
-                <a href="{% url 'gestionar_roles.create' %} " class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>Crear Rol</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'gestionar_roles.index' %} " class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>Listar Roles</p>
-                </a>
-            </li>
-
-
-
-        {% endif %}
-
-    </ul>
 </nav>
 <!-- /.sidebar-menu -->

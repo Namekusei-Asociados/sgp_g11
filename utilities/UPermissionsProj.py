@@ -7,8 +7,6 @@ class UPermissionsProject:
     DELETE_ROLE = 'Delete role'
 
     # Project
-    CREATE_PROJECT = 'Create project'
-    READ_PROJECT = 'Read project'
     UPDATE_PROJECT = 'Update project'
     DELETE_PROJECT = 'Delete project'
 

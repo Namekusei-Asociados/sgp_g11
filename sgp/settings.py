@@ -99,6 +99,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'has_perm_system': 'sgp.templatetags.has_perm_system',
+                'has_perm_project': 'sgp.templatetags.has_perm_project',
             },
         },
     },

@@ -11,29 +11,29 @@
     <section class="content">
         {% include 'base/components/success-message.html' %}
         <div class="container-fluid">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Miembros del Proyecto</h1>
+                        </div>
+
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
             <!-- /.row -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
 
-                            <!-- Content Header (Page header) -->
-                            <section class="content-header">
-                                <div class="container-fluid">
-                                    <div class="d-flex mb-2 justify-content-between">
-                                        <div class="col-sm-6">
-                                            <h1>Miembros del Proyecto</h1>
-                                        </div>
-
-                                        <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
-                                            <i class="fas fa-plus">
-                                            </i>
-                                            Agregar
-                                        </a>
-
-                                    </div>
-                                </div><!-- /.container-fluid -->
-                            </section>
+                        <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
+                            <i class="fas fa-plus">
+                            </i>
+                            Agregar
+                        </a>
 
                         </div>
                         <!-- /.card-header -->
@@ -53,7 +53,8 @@
                                         <td> {{ member.user.email }}</td>
 
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm" href="{% url 'projects.members.edit' id_project member.user.id %}">
+                                            <a class="btn btn-info btn-sm"
+                                               href="{% url 'projects.members.edit' id_project member.user.id %}">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Editar

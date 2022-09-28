@@ -78,5 +78,13 @@
       "name":"Delete user",
       "description":"Puede eliminar usuarios"
     }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 11,
+    "fields": {
+      "name":"Read all project",
+      "description":"Puede leer todos los proyectos"
+    }
   }
 ]

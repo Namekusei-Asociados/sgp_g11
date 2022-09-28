@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+import projects.views
 from accounts.models import User
 from gestionar_roles.models import RoleSystem
 
@@ -10,20 +11,28 @@ from gestionar_roles.models import RoleSystem
 # Create your views here.
 @login_required()
 def home(request):
+    user = request.user
+    if user.role.all().count() == 0:
+        role_visitor = RoleSystem.objects.get(role_name='Visitante')
+        RoleSystem.objects.assing_role_to_user(role_visitor, user)
+    if user.role.filter(role_name='Visitante'):
+        return render(request, 'accounts/visitor.html')
+    return projects.views.index(request)
+
+
+@login_required()
+def index(request):
     """
-        Retorna el template home correspondiente al tipo de user logueado
+       Retorna el template home correspondiente al tipo de user logueado
 
-        :param request: user
+       :param request: user
 
-        :return: documento html
+       :return: documento html
     """
     user = request.user
-    if user.role_sys == 'visitor':
-        return render(request, 'accounts/visitor.html')
-    else:
-        users = User.objects.all()
-        users = filter(lambda x: not x.is_staff and user.username != x.username, users)
-        return render(request, 'accounts/user.html', {'users': users})
+    users = User.objects.all()
+    users = filter(lambda x: not x.is_staff and user.username != x.username, users)
+    return render(request, 'accounts/user.html', {'users': users})
 
 
 def create_user(request):
@@ -74,7 +83,8 @@ def validate_edit_user(request):
     user = User.objects.get(username=username)
     role = RoleSystem.objects.get(id=roles)
     RoleSystem.objects.update_role_user(role, user)
-    messages.success(request, 'El usuario fue actualizado con éxito')
+    message = 'El usuario: ' + username + ' fue actualizado con éxito'
+    messages.success(request, message)
     return redirect(reverse('accounts.edit_user', kwargs={'username': user.username}), request)
 
 

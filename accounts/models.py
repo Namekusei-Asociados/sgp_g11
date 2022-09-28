@@ -3,7 +3,6 @@ from django.db import models
 
 # Create your models here.
 from accounts.manager import CustomUserManager
-from gestionar_roles.models import RoleSystem
 
 """
     Este modulo tiene el modelo de user personalizado de nuestro sistema
@@ -29,7 +28,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
 
-    objects = CustomUserManager()
+    #objects = CustomUserManager()
 
     def __str__(self):
         return f'''Username: {self.username}'''
