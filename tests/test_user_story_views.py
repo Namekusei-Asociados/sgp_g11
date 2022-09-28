@@ -11,3 +11,4 @@ def test_backlog_view(client):
     project = Project.objects.create(name='juan', description='test_project')
     response = client.get(reverse('user_story.backlog', kwargs={'id_project': project.id}))
     assert response.status_code == 200
+
