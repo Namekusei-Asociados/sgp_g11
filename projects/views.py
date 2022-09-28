@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 
-from utilities.UPermissionsProj import UPermissionProject
+from gestionar_roles.models import RoleSystem
+from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
 from .decorators import permission_proj_required
+from gestionar_roles.decorators import permission_sys_required
 from utilities.UProject import UProject
 
 
@@ -14,11 +17,15 @@ from utilities.UProject import UProject
 def index(request):
     # get all projects related to the current user
     user = request.user
+    if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
+        projects = Project.objects.all()
+    else:
+        projects = user.project_set.all()
 
-    projects = user.project_set.all()
     return render(request, 'projects/index.html', {"projects": projects})
 
 
+@permission_sys_required(UPermissions.CREATE_PROJECT)
 def create(request):
     """
     Retorna un formulario de creacion para proyectos
@@ -59,7 +66,8 @@ def store(request):
     return redirect(reverse('projects.create'), request)
 
 
-def edit(request, id):
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
+def edit(request, id_project):
     """
     Retorna la vista de edicion del projecto actual
 
@@ -69,7 +77,7 @@ def edit(request, id):
     :return: formulario de edicion de proyecto
     """
     # get project
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=id_project)
     users = User.objects.all()
     members = project.members.all()
     return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
@@ -114,9 +122,10 @@ def update(request):
     project.save()
 
     messages.success(request, 'El proyecto fue actualizado con exito')
-    return redirect(reverse('projects.edit', kwargs={'id': project.id}), request)
+    return redirect(reverse('projects.edit', kwargs={'id_project': project.id}), request)
 
-def cancel(request, id):
+
+def cancel(request, id_project):
     """
     Intenta cancelar un proyecto
 
@@ -126,7 +135,7 @@ def cancel(request, id):
     :return: documento html
     """
 
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=id_project)
     project.status = UProject.STATUS_CANCELED
     project.save()
 
@@ -139,12 +148,28 @@ def dashboard(request, id_project):
 
 
 def members(request, id_project):
+    """
+    Muestra la lista de miembros de un proyecto
+
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: documento html
+    """
     members = Project.objects.get_project_members(id_project)
     print(members)
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 
 
 def create_member(request, id_project):
+    """
+    Crea un miembro del proyecto
+
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: documento html
+    """
     project = Project.objects.get(id=id_project)
     roles = project.roleproject_set.all()
 
@@ -158,12 +183,22 @@ def create_member(request, id_project):
 
 
 def edit_member(request, id_project, member_id):
+    """
+    Muestra los datos para la edicion de un miembro
+
+    :param request:
+    :param id_project: id del proyecto
+    :param member_id: id del miembro a editar
+
+    :return: Documento HTML
+    """
     project = Project.objects.get(id=id_project)
     roles = project.roleproject_set.all()
 
     member = User.objects.get(id=member_id)
     current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
-    return render(request, 'projects/members/edit.html', {"roles": roles, "current_roles":current_roles,'id_project': id_project, 'member': member})
+    return render(request, 'projects/members/edit.html',
+                  {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
 
 def update_member(request, id_project, member_id):
@@ -175,7 +210,8 @@ def update_member(request, id_project, member_id):
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
 
     messages.success(request, 'El miembro se actualizo con exito')
-    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}), request)
+    return redirect(reverse('projects.members.edit', kwargs={'id_project': project.id, 'member_id': member_id}),
+                    request)
 
 
 def store_member(request, id_project):
@@ -230,8 +266,16 @@ def store_role(request, id_project):
     messages.success(request, 'El rol fue creado con exito')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
-@permission_proj_required(UPermissionProject.Role_CRUD)
+
 def index_role(request, id_project):
+    """
+    Muestra la lista de usuarios de un proyecto
+
+    :param request:
+    :param id_project: id del proyecto
+
+    :return: Documento HTML
+    """
     # get all Roles
     roles = RoleProject.objects.get_project_roles(id_project)
 

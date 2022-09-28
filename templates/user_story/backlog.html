@@ -11,20 +11,31 @@
     <section class="content">
         {% include 'base/components/success-message.html' %}
         <div class="container-fluid">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Backlog</h1>
+                        </div>
+
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
             <!-- /.row -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Backlog</h3>
+                            <a class="btn btn-primary btn-sm"
+                               href="{% url 'user_story.create_user_story' id_project %}">
+                                <i class="fas fa-plus">
+                                </i>
+                                Crear US
+                            </a>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <div class="input-group-append">
-                                        <a href="{% url 'user_story.create_user_story' id_project %}">
-                                            <button class="btn btn-default">
-                                                Create User Story
-                                            </button>
-                                        </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -34,14 +45,14 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
+                                    <th>Título</th>
+                                    <th>Descripcion</th>
                                     <th>Business Value</th>
-                                    <th>Technical Priority</th>
-                                    <th>Final Priority</th>
-                                    <th>User Type</th>
-                                    <th>Assigned to</th>
-                                    <th colspan="2">Action</th>
+                                    <th>Prioridad técnica</th>
+                                    <th>Prioridad final</th>
+                                    <th>Tipo de US</th>
+                                    <th>Encargado</th>
+                                    <th colspan="2">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
