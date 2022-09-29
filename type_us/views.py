@@ -44,5 +44,5 @@ def store(request,id_project):
     type_us = TypeUS.objects.create_type_us(name=name, prefix=prefix,custom_fields_type=custom_fields_type, custom_fields_name=custom_fields_name,flow=flow, project_id = id_project)
 
     # redirect back with success message
-    messages.success(request, 'El tipo de historia de usuario se creo con exito')
+    messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" fue creado exitosamente')
     return redirect(reverse('type_us.create', kwargs={'id_project':id_project}), request)

@@ -147,8 +147,8 @@
     "model": "projects.PermissionsProj",
     "pk": 19,
     "fields": {
-      "name":"Delete user_story",
-      "description":"Puede eliminar us"
+      "name":"Cancel user_story",
+      "description":"Puede cancelar us"
     }
   },
   {
