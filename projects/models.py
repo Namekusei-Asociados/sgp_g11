@@ -191,7 +191,7 @@ class RoleProjectManager(models.Manager):
         """
         name = UProjectDefaultRoles.DEVELOPER
         description = "Este rol es de Developer"
-        permissions_list = [17, 18, 19, 20, 21, 22, 23, 24]
+        permissions_list = [17, 18, 19, 20, 21, 22, 23]
         rol = RoleProject.objects.create(role_name=name, description=description, project=None)
         rol.perms.set(permissions_list)
         return rol

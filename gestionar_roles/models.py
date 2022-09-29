@@ -3,9 +3,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 
+
 class Permissions(models.Model):
     name = models.CharField(max_length=40, null=True)
     description = models.CharField(max_length=250, null=True)
+
 
 class RoleSystemManager(models.Manager):
     # funcion para crear roles permisos por modelo
@@ -70,7 +72,6 @@ class RoleSystemManager(models.Manager):
         """
         return RoleSystem.objects.get(id=id_role)
 
-
     @staticmethod
     def assing_role_to_user(role, user):
         """
@@ -95,8 +96,6 @@ class RoleSystemManager(models.Manager):
             pass
         new_role.user.add(user)
         print("Actualizado exitosamente")
-
-
 
     def list_roles(self):
         """
@@ -163,6 +162,7 @@ class RoleSystemManager(models.Manager):
         role = RoleSystem.objects.get(id=id_role)  # rol a listar
         permissions = role.perms.all()
         return permissions
+
 
 # Create your models here.
 class RoleSystem(models.Model):

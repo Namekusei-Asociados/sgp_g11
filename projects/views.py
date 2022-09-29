@@ -35,7 +35,7 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
-    users = filter(lambda x: x.role_sys != 'visitor' and not x.is_staff, users)
+    users = filter(lambda x: not x.role.filter(role_name='Visitante').exists() and not x.is_staff, users)
     return render(request, 'projects/create.html', {"users": users})
 
 
@@ -79,6 +79,7 @@ def edit(request, id_project):
     # get project
     project = Project.objects.get(id=id_project)
     users = User.objects.all()
+    users = filter(lambda x: not x.role.filter(role_name='Visitante').exists() and not x.is_staff, users)
     members = project.members.all()
     return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
 
