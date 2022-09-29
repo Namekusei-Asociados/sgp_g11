@@ -126,6 +126,7 @@ def update(request):
     return redirect(reverse('projects.edit', kwargs={'id_project': project.id}), request)
 
 
+@permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
 def cancel(request, id_project):
     """
     Intenta cancelar un proyecto
@@ -135,12 +136,20 @@ def cancel(request, id_project):
 
     :return: documento html
     """
-
     project = Project.objects.get(id=id_project)
+    return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
+
+
+@permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
+def validate_cancel_project(request, id_project):
+    cancellation_reason = request.POST['cancellation_reason']
+
+    # get project and update
+    project = Project.objects.get(id=id_project)
+    project.cancellation_reason = cancellation_reason
     project.status = UProject.STATUS_CANCELED
     project.save()
-
-    messages.success(request, 'El proyecto fue cancelado con exito')
+    messages.success(request, 'El proyecto "' + project.name + '" fue cancelado con éxito')
     return redirect(reverse('projects.index'), request)
 
 

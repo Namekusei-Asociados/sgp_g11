@@ -8,6 +8,7 @@ urlpatterns = [
     path('store', views.store, name='projects.store'),
     path('update', views.update, name='projects.update'),
     path('cancel/<int:id_project>', views.cancel, name='projects.cancel'),
+    path('validate_cancel/<int:id_project>', views.validate_cancel_project, name='projects.validate_cancel'),
 
 
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),

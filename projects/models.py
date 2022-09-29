@@ -261,6 +261,7 @@ class Project(models.Model):
     roles = models.ManyToOneRel('projects.RoleProject', on_delete=models.CASCADE, to='projects.Project',
                                 field_name='project')
     status = models.CharField(max_length=50)
+    cancellation_reason = models.TextField(max_length=500, null=True)
     objects = ProjectManager()
     # def __str__(self) -> str:
     #     text = "{0}"

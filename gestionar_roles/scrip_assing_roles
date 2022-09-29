@@ -5,4 +5,3 @@ role=RoleSystem.objects.get(role_name='Visitante')
 role.user.remove(usuario)
 role=RoleSystem.objects.get(role_name='Admin')
 RoleSystem.objects.assing_role_to_user(role, usuario)
-
