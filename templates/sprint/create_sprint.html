@@ -35,13 +35,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="id_capacity">Capacidad en Horas</label>
-                                    <input type="number" name="capacity" class="form-control" id="id_capacity"
+                                    <input type="number" ondrop="return false;" onpaste="return false;"
+                                           onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                           name="capacity" class="form-control" id="id_capacity"
                                            placeholder="Enter Sprint Capacity in hours">
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_duration">Duración en Días</label>
-                                    <input type="number" name="duration" class="form-control" id="id_duration"
-                                           placeholder="Enter Sprint Duration in days">
                                 </div>
                                 <div class="form-group">
                                     <label for="id_start_at">Fecha de Inicio</label>
@@ -57,14 +54,11 @@
                                 <div class="form-group">
                                     <label>Historias de Usuario</label>
                                     <select class="select2" multiple="multiple" data-placeholder="Select a State"
-                                            name="user_stories[]"
+                                            name="user_stories[]" id="user_stories[]"
                                             data-dropdown-css-class="select2-purple"
                                             style="width: 100%;">
-                                        {% for user in user_stories %}
-                                            <option {% if user in x %}
-                                                selected
-                                            {% endif %}
-                                                value="{{ user.id }}">{{ user.username }}</option>
+                                        {% for user_story in user_stories %}
+                                            <option value="{{ user_story.id }}">{{ user_story.title }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -82,4 +76,18 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+{% endblock %}
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        });
+    </script>
 {% endblock %}
