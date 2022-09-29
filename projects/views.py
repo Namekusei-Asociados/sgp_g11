@@ -14,6 +14,7 @@ from utilities.UProject import UProject
 
 
 # Create your views here.
+@permission_sys_required(UPermissions.READ_ALL_PROJECT)
 def index(request):
     # get all projects related to the current user
     user = request.user
@@ -39,6 +40,7 @@ def create(request):
     return render(request, 'projects/create.html', {"users": users})
 
 
+@permission_sys_required(UPermissions.CREATE_PROJECT)
 def store(request):
     """
     Intenta crear un nuevo recurso del modelo Project
@@ -66,7 +68,7 @@ def store(request):
     return redirect(reverse('projects.create'), request)
 
 
-@permission_proj_required(UPermissionsProject.CREATE_ROLE)
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
 def edit(request, id_project):
     """
     Retorna la vista de edicion del projecto actual
@@ -84,6 +86,7 @@ def edit(request, id_project):
     return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
 def update(request):
     """
     Actualiza un recurso del modelo Project
@@ -157,6 +160,7 @@ def dashboard(request, id_project):
     return render(request, 'projects/base/app.html', {'id_project': id_project})
 
 
+@permission_proj_required(UPermissionsProject.READ_PROJECTMEMBER)
 def members(request, id_project):
     """
     Muestra la lista de miembros de un proyecto
@@ -171,6 +175,7 @@ def members(request, id_project):
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_PROJECTMEMBER)
 def create_member(request, id_project):
     """
     Crea un miembro del proyecto
@@ -192,6 +197,7 @@ def create_member(request, id_project):
     return render(request, 'projects/members/create.html', {"roles": roles, 'id_project': id_project, 'users': users})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
 def edit_member(request, id_project, member_id):
     """
     Muestra los datos para la edicion de un miembro
@@ -211,6 +217,7 @@ def edit_member(request, id_project, member_id):
                   {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
 def update_member(request, id_project, member_id):
     roles_id = request.POST.getlist('roles[]')
 
@@ -224,6 +231,7 @@ def update_member(request, id_project, member_id):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_PROJECTMEMBER)
 def store_member(request, id_project):
     """
     Agrega un nuevo miembro al proyecto actual
@@ -245,6 +253,7 @@ def store_member(request, id_project):
 
 
 ###########ROLES#############
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
 def create_role(request, id_project):
     """
     Retorna un formulario de creacion de roles
@@ -258,6 +267,7 @@ def create_role(request, id_project):
     return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
 def store_role(request, id_project):
     """
     Funcion para guardar los un rol
@@ -277,6 +287,7 @@ def store_role(request, id_project):
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_ROLE)
 def index_role(request, id_project):
     """
     Muestra la lista de usuarios de un proyecto
@@ -292,6 +303,7 @@ def index_role(request, id_project):
     return render(request, 'roles/index.html', {"roles": roles, "id_project": id_project})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_ROLE)
 def edit_role(request, id_project, id):
     """
     Retorna la vista de edicion del rol actual
@@ -311,6 +323,7 @@ def edit_role(request, id_project, id):
                    'id': id})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_ROLE)
 def update_role(request, id_project, id):
     """
         Actualiza un recurso del modelo rol
@@ -336,6 +349,7 @@ def update_role(request, id_project, id):
     return redirect(reverse('projects.edit_role', kwargs={'id': role.id, "id_project": id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_ROLE)
 def delete_role(request, id_project, id):
     """
     Elimina un recurso del modelo roles
