@@ -40,6 +40,17 @@
                 </a>
             </li>
         {% endif %}
+
+     {% has_perm_project user id_project 'Read sprint' as ban %}
+        {% if ban %}
+
+            <li class="nav-item">
+                <a href="{% url 'sprints.index' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Sprint</p>
+                </a>
+            </li>
+        {% endif %}
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

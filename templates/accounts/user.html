@@ -70,7 +70,7 @@
                                         {% if u.role.all.count == 0 %}
                                             <td>Sin Rol</td>
                                         {% else %}
-                                            {% for rol in user.role.all %}
+                                            {% for rol in u.role.all %}
                                                 <td>{{ rol }}</td>
                                             {% endfor %}
                                         {% endif %}

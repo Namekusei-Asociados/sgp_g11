@@ -89,6 +89,53 @@
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2();
+
+             $('#create_sprint_form').validate({
+                rules: {
+                    sprint_name: {
+                        required: true,
+                        minLength:5
+                    },
+                    start_at: {
+                        required: true,
+                        minlength: 4
+                    },
+                    end_at: {
+                        required: true,
+                        minlength: 4
+                    },
+                    'user_stories[]':{
+                        required:true
+                    }
+
+                },
+                messages: {
+                    sprint_name: {
+                        required: "El nombre es obligatorio",
+                        minlength: "Ingrese un minimo de 5 caracteres"
+                    },
+                    start_at: {
+                        required: "La fecha de inicio es obligatoria",
+                    },
+                    end_at: {
+                        required: "La fecha de fin es obligatoria",
+                    },
+                    "user_stories[]": {
+                        required: "Debe seleccionar al menos una Historia de usuario",
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
         });
     </script>
 {% endblock %}

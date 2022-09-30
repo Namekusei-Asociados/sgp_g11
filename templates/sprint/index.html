@@ -30,7 +30,11 @@
             <div class="card">
                 <div class="card-header">
 
-
+                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.create_sprint' id_project %}">
+                        <i class="fas fa-plus">
+                        </i>
+                        Crear
+                    </a>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -99,11 +103,11 @@
                                 </td>
 
                                 <td>
-                                    {{ sprint.start_at}}
+                                    {{ sprint.start_at }}
                                 </td>
 
                                 <td>
-                                    {{ sprint.end_at}}
+                                    {{ sprint.end_at }}
                                 </td>
 
                                 <td class="project-actions text-right">
@@ -112,16 +116,16 @@
                                     {#                                        </i>#}
                                     {#                                        View#}
                                     {#                                    </a>#}
-                                    <a class="btn btn-info btn-sm" href="#">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Editar
-                                    </a>
-{#                                    <a class="btn btn-danger btn-sm" href="#">#}
-{#                                        <i class="fas fa-trash">#}
+{#                                    <a class="btn btn-info btn-sm" href="#">#}
+{#                                        <i class="fas fa-pencil-alt">#}
 {#                                        </i>#}
-{#                                        Delete#}
+{#                                        Editar#}
 {#                                    </a>#}
+                                    {#                                    <a class="btn btn-danger btn-sm" href="#">#}
+                                    {#                                        <i class="fas fa-trash">#}
+                                    {#                                        </i>#}
+                                    {#                                        Delete#}
+                                    {#                                    </a>#}
                                 </td>
                                 </tr>
                             {% endfor %}
