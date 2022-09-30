@@ -9,31 +9,23 @@ from utilities.UPermissionsProj import UPermissionsProject
 
 
 class ProjectTest(TestCase):
-    fixtures = ['default_roles_system.json','permissions.json','permissionsProj.json']
+    fixtures = ['default_roles_system.json','permissions.json','permissionsProj.json','admin.json']
     # @pytest.mark.django_db
     # def test_get_index_page(client):
     #     response = client.get(reverse('projects.index'))
     #     assert response.status_code == 500
 
-    @pytest.mark.django_db
+    # @pytest.fixture
+    # def project_with_(db) ->User:
+    #     user =
 
-    def test_verifyPermissions(self):
-
-
-        role = RoleSystem.objects.get(id=1)
-        self.assertEqual(role.role_name, "Admin")
 
     # @pytest.mark.django_db
     # def test_get_create_page(client):
     #     response = client.get(reverse('projects.create'))
     #     assert response.status_code == 200
-    #
-    # @pytest.fixture
-    # def create_permissions(db):
-    #     # create permissions
-    #     PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
-    #     PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
-    #
+
+
     # @pytest.mark.django_db
     # def test_store_project(client, create_permissions):
     #     # create user
