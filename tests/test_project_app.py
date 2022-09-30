@@ -7,24 +7,31 @@ from projects.models import Project, PermissionsProj
 from utilities.UPermissionsProj import UPermissionsProject
 
 
-
-class ProjectTest(TestCase):
-    fixtures = ['default_roles_system.json','permissions.json','permissionsProj.json','admin.json']
-    # @pytest.mark.django_db
-    # def test_get_index_page(client):
-    #     response = client.get(reverse('projects.index'))
-    #     assert response.status_code == 500
+# @pytest.mark.usefixtures("create_user")
+# class ProjectTest(TestCase):
+#
+#     fixtures = ['default_roles_system.json', 'permissions.json', 'permissionsProj.json', 'admin.json']
+#
+#
+#     def test_get_index_page(self):
+#         print('****************')
+#         print(self.create_user)
+#         print('****************')
+#         response = self.client.get(reverse('projects.index'))
+#         assert response.status_code == 500
+#
+# @pytest.fixture(scope="class")
+# def create_user(db) -> RoleSystem:
+#     return User.objects.get(id=1)
 
     # @pytest.fixture
     # def project_with_(db) ->User:
     #     user =
 
-
     # @pytest.mark.django_db
     # def test_get_create_page(client):
     #     response = client.get(reverse('projects.create'))
     #     assert response.status_code == 200
-
 
     # @pytest.mark.django_db
     # def test_store_project(client, create_permissions):
