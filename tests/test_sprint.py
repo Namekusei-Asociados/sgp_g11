@@ -1,3 +1,5 @@
+from _datetime import datetime
+import pandas as pd
 import pytest
 from django.test import TestCase
 from accounts.models import User
@@ -5,14 +7,13 @@ from user_story.models import UserStory
 from type_us.models import TypeUS
 from projects.models import ProjectMember
 from projects.models import Project
+from sprints.models import Sprint
 
 
-class TestUserStories(TestCase):
-    fixtures = ['default_roles_system.json', 'permissions.json', 'permissionsProj.json', 'admin.json']
+class TestSprints(TestCase):
 
     @pytest.mark.django_db
-    def test_create_user_story(self):
-        # create user
+    def test_create_sprint(self):
         user = User.objects.create(username='test_user', password='password')
         user.save()
         project = Project.objects.create(name='proyecto de juan', description='test_project')
@@ -32,5 +33,17 @@ class TestUserStories(TestCase):
             project_id=project.id,
             us_type_id=us_type.id
         )
-        assert user_story.project_id == project.id, "Error al asignar id del proyecto a la historia de Usuario"
-        assert user_story.us_type == us_type, "Error al asignar tipo de US a la historia de Usuario"
+        sprint = Sprint.objects.create(sprint_name='Sprint Test',
+                                       start_at=datetime.strptime('2022/09/30', '%Y/%m/%d'),
+                                       end_at=datetime.strptime('2022/10/15', '%Y/%m/%d'),
+                                       duration=pd.bdate_range(start=datetime.strptime('2022/09/30', '%Y/%m/%d'),
+                                                               end=datetime.strptime('2022/10/15', '%Y/%m/%d')).size,
+                                       number=1,
+                                       project_id=project.id)
+
+        self.assertEqual(sprint.sprint_name, 'Sprint Test', "No se ha creado correctamente el sprint")
+
+        user_story.sprint = sprint
+        user_story.save()
+
+        self.assertEqual(user_story.sprint.id, sprint.id, "No se han asociado correctamente el sprint y la US")
