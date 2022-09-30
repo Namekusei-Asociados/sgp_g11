@@ -31,6 +31,14 @@ def index(request, id_project):
 
 
 def create_sprint(request, id_project):
+    """
+    Devuelve el template para crear un nuevo sprint
+
+    :param request:
+    :param id_project: id del proyecto en el cual se debe crear el sprint
+
+    :return: documento HTML
+    """
     user_stories = UserStory.objects.filter(project_id=id_project, sprint_id=None)
     projectMembers = ProjectMember.objects.filter(project_id=id_project)
 
@@ -44,6 +52,14 @@ def create_sprint(request, id_project):
 
 
 def validate_create_sprint(request, id_project):
+    """
+    Función para guardar un nuevo sprint
+
+    :param request:
+    :param id_project: id del proyecto en el cual se crea el sprint
+
+    :return: template para crear un nuevo sprint
+    """
     sprint_name = request.POST['sprint_name']
     start_at = request.POST['start_at']
     end_at = request.POST['end_at']
@@ -62,8 +78,23 @@ def validate_create_sprint(request, id_project):
 
 
 def daterange(start_date, end_date):
+    """
+    Calcula los días hábiles para un sprint
+
+    :param start_date: fecha estimada de inicio del sprint
+    :param end_date: fecha estimada de finalización del sprint
+
+    :return: cantidad de días hábiles entre fecha de inicio y fecha de finalización del sprint
+    """
     return rrule(DAILY, dtstart=start_date, until=end_date, byweekday=(MO, TU, WE, TH, FR))
 
 
 def numbersSprint(id_project):
+    """
+    Calcula el número del sprint a ser creado
+
+    :param id_project: id del proyecto en el cual se creará el sprint
+
+    :return: número del sprint a ser creado
+    """
     return Sprint.objects.filter(project_id=id_project).count() + 1

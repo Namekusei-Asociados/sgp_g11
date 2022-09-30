@@ -16,6 +16,13 @@ from utilities.UProject import UProject
 # Create your views here.
 @permission_sys_required(UPermissions.READ_ALL_PROJECT)
 def index(request):
+    """
+    Retorna una página con todos los proyectos listados
+
+    :param request:
+
+    :return: Documento HTML
+    """
     # get all projects related to the current user
     user = request.user
     if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
@@ -116,9 +123,9 @@ def cancel(request, id_project):
     Intenta cancelar un proyecto
 
     :param request:
-    :param project_id: id del registro proyecto
+    :param project_id: id del proyecto a ser cancelado
 
-    :return: documento html
+    :return: documento html que solicita el motivo de la cancelación del proyecto
     """
     project = Project.objects.get(id=id_project)
     return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
@@ -126,6 +133,14 @@ def cancel(request, id_project):
 
 @permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
 def validate_cancel_project(request, id_project):
+    """
+    Realiza la cancelación de un proyecto
+
+    :param request:
+    :param id_project: id del proyecto a ser cancelado
+
+    :return: template con la lista de proyectos
+    """
     cancellation_reason = request.POST['cancellation_reason']
 
     # get project and update
@@ -231,6 +246,7 @@ def store_member(request, id_project):
 
     messages.success(request, 'El miembro se agrego al proyecto con exito')
     return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)\
+
 
 
 def delete_member(request, id_project, user_id):
