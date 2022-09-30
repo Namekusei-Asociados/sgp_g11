@@ -5,15 +5,17 @@ from accounts.models import User
 from projects.models import ProjectMember
 from type_us.models import TypeUS
 from user_story.models import UserStory
+from projects.decorators import permission_proj_required
+from utilities.UPermissionsProj import UPermissionsProject
 
 
 # Create your views here.
+@permission_proj_required(UPermissionsProject.CREATE_US)
 def create_user_story(request, id_project):
     """
     Retorna el template para crear una nueva historia de usuario
 
     :param request:
-
     :param id_project: id del proyecto en el que se crea la historia de usuario
 
     :return: template para crear una nueva historia de usuario
@@ -23,12 +25,12 @@ def create_user_story(request, id_project):
     return render(request, 'user_story/create_user_story.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_US)
 def validate_create_user_story(request, id_project):
     """
     Valida los datos y crea la historia de usuario
 
     :param request:
-
     :param id_project: id del proyecto en el que se crea la historia de usuario
 
     :return: template para crear una nueva historia de usuario
@@ -56,12 +58,12 @@ def validate_create_user_story(request, id_project):
     return redirect(reverse('user_story.create_user_story', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_US)
 def edit_user_story(request, id_project, id_user_story):
     """
     Retorna el template para editar una historia de usuario
 
     :param request:
-
     :param id_project: id del proyecto al que pertenece la historia de usuario
 
     :return: template para editar una historia de usuario
@@ -106,7 +108,16 @@ def get_user_story_context(id_project):
     return context
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_US)
 def validate_edit_user_story(request, id_project):
+    """
+    Actualiza la historia de usuario que debe ser editada
+
+    :param request:
+    :param id_project: id del proyecto actual, al que pertenece la historia de usuario
+
+    :return: formulario de edición de la historia de usuario, pero con los datos ya actualizados
+    """
     title = request.POST['title']
     description = request.POST['description']
     business_value = int(request.POST['business_value'])
@@ -134,6 +145,7 @@ def validate_edit_user_story(request, id_project):
     return redirect(reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}), request)
 
 
+@permission_proj_required(UPermissionsProject.CANCEL_US)
 def cancel_user_story(request, id_project):
     return None
 
@@ -142,12 +154,12 @@ def validate_cancel_user_story(request):
     return None
 
 
+@permission_proj_required(UPermissionsProject.READ_US)
 def backlog(request, id_project):
     """
     Retorna el template del backlog de un proyecto
 
     :param request:
-
     :param id_project: id del proyecto del que se quiere su backlog
 
     :return: template del backlog de un proyecto
