@@ -14,7 +14,7 @@ from utilities.UProject import UProject
 
 
 # Create your views here.
-@permission_sys_required(UPermissions.READ_ALL_PROJECT)
+
 def index(request):
     """
     Retorna una página con todos los proyectos listados
