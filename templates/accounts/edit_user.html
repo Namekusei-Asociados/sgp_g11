@@ -47,24 +47,7 @@
                                     <input type="email" name="email" class="form-control" id="id_email"
                                            placeholder="Enter Email" disabled value="{{ u.email }}">
                                 </div>
-                                <div class="form-group">
-                                    <label>Role System</label>
-                                    <select class="form-control select2bs4" style="width: 100%;" id="id_role_sys"
-                                            name="role_sys">
-                                        <option selected="selected">{{ u.role_sys }}</option>
-                                        {% if u.role_sys == 'visitor' %}
-                                            <option>admin</option>
-                                            <option>user</option>
-                                        {% elif u.role_sys == 'user' %}
-                                            <option>admin</option>
-                                            <option>visitor</option>
-                                        {% else %}
-                                            <option>user</option>
-                                            <option>visitor</option>
-                                        {% endif %}
 
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label>Rol</label>
                                      <select class="form-control select2bs4" style="width: 100%;" id="id_role_system"

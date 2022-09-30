@@ -75,11 +75,9 @@ def validate_edit_user(request):
     username = request.POST['user_username']
     first_name = request.POST['first_name']
     last_name = request.POST['last_name']
-    role_sys = request.POST['role_sys']
     user = User.objects.get(username=username)
     user.first_name = first_name
     user.last_name = last_name
-    user.role_sys = role_sys
     roles = request.POST['role_system']
 
     # RoleSystem.objects.update_role_user(roles,user)

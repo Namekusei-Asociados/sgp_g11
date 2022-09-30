@@ -56,7 +56,6 @@
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Email</th>
-                                    <th>System Role</th>
                                     <th>Rol de Sistema</th>
                                     <th colspan="2">Acción</th>
                                 </tr>
@@ -68,7 +67,6 @@
                                         <td> {{ u.first_name }}</td>
                                         <td> {{ u.last_name }}</td>
                                         <td> {{ u.email }}</td>
-                                        <td> {{ u.role_sys }}</td>
                                         {% if u.role.all.count == 0 %}
                                             <td>Sin Rol</td>
                                         {% else %}
