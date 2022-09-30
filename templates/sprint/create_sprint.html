@@ -6,6 +6,13 @@
     | Create Sprint
 {% endblock %}
 
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+{% endblock %}
+
 {% block content %}
     <!--MESSAGES-->
     {% include 'base/components/success-message.html' %}
@@ -34,16 +41,6 @@
                                            placeholder="Enter Sprint Name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_capacity">Capacidad en Horas</label>
-                                    <input type="number" name="capacity" class="form-control" id="id_capacity"
-                                           placeholder="Enter Sprint Capacity in hours">
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_duration">Duración en Días</label>
-                                    <input type="number" name="duration" class="form-control" id="id_duration"
-                                           placeholder="Enter Sprint Duration in days">
-                                </div>
-                                <div class="form-group">
                                     <label for="id_start_at">Fecha de Inicio</label>
                                     <input type="date" name="start_at" class="form-control" id="id_start_at"
                                            placeholder="Enter Start Date">
@@ -56,15 +53,13 @@
 
                                 <div class="form-group">
                                     <label>Historias de Usuario</label>
-                                    <select class="select2" multiple="multiple" data-placeholder="Select a State"
-                                            name="user_stories[]"
+                                    <select class="select2" multiple="multiple" data-placeholder="Select a US"
                                             data-dropdown-css-class="select2-purple"
-                                            style="width: 100%;">
-                                        {% for user in user_stories %}
-                                            <option {% if user in x %}
-                                                selected
-                                            {% endif %}
-                                                value="{{ user.id }}">{{ user.username }}</option>
+                                            style="width: 100%;"
+                                            id="user_stories[]"
+                                            name="user_stories[]">
+                                        {% for user_story in user_stories %}
+                                            <option value="{{ user_story.id }}">{{ user_story.title }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -82,4 +77,18 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+{% endblock %}
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+        });
+    </script>
 {% endblock %}
