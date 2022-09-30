@@ -238,9 +238,12 @@ class Project(models.Model):
                                 field_name='project')
     status = models.CharField(max_length=50)
     objects = ProjectManager()
+
     # def __str__(self) -> str:
     #     text = "{0}"
     #     return text.format(self.name)
+    def __str__(self):
+        return f"{self.name}"
 
 
 class RoleProject(models.Model):
