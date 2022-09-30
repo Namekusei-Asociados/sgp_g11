@@ -1,13 +1,13 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
-from accounts.models import User
+from django.db.models import Q
 
 
 class Permissions(models.Model):
     name = models.CharField(max_length=40, null=True)
     description = models.CharField(max_length=250, null=True)
+
 
 class RoleSystemManager(models.Manager):
     # funcion para crear roles permisos por modelo
@@ -49,7 +49,11 @@ class RoleSystemManager(models.Manager):
         :param perm: permiso a ser consultado
         :return:
         """
-        return RoleSystem.objects.filter(user=user_id, perms__name__in=perm).exists()
+        if isinstance(perm, str):
+            perms = (perm,)
+        else:
+            perms = perm
+        return RoleSystem.objects.filter(user=user_id, perms__name__in=perms).exists()
 
     def has_role(self, user_id, id_role):
         """
@@ -68,7 +72,6 @@ class RoleSystemManager(models.Manager):
         """
         return RoleSystem.objects.get(id=id_role)
 
-
     @staticmethod
     def assing_role_to_user(role, user):
         """
@@ -82,15 +85,17 @@ class RoleSystemManager(models.Manager):
     def update_role_user(new_role, user):
         """
         Asignar rol a usuario
-        :param role: rol a ser deasignado
+
+        :param new_role: rol a ser deasignado
         :param user: usuario al cual sera asignado el rol
         """
-        role=RoleSystem.objects.get(user=user)
-        role.user.remove(user)
+        try:
+            role=RoleSystem.objects.get(user=user)
+            role.user.remove(user)
+        except RoleSystem.DoesNotExist:
+            pass
         new_role.user.add(user)
         print("Actualizado exitosamente")
-
-
 
     def list_roles(self):
         """
@@ -129,7 +134,11 @@ class RoleSystemManager(models.Manager):
         # permisos a eliminar
         perms_to_remove = list(set(original_permissions_id) - set(selected_id_permissions))
         print("permisos a eliminar: ", perms_to_remove)
-        role.perms.add(*perms)
+        perms_to_add= list(set(selected_id_permissions) - set(original_permissions_id))
+
+        for perm in perms:
+            if perm.id in perms_to_add:
+                role.perms.add(perm)
 
         for perm in original_permissions:
             if perm.id in perms_to_remove:
@@ -154,6 +163,7 @@ class RoleSystemManager(models.Manager):
         permissions = role.perms.all()
         return permissions
 
+
 # Create your models here.
 class RoleSystem(models.Model):
     """
@@ -164,6 +174,7 @@ class RoleSystem(models.Model):
     description = models.CharField(max_length=250, null=True)
     # asociamos el rol a la tabla de usuarios
     user = models.ManyToManyField('accounts.User', related_name='role')
+
     # asociamos los roles a permisos
     perms = models.ManyToManyField(Permissions)
 

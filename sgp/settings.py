@@ -35,9 +35,10 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    'sgp.templatetags',
     # Projects management
     'projects',
-    #TypeUS
+    # TypeUS
     'type_us',
     # App para gestionar los roles
     'gestionar_roles',
@@ -51,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Register the oauth_app
-   'django.contrib.sites',
+    'django.contrib.sites',
 
     # Register django-allauth
     'allauth',
@@ -64,8 +65,10 @@ INSTALLED_APPS = [
 
     # Account
     'accounts',
-    #libreria [ara uso de roles
+    # libreria [ara uso de roles
     'guardian',
+
+    # templatetags
 
     # App of the User Story
     'user_story'
@@ -96,6 +99,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'has_perm_system': 'sgp.templatetags.has_perm_system',
+                'has_perm_project': 'sgp.templatetags.has_perm_project',
+            },
         },
     },
 ]
@@ -204,4 +211,3 @@ LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
-

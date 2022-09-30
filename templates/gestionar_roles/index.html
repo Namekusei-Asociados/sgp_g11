@@ -1,9 +1,10 @@
 {% extends 'base/app.html' %}
+{% load has_perm_system %}
 
 {% load static %}
 
 {% block title %}
-    | Roles
+    | Roles de Sistema
 {% endblock %}
 
 {% block content %}
@@ -17,10 +18,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="d-flex mb-2 justify-content-between">
                     <div class="col-sm-6">
-                        <h1>Roles</h1>
+                        <h1>Roles de Sistema</h1>
                     </div>
+
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -31,7 +33,14 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-
+                    {% has_perm_system user 'Create role' as ban %}
+                    {% if ban %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'gestionar_roles.create' %}">
+                            <i class="fas fa-plus">
+                            </i>
+                            Crear
+                        </a>
+                    {% endif %}
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -56,7 +65,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% for role in roles%}
+                            {% for role in roles %}
                                 <td>
                                     {{ role.id }}
                                 </td>
@@ -73,23 +82,24 @@
                                     </a>
 
                                 </td>
-
                                 <td class="roles-actions text-right">
-                                    {#                                    <a class="btn btn-primary btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-folder">#}
-                                    {#                                        </i>#}
-                                    {#                                        View#}
-                                    {#                                    </a>#}
-                                    <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Editar
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="{% url 'gestionar_roles.delete' role.id %}">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Eliminar
-                                    </a>
+                                    {% has_perm_system user 'Update role' as ban %}
+                                    {% if ban %}
+                                        <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Editar
+                                        </a>
+                                    {% endif %}
+                                    {% has_perm_system user 'Delete role' as ban %}
+                                    {% if ban %}
+                                        <a class="btn btn-danger btn-sm"
+                                           href="{% url 'gestionar_roles.delete' role.id %}">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Eliminar
+                                        </a>
+                                    {% endif %}
                                 </td>
                                 </tr>
                             {% endfor %}

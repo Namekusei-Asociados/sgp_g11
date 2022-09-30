@@ -1,76 +1,45 @@
 {% load static %}
+{% load has_perm_project %}
 <!-- Sidebar Menu -->
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        {% has_perm_project user id_project 'Read projectmember' as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'projects.members.index' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Miembros</p>
+                </a>
+            </li>
+        {% endif %}
+        {% has_perm_project user id_project 'Read role' as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'projects.index_role' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Roles de proyecto</p>
+                </a>
+            </li>
+        {% endif %}
+        {% has_perm_project user id_project 'Read user_story' as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Backlog</p>
+                </a>
+            </li>
+        {% endif %}
+        {% has_perm_project user id_project 'Read typeus' as ban %}
+        {% if ban %}
 
-        <li class="nav-item">
-            <a href="{% url 'gestionar_roles.create' %} " class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Crear Rol</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{% url 'gestionar_roles.index' %} " class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Listar Roles</p>
-            </a>
-        </li>
-
-
-        <li class="nav-item">
-            <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Backlog</p>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="far fa-id-card"></i>
-                <p>
-                    Tipos de US
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{% url 'type_us.index' id_project %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Listar</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'type_us.create' id_project %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Crear</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="far fa-id-card"></i>
-                <p>
-                    Sprint
-                    <i class="fas fa-angle-left right"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{% url 'sprints.index' id_project %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Listar</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'sprints.create_sprint' id_project %}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Crear</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            <li class="nav-item">
+                <a href="{% url 'type_us.index' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Tipos de US</p>
+                </a>
+            </li>
+        {% endif %}
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

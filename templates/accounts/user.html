@@ -1,92 +1,116 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
-
+{% load has_perm_system %}
 {% block title %}
     | {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
 
 {% block content %}
+    <br>
+    <section class="content">
+        {% include 'base/components/success-message.html' %}
+        <div class="container-fluid">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Lista de Usuarios</h1>
+                        </div>
 
-    {% if user.role_sys == 'admin' %}
-        <br>
-        <section class="content">
-            {% include 'base/components/success-message.html' %}
-            <div class="container-fluid">
-                <!-- /.row -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">System Users List</h3>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {#                            {% has_perm_system user 'Create user' as ban %}#}
+                            {#                            {% if ban %}#}
+                            {#                            <a class="btn btn-primary btn-sm" href="{% url 'accounts.create_user' %}">#}
+                            {#                                <i class="fas fa-plus">#}
+                            {#                                </i>#}
+                            {#                                Crear#}
+                            {#                            </a>#}
+                            {#                            {% endif %}#}
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control float-right"
+                                           placeholder="Search">
 
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right"
-                                               placeholder="Search">
-
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap">
-                                    <thead>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>System Role</th>
+                                    <th>Rol de Sistema</th>
+                                    <th colspan="2">Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for u in users %}
                                     <tr>
-                                        <th>Username</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email Address</th>
-                                        <th>System Role</th>
-                                        <th>System Role</th>
-                                        <th colspan="2">Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for user in users %}
-                                        <tr>
-                                            <td> {{ user.username }}</td>
-                                            <td> {{ user.first_name }}</td>
-                                            <td> {{ user.last_name }}</td>
-                                            <td> {{ user.email }}</td>
-                                            <td> {{ user.role_sys }}</td>
+                                        <td> {{ u.username }}</td>
+                                        <td> {{ u.first_name }}</td>
+                                        <td> {{ u.last_name }}</td>
+                                        <td> {{ u.email }}</td>
+                                        <td> {{ u.role_sys }}</td>
+                                        {% if u.role.all.count == 0 %}
+                                            <td>Sin Rol</td>
+                                        {% else %}
                                             {% for rol in user.role.all %}
-                                                <td> {{ rol }}</td>
+                                                <td>{{ rol }}</td>
                                             {% endfor %}
-                                            <td class="d-flex" style="gap: 5px">
+                                        {% endif %}
+
+                                        <td class="d-flex" style="gap: 5px">
+                                            {% has_perm_system user 'Update user' as ban %}
+                                            {% if ban %}
                                                 <a class="btn btn-info btn-sm"
-                                                   href="{% url 'accounts.edit_user' user.username %}">
+                                                   href="{% url 'accounts.edit_user' u.username %}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                     Editar
                                                 </a>
+                                            {% endif %}
+                                            {% has_perm_system user 'Delete user' as ban %}
+                                            {% if ban %}
                                                 <form class="m-0 p-0"
-                                                      action="{% url 'accounts.delete' user.username %}">
+                                                      action="{% url 'accounts.delete' u.username %}">
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash">
                                                         </i>
                                                         Eliminar
                                                     </button>
-
                                                 </form>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.row -->
             </div>
-        </section>
-    {% endif %}
+            <!-- /.row -->
+        </div>
+    </section>
+
 {% endblock %}

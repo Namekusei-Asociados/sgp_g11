@@ -36,10 +36,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Descripcion del proyecto</label>
+                        <label>Descripcion del rol</label>
                         <textarea class="form-control" name="description" id="role_description" cols="30" rows="3"
                                   maxlength="500"
-                                  placeholder="Este proyecto pertenece...">{{ role.description }}</textarea>
+                                  placeholder="Este rol es el encargado de...">{{ role.description }}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -69,6 +69,7 @@
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <a href=" {% url 'gestionar_roles.index' %} " class="btn btn-secondary mx-3">Cancelar</a>
                 </div>
             </form>
         </div>

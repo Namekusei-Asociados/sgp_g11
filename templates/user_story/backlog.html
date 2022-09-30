@@ -1,6 +1,7 @@
 {% extends 'projects/base/app.html' %}
 
 {% load static %}
+{% load has_perm_project %}
 
 {% block title %}
     | Backlog
@@ -11,20 +12,34 @@
     <section class="content">
         {% include 'base/components/success-message.html' %}
         <div class="container-fluid">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Backlog</h1>
+                        </div>
+
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
             <!-- /.row -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Backlog</h3>
+                            {% has_perm_project user id_project 'Create user_story' as ban %}
+                            {% if ban %}
+                                <a class="btn btn-primary btn-sm"
+                                   href="{% url 'user_story.create_user_story' id_project %}">
+                                    <i class="fas fa-plus">
+                                    </i>
+                                    Crear US
+                                </a>
+                            {% endif %}
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <div class="input-group-append">
-                                        <a href="{% url 'user_story.create_user_story' id_project %}">
-                                            <button class="btn btn-default">
-                                                Create User Story
-                                            </button>
-                                        </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -34,14 +49,14 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
+                                    <th>Título</th>
+                                    <th>Descripción</th>
                                     <th>Business Value</th>
-                                    <th>Technical Priority</th>
-                                    <th>Final Priority</th>
-                                    <th>User Type</th>
-                                    <th>Assigned to</th>
-                                    <th colspan="2">Action</th>
+                                    <th>Prioridad técnica</th>
+                                    <th>Prioridad final</th>
+                                    <th>Tipo de US</th>
+                                    {#                                    <th>Encargado</th>#}
+                                    <th colspan="2">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -53,31 +68,35 @@
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>X</td>
                                         <td>{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}</td>
-                                        <td>{{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}
-                                            | {{ user_story.assigned_to.user.email }}</td>
+                                        {#                                        <td>{{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}</td>#}
                                         <td class="d-flex" style="gap: 5px">
-                                            <form id="edit_user_story" class="m-0 p-0" method="post"
-                                                  action="{% url 'user_story.edit_user_story' id_project %}">
-                                                {% csrf_token %}
-                                                <input type="hidden" value="{{ user_story.id }}" name="id_user_story">
-                                                <button type="submit" class="btn btn-info btn-sm">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                    Editar
-                                                </button>
+                                            {% has_perm_project user id_project 'Update user_story' as ban %}
+                                            {% if ban %}
+                                                <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                      action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Editar
+                                                    </button>
 
-                                            </form>
-                                            <form id="cancelled_user_story" class="m-0 p-0"
-                                                  action="{% url 'user_story.cancel_user_story' id_project %}">
-                                                {% csrf_token %}
-                                                <input type="hidden" value="{{ user_story.id }}" name="id_user_story">
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash">
-                                                    </i>
-                                                    Cancelar
-                                                </button>
-
-                                            </form>
+                                                </form>
+                                            {% endif %}
+{#                                            {% has_perm_project user id_project 'Cancel user_story' as ban %}#}
+{#                                            {% if ban %}#}
+{#                                                <form id="cancelled_user_story" class="m-0 p-0"#}
+{#                                                      action="{% url 'user_story.cancel_user_story' id_project %}">#}
+{#                                                    {% csrf_token %}#}
+{#                                                    <input type="hidden" value="{{ user_story.id }}"#}
+{#                                                           name="id_user_story">#}
+{#                                                    <button type="submit" class="btn btn-danger btn-sm">#}
+{#                                                        <i class="fas fa-trash">#}
+{#                                                        </i>#}
+{#                                                        Cancelar#}
+{#                                                    </button>#}
+{#                                                </form>#}
+{#                                            {% endif %}#}
                                         </td>
                                     </tr>
                                 {% endfor %}

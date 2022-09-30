@@ -55,5 +55,5 @@ class TestUser(TestCase):
         self.assertEqual(user2.role_sys, "user", "Actualización de rol fallida")
 
     def test_user_create(self):
-        user = User.objects.create_user('Juan@gmaill.com', '123')
+        user = User.objects.create_user(username='juan', email='Juan@gmaill.com', password='123')
         self.assertEqual(user.email, 'Juan@gmaill.com', "El usuario no se ha creado correctamente")

@@ -5,6 +5,7 @@ class UProject:
     STATUS_SUCCESS = "success"
     STATUS_PENDING = "pending"
     STATUS_FINISHED = "finished"
+    STATUS_CANCELED = "canceled"
 
     # CUSTOM FIELDS LOGIC
 

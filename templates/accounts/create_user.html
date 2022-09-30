@@ -20,7 +20,7 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Create New User</small></h3>
+                            <h3 class="card-title"><small>Crear Nuevo Usuario</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -30,27 +30,27 @@
                                 <div class="form-group">
                                     <label for="id_username">Username</label>
                                     <input type="text" name="username" class="form-control" id="id_username"
-                                           placeholder="Enter Username">
+                                           placeholder="Ingrese el Username">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_first_name">First Name</label>
+                                    <label for="id_first_name">Nombre</label>
                                     <input type="text" name="first_name" class="form-control" id="id_first_name"
-                                           placeholder="Enter First Name">
+                                           placeholder="Ingrese el Nombre">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_last_name">Last Name</label>
+                                    <label for="id_last_name">Apellido</label>
                                     <input type="text" name="last_name" class="form-control" id="id_last_name"
-                                           placeholder="Enter Last Name">
+                                           placeholder="Ingrese el Apellido">
                                 </div>
                                 <div class="form-group">
                                     <label for="id_email">Email</label>
                                     <input type="email" name="email" class="form-control" id="id_email"
-                                           placeholder="Enter Email">
+                                           placeholder="Ingrese el Email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_password">Password</label>
+                                    <label for="id_password">Contraseña</label>
                                     <input type="password" name="password" class="form-control" id="id_password"
-                                           placeholder="Enter Password">
+                                           placeholder="Ingrese la contraseña">
                                 </div>
                                 <div class="form-group">
                                     <label>Role System</label>
@@ -73,7 +73,8 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Crear</button>
+                                <a class="btn btn-secondary mx-3" href="{% url 'accounts.index' %}">Cancelar</a>
                             </div>
                         </form>
                     </div>

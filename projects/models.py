@@ -99,7 +99,11 @@ class RoleProjectManager(models.Manager):
         # permisos a eliminar
         perms_to_remove = list(set(original_permissions_id) - set(selected_id_perms))
         print("permisos a eliminar: ", perms_to_remove)
-        role.perms.add(*perms)
+        perms_to_add = list(set(selected_id_perms) - set(original_permissions_id))
+
+        for perm in perms:
+            if perm.id in perms_to_add:
+                role.perms.add(perm)
 
         for perm in original_perms:
             if perm.id in perms_to_remove:
@@ -157,23 +161,37 @@ class RoleProjectManager(models.Manager):
         :param user_id: id del usuario
         :param perm: permiso a ser consultado
         """
+        if isinstance(perm, str):
+            perms = (perm,)
+        else:
+            perms = perm
         return ProjectMember.objects.filter(user_id=user_id, project_id=project_id,
-                                            roles__perms__name__in=perm).exists()
+                                            roles__perms__name__in=perms).exists()
 
     @staticmethod
     def get_scrum_master():
+        """
+        Funcion para obtener un rol scrum master
+
+        :return: Rol Scrum Master
+        """
         name = UProjectDefaultRoles.SCRUM_MASTER
         description = "Este rol es de Scrum Master"
-        permissions_list = [1, 2]
+        permissions_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
         rol = RoleProject.objects.create(role_name=name, description=description, project=None)
         rol.perms.set(permissions_list)
         return rol
 
     @staticmethod
     def get_developer():
+        """
+        Funcion para obtener un rol scrum develop
+
+        :return: Rol Develop
+        """
         name = UProjectDefaultRoles.DEVELOPER
         description = "Este rol es de Developer"
-        permissions_list = [2]
+        permissions_list = [17, 18, 19, 20, 21, 22, 23]
         rol = RoleProject.objects.create(role_name=name, description=description, project=None)
         rol.perms.set(permissions_list)
         return rol
@@ -215,11 +233,37 @@ class ProjectManager(models.Manager):
         )
         member.roles.add(*roles)
 
+    def delete_member(self, user_id,project):
+        """
+
+        :param user_id:
+        :param project:
+
+        :return: Retorna True si el miembro se pudo eliminar con exito y False si es que no
+        """
+        # get the current member and then delete just if doesn't have scrum master role
+        member = ProjectMember.objects.get(
+            project=project,
+            user_id=user_id
+        )
+
+        result = member.roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+
+        if not result:
+            project.members.remove(member.user)
+            return True
+        return False
+    def get_project_members(self, id_project):
+        return ProjectMember.objects.filter(project_id=id_project)
+
 
 #########################################################
 ####################### MODELS ##########################
 #########################################################
 class PermissionsProj(models.Model):
+    """
+    Permisos de proyecto
+    """
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=250, null=True)
 
@@ -237,6 +281,7 @@ class Project(models.Model):
     roles = models.ManyToOneRel('projects.RoleProject', on_delete=models.CASCADE, to='projects.Project',
                                 field_name='project')
     status = models.CharField(max_length=50)
+    cancellation_reason = models.TextField(max_length=500, null=True)
     objects = ProjectManager()
 
     # def __str__(self) -> str:
@@ -263,6 +308,9 @@ class RoleProject(models.Model):
 
 
 class ProjectMember(models.Model):
+    """
+    Miembros de Proyecto
+    """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     roles = models.ManyToManyField(RoleProject)
