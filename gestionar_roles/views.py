@@ -35,7 +35,7 @@ def store(request):
 
     RoleSystem.objects.create_role(name, description, perms)
 
-    messages.success(request, 'El rol fue creado con exito')
+    messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
     return redirect(reverse('gestionar_roles.create'), request)
 
 
@@ -87,6 +87,7 @@ def update(request):
     # get project and update
     RoleSystem.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
 
+    messages.success(request, 'El rol "' + name + '" fue actualizado exitosamente')
     return redirect(reverse('gestionar_roles.edit', kwargs={'id': role.id}), request)
 
 

@@ -2,10 +2,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
 import projects.views
 from accounts.models import User
 from gestionar_roles.models import RoleSystem
+from gestionar_roles.decorators import permission_sys_required
+from utilities.UPermissions import UPermissions
 
 
 # Create your views here.
@@ -20,6 +21,7 @@ def home(request):
     return projects.views.index(request)
 
 
+@permission_sys_required(UPermissions.READ_USER)
 @login_required()
 def index(request):
     """
@@ -35,11 +37,13 @@ def index(request):
     return render(request, 'accounts/user.html', {'users': users})
 
 
+@permission_sys_required(UPermissions.CREATE_USER)
 def create_user(request):
     roles = RoleSystem.objects.all()
     return render(request, 'accounts/create_user.html', {'roles': roles})
 
 
+@permission_sys_required(UPermissions.UPDATE_USER)
 def edit_user(request, username):
     """
     Retorna una página para editar un usuario en cuestión
@@ -59,6 +63,7 @@ def edit_user(request, username):
     return render(request, 'accounts/edit_user.html', {'u': user, 'roles': roles, 'role_system': role_system})
 
 
+@permission_sys_required(UPermissions.UPDATE_USER)
 def validate_edit_user(request):
     """
     Valida el usuario a ser actualizado y realiza la actualización de los datos
@@ -88,6 +93,7 @@ def validate_edit_user(request):
     return redirect(reverse('accounts.edit_user', kwargs={'username': user.username}), request)
 
 
+@permission_sys_required(UPermissions.CREATE_USER)
 def validate_user(request):
     """
         Valida que el user que se está creando cumpla las condiciones necesarias y si es así redirije al home del sitio,
@@ -119,7 +125,7 @@ def validate_user(request):
     role = RoleSystem.objects.get(id=id_role)
     RoleSystem.objects.assing_role_to_user(role, user)
 
-    return redirect(home)
+    return redirect(reverse('accounts.index'), request)
 
 
 def username_exists(username):
@@ -130,6 +136,7 @@ def email_exists(email):
     return User.objects.filter(email=email).exists()
 
 
+@permission_sys_required(UPermissions.DELETE_USER)
 def destroy(request, username):
     """
     Elimina un usuario
@@ -140,6 +147,7 @@ def destroy(request, username):
     :return: Documento HTML del home
     """
     user = User.objects.get(username=username)
+    deleted_user_name = user.username
     user.delete()
-    messages.success(request, 'El usuario fue eliminado con éxito')
-    return redirect(reverse('home'), request)
+    messages.success(request, 'El usuario' + deleted_user_name + 'fue eliminado con éxito')
+    return redirect(reverse('accounts.index'), request)

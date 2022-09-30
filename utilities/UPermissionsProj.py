@@ -8,7 +8,7 @@ class UPermissionsProject:
 
     # Project
     UPDATE_PROJECT = 'Update project'
-    DELETE_PROJECT = 'Delete project'
+    CANCEL_PROJECT = 'Cancel project'
 
     # Project Member
     CREATE_PROJECTMEMBER = 'Create projectmember'
@@ -26,7 +26,7 @@ class UPermissionsProject:
     CREATE_US = 'Create user_story'
     READ_US = 'Read user_story'
     UPDATE_US = 'Update user_story'
-    DELETE_US = 'Delete user_story'
+    CANCEL_US = 'Cancel user_story'
 
     # SPRINT
     CREATE_SPRINT = 'Create sprint'

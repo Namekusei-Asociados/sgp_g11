@@ -14,6 +14,7 @@ from utilities.UProject import UProject
 
 
 # Create your views here.
+@permission_sys_required(UPermissions.READ_ALL_PROJECT)
 def index(request):
     # get all projects related to the current user
     user = request.user
@@ -35,10 +36,11 @@ def create(request):
     :return:documento html
     """
     users = User.objects.all()
-    users = filter(lambda x: x.role_sys != 'visitor' and not x.is_staff, users)
+    users = filter(lambda x: not x.role.filter(role_name='Visitante').exists() and not x.is_staff, users)
     return render(request, 'projects/create.html', {"users": users})
 
 
+@permission_sys_required(UPermissions.CREATE_PROJECT)
 def store(request):
     """
     Intenta crear un nuevo recurso del modelo Project
@@ -66,7 +68,7 @@ def store(request):
     return redirect(reverse('projects.create'), request)
 
 
-@permission_proj_required(UPermissionsProject.CREATE_ROLE)
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
 def edit(request, id_project):
     """
     Retorna la vista de edicion del projecto actual
@@ -78,12 +80,12 @@ def edit(request, id_project):
     """
     # get project
     project = Project.objects.get(id=id_project)
-    users = User.objects.all()
-    members = project.members.all()
-    return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
+
+    return render(request, 'projects/edit.html', {'project': project,'id_project':id_project})
 
 
-def update(request):
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
+def update(request, id_project):
     """
     Actualiza un recurso del modelo Project
 
@@ -95,26 +97,9 @@ def update(request):
     # get fields from edit form
     name = request.POST['name']
     description = request.POST['description']
-    users = request.POST.getlist('users[]')
-    project_id = request.POST['project_id']
 
     # get project and update
-    project = Project.objects.get(id=project_id)
-
-    # detach members
-    members = project.members.values_list('id', flat=True)
-
-    for member in members:
-        if str(member) not in users:
-            project.members.remove(str(member))
-
-    # attach members with default role
-    role = RoleProject.objects.get(project=project, role_name=UProjectDefaultRoles.DEVELOPER)
-
-    current_members = list(project.members.values_list('id', flat=True))
-    for user in users:
-        if int(user) not in current_members:
-            Project.objects.add_member(user, [role], project)
+    project = Project.objects.get(id=id_project)
 
     # # update fields
     project.name = name
@@ -125,6 +110,7 @@ def update(request):
     return redirect(reverse('projects.edit', kwargs={'id_project': project.id}), request)
 
 
+@permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
 def cancel(request, id_project):
     """
     Intenta cancelar un proyecto
@@ -134,12 +120,20 @@ def cancel(request, id_project):
 
     :return: documento html
     """
-
     project = Project.objects.get(id=id_project)
+    return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
+
+
+@permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
+def validate_cancel_project(request, id_project):
+    cancellation_reason = request.POST['cancellation_reason']
+
+    # get project and update
+    project = Project.objects.get(id=id_project)
+    project.cancellation_reason = cancellation_reason
     project.status = UProject.STATUS_CANCELED
     project.save()
-
-    messages.success(request, 'El proyecto fue cancelado con exito')
+    messages.success(request, 'El proyecto "' + project.name + '" fue cancelado con éxito')
     return redirect(reverse('projects.index'), request)
 
 
@@ -147,6 +141,7 @@ def dashboard(request, id_project):
     return render(request, 'projects/base/app.html', {'id_project': id_project})
 
 
+@permission_proj_required(UPermissionsProject.READ_PROJECTMEMBER)
 def members(request, id_project):
     """
     Muestra la lista de miembros de un proyecto
@@ -161,6 +156,7 @@ def members(request, id_project):
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_PROJECTMEMBER)
 def create_member(request, id_project):
     """
     Crea un miembro del proyecto
@@ -182,6 +178,7 @@ def create_member(request, id_project):
     return render(request, 'projects/members/create.html', {"roles": roles, 'id_project': id_project, 'users': users})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
 def edit_member(request, id_project, member_id):
     """
     Muestra los datos para la edicion de un miembro
@@ -201,6 +198,7 @@ def edit_member(request, id_project, member_id):
                   {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
 def update_member(request, id_project, member_id):
     roles_id = request.POST.getlist('roles[]')
 
@@ -214,6 +212,7 @@ def update_member(request, id_project, member_id):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_PROJECTMEMBER)
 def store_member(request, id_project):
     """
     Agrega un nuevo miembro al proyecto actual
@@ -231,10 +230,34 @@ def store_member(request, id_project):
     Project.objects.add_member(user_id=user_id, roles=roles, project=project)
 
     messages.success(request, 'El miembro se agrego al proyecto con exito')
-    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
+    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)\
+
+
+def delete_member(request, id_project, user_id):
+    """
+    Elimina un miembro perteneciente al proyecto actual
+
+    :param request:
+    :param id_project: Id perteneciente al proyecto actual
+    :param user_id: Id perteneciente al miembro que esta siendo eliminado
+
+    :return: Documento html
+    """
+    user = User.objects.get(id=user_id)
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    result = Project.objects.delete_member(user_id=user_id, project=project)
+    if result:
+        messages.success(request, f'El miembro {user.username} fue eliminado del proyecto con exito')
+    else:
+        messages.error(request, f'No se pudo eliminar el miembro {user.username} del proyecto con exito')
+
+    return redirect(reverse('projects.members.index', kwargs={'id_project': project.id}), request)
 
 
 ###########ROLES#############
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
 def create_role(request, id_project):
     """
     Retorna un formulario de creacion de roles
@@ -248,6 +271,7 @@ def create_role(request, id_project):
     return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_ROLE)
 def store_role(request, id_project):
     """
     Funcion para guardar los un rol
@@ -263,10 +287,11 @@ def store_role(request, id_project):
 
     RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
 
-    messages.success(request, 'El rol fue creado con exito')
+    messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_ROLE)
 def index_role(request, id_project):
     """
     Muestra la lista de usuarios de un proyecto
@@ -282,6 +307,7 @@ def index_role(request, id_project):
     return render(request, 'roles/index.html', {"roles": roles, "id_project": id_project})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_ROLE)
 def edit_role(request, id_project, id):
     """
     Retorna la vista de edicion del rol actual
@@ -301,6 +327,7 @@ def edit_role(request, id_project, id):
                    'id': id})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_ROLE)
 def update_role(request, id_project, id):
     """
         Actualiza un recurso del modelo rol
@@ -321,11 +348,13 @@ def update_role(request, id_project, id):
     role = RoleProject.objects.get(id=role_id)
     # get project and update
     RoleProject.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
-    messages.success(request, 'El rol fue actualizado con éxito')
+
+    messages.success(request, 'El rol "' + name + '" fue actualizado exitosamente')
 
     return redirect(reverse('projects.edit_role', kwargs={'id': role.id, "id_project": id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_ROLE)
 def delete_role(request, id_project, id):
     """
     Elimina un recurso del modelo roles

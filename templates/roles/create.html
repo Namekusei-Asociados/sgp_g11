@@ -31,7 +31,7 @@
 
         <div class="card card-primary m-2">
             <div class="card-header">
-                <h3 class="card-title">Crear Rol</h3>
+                <h3 class="card-title">Crear Rol de Proyecto</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -73,6 +73,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href=" {% url 'projects.index_role' id_project %} " class="btn btn-secondary mx-3">Cancelar</a>
                     </div>
             </form>
         </div>

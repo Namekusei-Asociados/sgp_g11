@@ -191,7 +191,7 @@ class RoleProjectManager(models.Manager):
         """
         name = UProjectDefaultRoles.DEVELOPER
         description = "Este rol es de Developer"
-        permissions_list = [17, 18, 19, 20, 21, 22, 23, 24]
+        permissions_list = [17, 18, 19, 20, 21, 22, 23]
         rol = RoleProject.objects.create(role_name=name, description=description, project=None)
         rol.perms.set(permissions_list)
         return rol
@@ -233,6 +233,26 @@ class ProjectManager(models.Manager):
         )
         member.roles.add(*roles)
 
+    def delete_member(self, user_id,project):
+        """
+
+        :param user_id:
+        :param project:
+
+        :return: Retorna True si el miembro se pudo eliminar con exito y False si es que no
+        """
+        # get the current member and then delete just if doesn't have scrum master role
+        member = ProjectMember.objects.get(
+            project=project,
+            user_id=user_id
+        )
+
+        result = member.roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+
+        if not result:
+            project.members.remove(member.user)
+            return True
+        return False
     def get_project_members(self, id_project):
         return ProjectMember.objects.filter(project_id=id_project)
 
@@ -261,6 +281,7 @@ class Project(models.Model):
     roles = models.ManyToOneRel('projects.RoleProject', on_delete=models.CASCADE, to='projects.Project',
                                 field_name='project')
     status = models.CharField(max_length=50)
+    cancellation_reason = models.TextField(max_length=500, null=True)
     objects = ProjectManager()
     # def __str__(self) -> str:
     #     text = "{0}"

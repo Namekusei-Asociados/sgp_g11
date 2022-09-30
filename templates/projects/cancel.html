@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    | Proyectos
+    | Cancelar Proyecto
 {% endblock %}
 
 {% block styles %}
@@ -14,35 +14,28 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Main content -->
+
     <section class="content">
 
-        {% include 'base/components/success-message.html' %}
         <div class="card card-primary m-2">
 
             <div class="card-header">
-                <h3 class="card-title">Editar Proyecto</h3>
+                <h3 class="card-title"> Cancelar Proyecto "{{ project.name }}" </h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="editProjectForm" action="{% url 'projects.update' id_project %}" method="post">
+            <form id="cancelProjectForm" action="{% url 'projects.validate_cancel' id_project%}" method="post">
                 {% csrf_token %}
-
+                <input type="hidden" name="project_id" value="{{ project.id }}">
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="name" class="required">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Petropar"
-                               value="{{ project.name }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Descripcion del proyecto</label>
-                        <textarea class="form-control" name="description" id="projectDescription" cols="30" rows="3"
+                        <p></p>
+                        <label class="required">Ingrese el motivo de cancelación del proyecto</label>
+                        <textarea class="form-control" name="cancellation_reason" id="cancellation_reason" cols="30"
+                                  rows="3"
                                   maxlength="500"
-                                  placeholder="Este proyecto pertenece...">{{ project.description }}</textarea>
+                                  placeholder="Motivo..."></textarea>
                     </div>
-
-
                 </div>
                 <!-- /.card-body -->
 
@@ -58,32 +51,27 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
     <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
     <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
     <script>
         //validations rules
         $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
 
-            $('#editProjectForm').validate({
+            $('#cancelProjectForm').validate({
                 rules: {
-                    name: {
-                        required: true,
-                        minlength: 4
-                    },
-                    description: {
+                    cancellation_reason: {
                         required: true,
                         minlength: 4,
                         maxlength: 500
                     }
-
                 },
                 messages: {
-                    name: {
-                        required: "El nombre es obligatorio",
-                        minlength: "Ingrese un minimo de 4 caracteres"
-                    },
-                    description: {
-                        required: "La descripcion del proyecto es obligatoria",
+                    cancellation_reason: {
+                        required: "Debe ingresar un motivo para cancelar el proyecto",
                         minlength: "Ingrese un minimo de 4 caracteres",
                         maxLength: "Ingrese un maximo de 500 caracteres"
                     }

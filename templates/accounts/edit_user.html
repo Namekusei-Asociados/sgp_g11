@@ -20,7 +20,7 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Edit User</small></h3>
+                            <h3 class="card-title"><small>Editar Usuario</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -33,12 +33,12 @@
                                            placeholder="Enter Username" disabled value="{{ u.username }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_first_name">First Name</label>
+                                    <label for="id_first_name">Nombre</label>
                                     <input type="text" name="first_name" class="form-control" id="id_first_name"
                                            placeholder="Enter First Name" value="{{ u.first_name }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_last_name">Last Name</label>
+                                    <label for="id_last_name">Apellido</label>
                                     <input type="text" name="last_name" class="form-control" id="id_last_name"
                                            placeholder="Enter Last Name" value="{{ u.last_name }}">
                                 </div>
@@ -82,6 +82,7 @@
                             <div class="card-footer">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-primary">Actualizar</button>
+                                <a class="btn btn-secondary mx-3" href="{% url 'accounts.index' %}">Cancelar</a>
                             </div>
                         </form>
                     </div>

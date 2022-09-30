@@ -1,6 +1,8 @@
 from django.db import models
 
-from projects.models import Project
+from projects.models import Project, ProjectMember
+from sprints.models import Sprint
+from type_us.models import TypeUS
 
 
 # Create your models here.
@@ -12,10 +14,10 @@ class UserStory(models.Model):
     technical_priority = models.IntegerField()
     estimation_time = models.IntegerField()
     current_status = models.CharField(max_length=20)
-    # us_type = models.ForeignKey(UserStoryType, on_delete=models.CASCADE)
+    us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
-    # assigned_to = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
+    assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)

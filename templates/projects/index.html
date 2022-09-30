@@ -1,6 +1,8 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
+{% load has_perm_system %}
+{% load has_perm_project %}
 
 {% block title %}
     | Proyectos
@@ -76,7 +78,9 @@
                                 Estado
                             </th>
                             <th>
+
                             </th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -125,19 +129,25 @@
                                         </i>
                                         Ver
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Editar
-                                    </a>
-                                    <form action="{% url 'projects.cancel' project.id %}" method="post" class="m-0 p-0">
-                                        {% csrf_token %}
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash">
+                                    {% has_perm_project user project.id 'Update project' as ban %}
+                                    {% if ban and project.status != 'canceled' %}
+                                        <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
+                                            <i class="fas fa-pencil-alt">
                                             </i>
-                                            Cancelar
-                                        </button>
-                                    </form>
+                                            Editar
+                                        </a>
+                                    {% endif %}
+                                    {% has_perm_project user project.id 'Cancel project' as ban %}
+                                    {% if ban and project.status != 'canceled' %}
+                                        <form class="m-0 p-0"
+                                              action="{% url 'projects.cancel' project.id %}">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                Cancelar
+                                            </button>
+                                        </form>
+                                    {% endif %}
 
                                 </td>
                             </tr>

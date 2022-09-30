@@ -1,12 +1,15 @@
 {% extends 'projects/base/app.html' %}
-
 {% load static %}
+{% load has_perm_project %}
 
 {% block title %}
     | Miembros del Proyecto
 {% endblock %}
 
 {% block content %}
+    {% has_perm_project user id_project 'Create projectmember' as can_create %}
+    {% has_perm_project user id_project 'Update projectmember' as can_edit %}
+    {% has_perm_project user id_project 'Delete projectmember' as can_delete %}
     <br>
     <section class="content">
         {% include 'base/components/success-message.html' %}
@@ -29,14 +32,16 @@
                     <div class="card">
                         <div class="card-header">
 
-                        <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
-                            <i class="fas fa-plus">
-                            </i>
-                            Agregar
-                        </a>
-
+                            {% if can_create %}
+                                <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
+                                    <i class="fas fa-plus">
+                                    </i>
+                                    Agregar
+                                </a>
+                            {% endif %}
                         </div>
                         <!-- /.card-header -->
+
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
                                 <thead>
@@ -53,12 +58,27 @@
                                         <td> {{ member.user.email }}</td>
 
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm"
-                                               href="{% url 'projects.members.edit' id_project member.user.id %}">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </a>
+
+                                            {% if can_edit %}
+                                                <a class="btn btn-info btn-sm"
+                                                   href="{% url 'projects.members.edit' id_project member.user.id %}">
+                                                    <i class="fas fa-pencil-alt">
+                                                    </i>
+                                                    Editar
+                                                </a>
+                                            {% endif %}
+
+                                            {% if can_delete %}
+                                                <form action="{% url 'projects.members.delete' id_project member.user.id %}"
+                                                      method="post">
+                                                    {% csrf_token %}
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash">
+                                                        </i>
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            {% endif %}
 
                                         </td>
                                     </tr>

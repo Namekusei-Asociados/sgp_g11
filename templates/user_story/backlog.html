@@ -1,6 +1,7 @@
 {% extends 'projects/base/app.html' %}
 
 {% load static %}
+{% load has_perm_project %}
 
 {% block title %}
     | Backlog
@@ -26,12 +27,15 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a class="btn btn-primary btn-sm"
-                               href="{% url 'user_story.create_user_story' id_project %}">
-                                <i class="fas fa-plus">
-                                </i>
-                                Crear US
-                            </a>
+                            {% has_perm_project user id_project 'Create user_story' as ban %}
+                            {% if ban %}
+                                <a class="btn btn-primary btn-sm"
+                                   href="{% url 'user_story.create_user_story' id_project %}">
+                                    <i class="fas fa-plus">
+                                    </i>
+                                    Crear US
+                                </a>
+                            {% endif %}
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <div class="input-group-append">
@@ -46,39 +50,53 @@
                                 <thead>
                                 <tr>
                                     <th>Título</th>
-                                    <th>Descripcion</th>
+                                    <th>Descripción</th>
                                     <th>Business Value</th>
                                     <th>Prioridad técnica</th>
                                     <th>Prioridad final</th>
                                     <th>Tipo de US</th>
-                                    <th>Encargado</th>
+                                    {#                                    <th>Encargado</th>#}
                                     <th colspan="2">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for user_story in users_stories %}
+                                {% for user_story in user_stories %}
                                     <tr>
-                                        <td> {{ user.username }}</td>
-                                        <td> {{ user.first_name }}</td>
-                                        <td> {{ user.last_name }}</td>
-                                        <td> {{ user.email }}</td>
-                                        <td> {{ user.role_sys }}</td>
+                                        <td>{{ user_story.title }}</td>
+                                        <td>{{ user_story.description }}</td>
+                                        <td>{{ user_story.business_value }}</td>
+                                        <td>{{ user_story.technical_priority }}</td>
+                                        <td>X</td>
+                                        <td>{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}</td>
+                                        {#                                        <td>{{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}</td>#}
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm"
-                                               href="#">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </a>
-                                            <form class="m-0 p-0"
-                                                  action="#">
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash">
-                                                    </i>
-                                                    Eliminar
-                                                </button>
+                                            {% has_perm_project user id_project 'Update user_story' as ban %}
+                                            {% if ban %}
+                                                <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                      action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Editar
+                                                    </button>
 
-                                            </form>
+                                                </form>
+                                            {% endif %}
+{#                                            {% has_perm_project user id_project 'Cancel user_story' as ban %}#}
+{#                                            {% if ban %}#}
+{#                                                <form id="cancelled_user_story" class="m-0 p-0"#}
+{#                                                      action="{% url 'user_story.cancel_user_story' id_project %}">#}
+{#                                                    {% csrf_token %}#}
+{#                                                    <input type="hidden" value="{{ user_story.id }}"#}
+{#                                                           name="id_user_story">#}
+{#                                                    <button type="submit" class="btn btn-danger btn-sm">#}
+{#                                                        <i class="fas fa-trash">#}
+{#                                                        </i>#}
+{#                                                        Cancelar#}
+{#                                                    </button>#}
+{#                                                </form>#}
+{#                                            {% endif %}#}
                                         </td>
                                     </tr>
                                 {% endfor %}

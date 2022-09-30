@@ -1,6 +1,7 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
+{% load has_perm_system %}
 {% block title %}
     | {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
@@ -25,11 +26,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a class="btn btn-primary btn-sm" href="{% url 'accounts.create_user' %}">
-                                <i class="fas fa-plus">
-                                </i>
-                                Crear
-                            </a>
+                            {#                            {% has_perm_system user 'Create user' as ban %}#}
+                            {#                            {% if ban %}#}
+                            {#                            <a class="btn btn-primary btn-sm" href="{% url 'accounts.create_user' %}">#}
+                            {#                                <i class="fas fa-plus">#}
+                            {#                                </i>#}
+                            {#                                Crear#}
+                            {#                            </a>#}
+                            {#                            {% endif %}#}
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
                                     <input type="text" name="table_search" class="form-control float-right"
@@ -54,18 +58,18 @@
                                     <th>Email</th>
                                     <th>System Role</th>
                                     <th>Rol de Sistema</th>
-                                    <th colspan="2">Action</th>
+                                    <th colspan="2">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for user in users %}
+                                {% for u in users %}
                                     <tr>
-                                        <td> {{ user.username }}</td>
-                                        <td> {{ user.first_name }}</td>
-                                        <td> {{ user.last_name }}</td>
-                                        <td> {{ user.email }}</td>
-                                        <td> {{ user.role_sys }}</td>
-                                        {% if user.role.all.count == 0 %}
+                                        <td> {{ u.username }}</td>
+                                        <td> {{ u.first_name }}</td>
+                                        <td> {{ u.last_name }}</td>
+                                        <td> {{ u.email }}</td>
+                                        <td> {{ u.role_sys }}</td>
+                                        {% if u.role.all.count == 0 %}
                                             <td>Sin Rol</td>
                                         {% else %}
                                             {% for rol in user.role.all %}
@@ -74,21 +78,26 @@
                                         {% endif %}
 
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-info btn-sm"
-                                               href="{% url 'accounts.edit_user' user.username %}">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </a>
-                                            <form class="m-0 p-0"
-                                                  action="{% url 'accounts.delete' user.username %}">
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash">
+                                            {% has_perm_system user 'Update user' as ban %}
+                                            {% if ban %}
+                                                <a class="btn btn-info btn-sm"
+                                                   href="{% url 'accounts.edit_user' u.username %}">
+                                                    <i class="fas fa-pencil-alt">
                                                     </i>
-                                                    Eliminar
-                                                </button>
-
-                                            </form>
+                                                    Editar
+                                                </a>
+                                            {% endif %}
+                                            {% has_perm_system user 'Delete user' as ban %}
+                                            {% if ban %}
+                                                <form class="m-0 p-0"
+                                                      action="{% url 'accounts.delete' u.username %}">
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash">
+                                                        </i>
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

@@ -23,6 +23,7 @@ def create_permissions(db):
     PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
     PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
 
+
 @pytest.mark.django_db
 def test_store_project(client, create_permissions):
     # create user

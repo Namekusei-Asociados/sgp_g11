@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block title %}
-    | Roles
+    | Roles de Sistema
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
             <div class="container-fluid">
                 <div class="d-flex mb-2 justify-content-between">
                     <div class="col-sm-6">
-                        <h1>Roles</h1>
+                        <h1>Roles de Sistema</h1>
                     </div>
 
                 </div>
@@ -33,11 +33,14 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-primary btn-sm" href="{% url 'gestionar_roles.create' %}">
-                        <i class="fas fa-plus">
-                        </i>
-                        Crear
-                    </a>
+                    {% has_perm_system user 'Create role' as ban %}
+                    {% if ban %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'gestionar_roles.create' %}">
+                            <i class="fas fa-plus">
+                            </i>
+                            Crear
+                        </a>
+                    {% endif %}
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -88,11 +91,15 @@
                                             Editar
                                         </a>
                                     {% endif %}
-                                    <a class="btn btn-danger btn-sm" href="{% url 'gestionar_roles.delete' role.id %}">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Eliminar
-                                    </a>
+                                    {% has_perm_system user 'Delete role' as ban %}
+                                    {% if ban %}
+                                        <a class="btn btn-danger btn-sm"
+                                           href="{% url 'gestionar_roles.delete' role.id %}">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Eliminar
+                                        </a>
+                                    {% endif %}
                                 </td>
                                 </tr>
                             {% endfor %}
