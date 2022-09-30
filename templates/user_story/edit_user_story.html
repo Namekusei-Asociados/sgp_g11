@@ -1,0 +1,143 @@
+{% extends 'projects/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Create User Story
+{% endblock %}
+
+{% block content %}
+    <!--MESSAGES-->
+    {% include 'base/components/success-message.html' %}
+    <!--MESSAGES END-->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Editar Historia de Usuario</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="create_user_story_form" method="post"
+                              action="{% url 'user_story.validate_edit_user_story' id_project %}">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ user_story.id }}"
+                                   name="id_user_story">
+                            <!-- TEST -->
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_title">Título</label>
+                                            <input type="text" name="title" class="form-control" id="id_title"
+                                                   placeholder="Enter Title" maxlength="100"
+                                                   value="{{ user_story.title }}">
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_business_value">Business Value</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="business_value" class="form-control"
+                                                   id="id_business_value"
+                                                   placeholder="Enter Business Value"
+                                                   value="{{ user_story.business_value }}">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+{#                                        <div class="form-group">#}
+{#                                            <label>Encargado</label>#}
+{#                                            <select class="form-control select2" style="width: 100%;"#}
+{#                                                    id="id_assigned_to"#}
+{#                                                    name="assigned_to">#}
+{#                                                {% for user in users %}#}
+{#                                                    <option value="{{ user.id }}"#}
+{#                                                            {% if user_story.assigned_to.user == user %}#}
+{#                                                            selected#}
+{#                                                            {% endif %}#}
+{#                                                    >{{ user.first_name }} {{ user.last_name }}#}
+{#                                                        | {{ user.email }}</option>#}
+{#                                                {% endfor %}#}
+{#                                            </select>#}
+{#                                        </div>#}
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_estimation_time">Estimación</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="estimation_time" class="form-control"
+                                                   id="id_estimation_time"
+                                                   placeholder="Enter Estimation Time"
+                                                   value="{{ user_story.estimation_time }}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-md-6">
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_description">Descripción</label>
+                                            <input type="text" name="description" class="form-control"
+                                                   id="id_description"
+                                                   placeholder="Enter Description" maxlength="100"
+                                                   value="{{ user_story.description }}">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label for="id_technical_priority">Prioridad Técnica</label>
+                                            <input type="number" ondrop="return false;" onpaste="return false;"
+                                                   onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                                   name="technical_priority" class="form-control"
+                                                   id="id_technical_priority"
+                                                   placeholder="Enter Technical Priority"
+                                                   value="{{ user_story.technical_priority }}">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="form-group">
+                                            <label>User Type</label>
+                                            <select class="form-control select2" style="width: 100%;" id="id_us_type"
+                                                    name="us_type" disabled>
+
+                                                <option value="{{ user_story.us_type.id }}"
+                                                        selected>{{ user_story.us_type.name }}
+                                                    | {{ user_story.us_type.prefix }}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.card -->
+                            <!-- /.card-body -->
+                            {% if type_us == None %}
+                                <div class="card-footer">
+                                    <p>Debe crear al menos un Type US para poder actualizar un US</p>
+                                    <button type="submit" class="btn btn-primary" disabled>Guardar Cambios</button>
+                                </div>
+                            {% else %}
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    <a href=" {% url 'user_story.backlog' id_project %} " class="btn btn-secondary mx-3">Cancelar</a>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}

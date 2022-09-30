@@ -1,0 +1,186 @@
+[
+ {
+    "model": "projects.PermissionsProj",
+    "pk": 1,
+    "fields": {
+      "name":"Assing role",
+      "description":"Puede gestionar roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 2,
+    "fields": {
+      "name":"Create role",
+      "description":"Puede crear roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 3,
+    "fields": {
+      "name":"Read role",
+      "description":"Puede leer roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 4,
+    "fields": {
+      "name":"Update role",
+      "description":"Puede actualizar roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 5,
+    "fields": {
+      "name":"Delete role",
+      "description":"Puede eliminar roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 6,
+    "fields": {
+      "name":"Update project",
+      "description":"Puede actualizar proyectos"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 7,
+    "fields": {
+      "name":"Cancel project",
+      "description":"Puede cancelar proyectos"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 8,
+    "fields": {
+      "name":"Create projectmember",
+      "description":"Puede crear miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 9,
+    "fields": {
+      "name":"Read projectmember",
+      "description":"Puede leer miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 10,
+    "fields": {
+      "name":"Update projectmember",
+      "description":"Puede actualizar miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 11,
+    "fields": {
+      "name":"Delete projectmember",
+      "description":"Puede eliminar miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 12,
+    "fields": {
+      "name":"Create typeus",
+      "description":"Puede crear typeus"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 13,
+    "fields": {
+      "name":"Read typeus",
+      "description":"Puede leer typeus"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 14,
+    "fields": {
+      "name":"Update typeus",
+      "description":"Puede actualizar typeus"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 15,
+    "fields": {
+      "name":"Delete typeus",
+      "description":"Puede eliminar typeus"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 16,
+    "fields": {
+      "name":"Create user_story",
+      "description":"Puede crear us"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 17,
+    "fields": {
+      "name":"Read user_story",
+      "description":"Puede leer us"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 18,
+    "fields": {
+      "name":"Update user_story",
+      "description":"Puede actualizar us"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 19,
+    "fields": {
+      "name":"Cancel user_story",
+      "description":"Puede cancelar us"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 20,
+    "fields": {
+      "name":"Create sprint",
+      "description":"Puede crear sprint"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 21,
+    "fields": {
+      "name":"Read sprint",
+      "description":"Puede leer sprint"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 22,
+    "fields": {
+      "name":"Update sprint",
+      "description":"Puede actualizar sprint"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 23,
+    "fields": {
+      "name":"Delete sprint",
+      "description":"Puede eliminar sprint"
+    }
+  }
+]

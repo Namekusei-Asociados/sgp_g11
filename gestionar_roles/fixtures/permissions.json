@@ -1,0 +1,90 @@
+[
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 1,
+    "fields": {
+      "name":"Assing role",
+      "description":"Puede gestionar roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 2,
+    "fields": {
+      "name":"Create role",
+      "description":"Puede crear roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 3,
+    "fields": {
+      "name":"Read role",
+      "description":"Puede leer roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 4,
+    "fields": {
+      "name":"Update role",
+      "description":"Puede actualizar roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 5,
+    "fields": {
+      "name":"Delete role",
+      "description":"Puede eliminar roles"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 6,
+    "fields": {
+      "name":"Create project",
+      "description":"Puede crear proyectos"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 7,
+    "fields": {
+      "name":"Create user",
+      "description":"Puede crear usuarios"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 8,
+    "fields": {
+      "name":"Read user",
+      "description":"Puede leer usuarios"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 9,
+    "fields": {
+      "name":"Update user",
+      "description":"Puede actualizar usuarios"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 10,
+    "fields": {
+      "name":"Delete user",
+      "description":"Puede eliminar usuarios"
+    }
+  },
+  {
+    "model": "gestionar_roles.Permissions",
+    "pk": 11,
+    "fields": {
+      "name":"Read all project",
+      "description":"Puede leer todos los proyectos"
+    }
+  }
+]
