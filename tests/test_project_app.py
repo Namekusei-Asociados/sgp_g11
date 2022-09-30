@@ -2,7 +2,7 @@ import pytest
 from django.urls import reverse
 from accounts.models import User
 from projects.models import Project, PermissionsProj
-from utilities.UPermissionsProj import UPermissionProject
+from utilities.UPermissionsProj import UPermissionsProject
 
 
 # @pytest.mark.django_db
@@ -20,8 +20,8 @@ def test_get_create_page(client):
 @pytest.fixture
 def create_permissions(db):
     # create permissions
-    PermissionsProj.objects.create(name=UPermissionProject.Role_CRUD,description='test')
-    PermissionsProj.objects.create(name=UPermissionProject.Project_config,description='test')
+    PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
+    PermissionsProj.objects.create(name=UPermissionsProject.UPDATE_PROJECT, description='test')
 
 
 @pytest.mark.django_db
