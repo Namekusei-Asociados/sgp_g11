@@ -17,7 +17,7 @@ class Sprint(models.Model):
     number = models.IntegerField()
     project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
     sprint_name = models.CharField(max_length=50)
-    capacity = models.IntegerField(verbose_name='Capacidad en horas')
+    capacity = models.IntegerField(verbose_name='Capacidad en horas', null=True)
     duration = models.IntegerField(verbose_name='Duración en días')
     start_at = models.DateField(null=True, verbose_name='Fecha de inicio')
     end_at = models.DateField(null=True, verbose_name='Fecha de finalización')
@@ -33,7 +33,8 @@ class Sprint(models.Model):
 class SprintMember(models.Model):
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    workload = models.IntegerField()
+    workload = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
