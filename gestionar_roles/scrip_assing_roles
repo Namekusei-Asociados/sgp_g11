@@ -1,6 +1,6 @@
 from gestionar_roles.models import RoleSystem
 from accounts.models import User
-usuario = User.objects.get(username='alejandro_alexander')
+usuario = User.objects.get(username='cristhian')
 role=RoleSystem.objects.get(role_name='Visitante')
 role.user.remove(usuario)
 role=RoleSystem.objects.get(role_name='Admin')

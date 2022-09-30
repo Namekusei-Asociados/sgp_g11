@@ -233,6 +233,26 @@ class ProjectManager(models.Manager):
         )
         member.roles.add(*roles)
 
+    def delete_member(self, user_id,project):
+        """
+
+        :param user_id:
+        :param project:
+
+        :return: Retorna True si el miembro se pudo eliminar con exito y False si es que no
+        """
+        # get the current member and then delete just if doesn't have scrum master role
+        member = ProjectMember.objects.get(
+            project=project,
+            user_id=user_id
+        )
+
+        result = member.roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+
+        if not result:
+            project.members.remove(member.user)
+            return True
+        return False
     def get_project_members(self, id_project):
         return ProjectMember.objects.filter(project_id=id_project)
 

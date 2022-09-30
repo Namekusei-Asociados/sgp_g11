@@ -80,14 +80,12 @@ def edit(request, id_project):
     """
     # get project
     project = Project.objects.get(id=id_project)
-    users = User.objects.all()
-    users = filter(lambda x: not x.role.filter(role_name='Visitante').exists() and not x.is_staff, users)
-    members = project.members.all()
-    return render(request, 'projects/edit.html', {'project': project, 'users': users, 'members': members})
+
+    return render(request, 'projects/edit.html', {'project': project,'id_project':id_project})
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
-def update(request):
+def update(request, id_project):
     """
     Actualiza un recurso del modelo Project
 
@@ -99,26 +97,9 @@ def update(request):
     # get fields from edit form
     name = request.POST['name']
     description = request.POST['description']
-    users = request.POST.getlist('users[]')
-    project_id = request.POST['project_id']
 
     # get project and update
-    project = Project.objects.get(id=project_id)
-
-    # detach members
-    members = project.members.values_list('id', flat=True)
-
-    for member in members:
-        if str(member) not in users:
-            project.members.remove(str(member))
-
-    # attach members with default role
-    role = RoleProject.objects.get(project=project, role_name=UProjectDefaultRoles.DEVELOPER)
-
-    current_members = list(project.members.values_list('id', flat=True))
-    for user in users:
-        if int(user) not in current_members:
-            Project.objects.add_member(user, [role], project)
+    project = Project.objects.get(id=id_project)
 
     # # update fields
     project.name = name
@@ -249,7 +230,30 @@ def store_member(request, id_project):
     Project.objects.add_member(user_id=user_id, roles=roles, project=project)
 
     messages.success(request, 'El miembro se agrego al proyecto con exito')
-    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
+    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)\
+
+
+def delete_member(request, id_project, user_id):
+    """
+    Elimina un miembro perteneciente al proyecto actual
+
+    :param request:
+    :param id_project: Id perteneciente al proyecto actual
+    :param user_id: Id perteneciente al miembro que esta siendo eliminado
+
+    :return: Documento html
+    """
+    user = User.objects.get(id=user_id)
+
+    # attach new members to the project
+    project = Project.objects.get(id=id_project)
+    result = Project.objects.delete_member(user_id=user_id, project=project)
+    if result:
+        messages.success(request, f'El miembro {user.username} fue eliminado del proyecto con exito')
+    else:
+        messages.error(request, f'No se pudo eliminar el miembro {user.username} del proyecto con exito')
+
+    return redirect(reverse('projects.members.index', kwargs={'id_project': project.id}), request)
 
 
 ###########ROLES#############
