@@ -283,7 +283,7 @@ def store_role(request, id_project):
 
     RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
 
-    messages.success(request, 'El rol fue creado con exito')
+    messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
 
@@ -344,7 +344,8 @@ def update_role(request, id_project, id):
     role = RoleProject.objects.get(id=role_id)
     # get project and update
     RoleProject.objects.update_role(id_role=role_id, name=name, description=description, perms=permissions)
-    messages.success(request, 'El rol fue actualizado con éxito')
+
+    messages.success(request, 'El rol "' + name + '" fue actualizado exitosamente')
 
     return redirect(reverse('projects.edit_role', kwargs={'id': role.id, "id_project": id_project}), request)
 
