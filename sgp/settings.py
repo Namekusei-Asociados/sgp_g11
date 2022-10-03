@@ -189,9 +189,16 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
+        },
+        'APP': {
+            'client_id': os.environ.get("CLIENT_ID"),
+            'secret': os.environ.get("CLIENT_SECRET"),
         }
+
     }
 }
+
+#SOCIALACCOUNT_ADAPTER = 'sgp.social_account_adapter.CustomUsersAccountAdapter'
 
 # The SCOPE from Google APIs
 # If the scope is not specified, it defaults to profile
@@ -204,7 +211,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
 AUTH_USER_MODEL = "accounts.User"
 ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 LOGIN_REDIRECT_URL = "home"
