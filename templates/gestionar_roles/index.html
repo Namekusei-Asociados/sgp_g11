@@ -85,14 +85,14 @@
 
                                 </td>
                                 <td class="roles-actions text-right">
-                                    {% if can_update %}
+                                    {% if can_update and role.role_name != 'Admin' %}
                                         <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Editar
                                         </a>
                                     {% endif %}
-                                    {% if can_delete %}
+                                    {% if can_delete and role.role_name != 'Admin'%}
                                         <a class="btn btn-danger btn-sm"
                                            href="{% url 'gestionar_roles.delete' role.id %}">
                                             <i class="fas fa-trash">

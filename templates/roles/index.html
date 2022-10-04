@@ -99,7 +99,7 @@
                                         </a>
                                     {% endif %}
                                     {% has_perm_project user id_project 'Delete role' as ban %}
-                                    {% if ban %}
+                                    {% if ban and role.role_name != 'Scrum Master' %}
                                         <a class="btn btn-danger btn-sm"
                                            href="{% url 'projects.delete_role' id_project role.id %}">
                                             <i class="fas fa-trash">
