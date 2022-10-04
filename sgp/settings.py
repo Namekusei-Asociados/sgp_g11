@@ -35,6 +35,8 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+
+    # templatetags
     'sgp.templatetags',
     # Projects management
     'projects',
@@ -65,10 +67,7 @@ INSTALLED_APPS = [
 
     # Account
     'accounts',
-    # libreria [ara uso de roles
-    'guardian',
 
-    # templatetags
 
     # App of the User Story
     'user_story'
