@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from gestionar_roles.models import RoleSystem
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
-from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
@@ -182,11 +181,11 @@ def create_member(request, id_project):
     :return: documento html
     """
     project = Project.objects.get(id=id_project)
-    roles = project.roleproject_set.all()
+    roles = project.roleproject_set.all().exclude(role_name='Scrum Master')
 
     # get all users that has not been attached to this project
     current_members = project.members.all()
-    all_users = User.objects.all()
+    all_users = User.objects.all().exclude(role__role_name='Visitante')
 
     users = list(set(all_users) - set(current_members))
     print(users)
@@ -246,10 +245,10 @@ def store_member(request, id_project):
 
     # attach new members to the project
     project = Project.objects.get(id=id_project)
-    Project.objects.add_member(user_id=user_id, roles=roles, project=project)
+    member=Project.objects.add_member(user_id=user_id, roles=roles, project=project)
 
-    messages.success(request, 'El miembro se agrego al proyecto con exito')
-    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)\
+    messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
+    return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
 
 
 

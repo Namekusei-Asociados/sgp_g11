@@ -232,6 +232,7 @@ class ProjectManager(models.Manager):
             user_id=user_id
         )
         member.roles.add(*roles)
+        return member
 
     def delete_member(self, user_id,project):
         """
