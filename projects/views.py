@@ -205,10 +205,14 @@ def edit_member(request, id_project, member_id):
     :return: Documento HTML
     """
     project = Project.objects.get(id=id_project)
-    roles = project.roleproject_set.all()
-
     member = User.objects.get(id=member_id)
+
     current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
+    #mostrar el rol de Scrum Master solo si se posee
+    if current_roles.filter(role_name='Scrum Master').exists():
+        roles = project.roleproject_set.all()
+    else:
+        roles = project.roleproject_set.all().exclude(role_name='Scrum Master')
     return render(request, 'projects/members/edit.html',
                   {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 

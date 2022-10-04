@@ -53,8 +53,6 @@ def assing_iniciate_rol(sender, instance, **kwargs):
     role_admin = RoleSystem.objects.get(role_name='Admin')
     role_visitor = RoleSystem.objects.get(role_name='Visitante')
     if User.objects.all().count() == 1:
-        print("jafffa")
         instance.role.add(role_admin)
-    else:
-        print("jo;aa")
+    elif instance.role.all().count() == 0:
         instance.role.add(role_visitor)

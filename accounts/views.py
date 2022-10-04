@@ -50,7 +50,7 @@ def edit_user(request, username):
 
     :return: documento HTML con la información del usuario a ser actualizado
     """
-    roles = RoleSystem.objects.all()
+    roles = RoleSystem.objects.all().exclude(role_name='Admin')
     user = User.objects.get(username=username)
     try:
         role_system = RoleSystem.objects.get(user=user)

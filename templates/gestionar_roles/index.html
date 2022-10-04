@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+    {% has_perm_system user 'Create role' as can_create %}
+    {% has_perm_system user 'Update role' as can_update %}
+    {% has_perm_system user 'Delete role' as can_delete %}
 
     <!-- Main content -->
     <section class="content">
@@ -33,8 +36,7 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% has_perm_system user 'Create role' as ban %}
-                    {% if ban %}
+                    {% if can_create %}
                         <a class="btn btn-primary btn-sm" href="{% url 'gestionar_roles.create' %}">
                             <i class="fas fa-plus">
                             </i>
@@ -83,16 +85,14 @@
 
                                 </td>
                                 <td class="roles-actions text-right">
-                                    {% has_perm_system user 'Update role' as ban %}
-                                    {% if ban %}
+                                    {% if can_update %}
                                         <a class="btn btn-info btn-sm" href="{% url 'gestionar_roles.edit' role.id %}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Editar
                                         </a>
                                     {% endif %}
-                                    {% has_perm_system user 'Delete role' as ban %}
-                                    {% if ban %}
+                                    {% if can_delete %}
                                         <a class="btn btn-danger btn-sm"
                                            href="{% url 'gestionar_roles.delete' role.id %}">
                                             <i class="fas fa-trash">
