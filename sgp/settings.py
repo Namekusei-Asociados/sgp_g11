@@ -198,7 +198,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-#SOCIALACCOUNT_ADAPTER = 'sgp.social_account_adapter.CustomUsersAccountAdapter'
 
 # The SCOPE from Google APIs
 # If the scope is not specified, it defaults to profile
