@@ -49,12 +49,14 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-primary btn-sm" href="{% url 'projects.create' %}">
-                        <i class="fas fa-plus">
-                        </i>
-                        Crear
-                    </a>
-
+                    {% has_perm_system user 'Create project' as ban %}
+                    {% if ban %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'projects.create' %}">
+                            <i class="fas fa-plus">
+                            </i>
+                            Crear
+                        </a>
+                    {% endif %}
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>

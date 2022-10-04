@@ -152,7 +152,10 @@ def validate_cancel_project(request, id_project):
 
 
 def dashboard(request, id_project):
-    return render(request, 'projects/base/app.html', {'id_project': id_project})
+    if request.user.project_set.filter(id=id_project).exists():
+        return render(request, 'projects/base/app.html', {'id_project': id_project})
+    else:
+        return render(request, 'redirect/forbidden.html')
 
 
 @permission_proj_required(UPermissionsProject.READ_PROJECTMEMBER)
@@ -251,7 +254,7 @@ def store_member(request, id_project):
     return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
 
 
-
+@permission_proj_required(UPermissionsProject.DELETE_PROJECTMEMBER)
 def delete_member(request, id_project, user_id):
     """
     Elimina un miembro perteneciente al proyecto actual
