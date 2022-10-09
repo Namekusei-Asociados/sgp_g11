@@ -68,7 +68,7 @@
                                                 </a>
                                             {% endif %}
 
-                                            {% if can_delete %}
+                                            {% if can_delete%}
                                                 <form action="{% url 'projects.members.delete' id_project member.user.id %}"
                                                       method="post">
                                                     {% csrf_token %}

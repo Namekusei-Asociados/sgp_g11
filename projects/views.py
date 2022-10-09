@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from gestionar_roles.models import RoleSystem
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
@@ -87,7 +88,7 @@ def edit(request, id_project):
     # get project
     project = Project.objects.get(id=id_project)
 
-    return render(request, 'projects/edit.html', {'project': project,'id_project':id_project})
+    return render(request, 'projects/edit.html', {'project': project, 'id_project': id_project})
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_PROJECT)
@@ -184,7 +185,7 @@ def create_member(request, id_project):
     :return: documento html
     """
     project = Project.objects.get(id=id_project)
-    roles = project.roleproject_set.all().exclude(role_name='Scrum Master')
+    roles = project.roleproject_set.all().exclude(role_name=UProjectDefaultRoles.SCRUM_MASTER)
 
     # get all users that has not been attached to this project
     current_members = project.members.all()
@@ -210,11 +211,11 @@ def edit_member(request, id_project, member_id):
     member = User.objects.get(id=member_id)
 
     current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
-    #mostrar el rol de Scrum Master solo si se posee
-    if current_roles.filter(role_name='Scrum Master').exists():
+    # mostrar el rol de Scrum Master solo si se posee
+    if current_roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists():
         roles = project.roleproject_set.all()
     else:
-        roles = project.roleproject_set.all().exclude(role_name='Scrum Master')
+        roles = project.roleproject_set.all().exclude(role_name=UProjectDefaultRoles.SCRUM_MASTER)
     return render(request, 'projects/members/edit.html',
                   {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
@@ -248,7 +249,7 @@ def store_member(request, id_project):
 
     # attach new members to the project
     project = Project.objects.get(id=id_project)
-    member=Project.objects.add_member(user_id=user_id, roles=roles, project=project)
+    member = Project.objects.add_member(user_id=user_id, roles=roles, project=project)
 
     messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
     return redirect(reverse('projects.members.create', kwargs={'id_project': project.id}), request)
@@ -267,13 +268,12 @@ def delete_member(request, id_project, user_id):
     """
     user = User.objects.get(id=user_id)
 
-    # attach new members to the project
     project = Project.objects.get(id=id_project)
     result = Project.objects.delete_member(user_id=user_id, project=project)
     if result:
         messages.success(request, f'El miembro {user.username} fue eliminado del proyecto con exito')
     else:
-        messages.error(request, f'No se pudo eliminar el miembro {user.username} del proyecto con exito')
+        messages.error(request, f'No se pudo eliminar el miembro {user.username} del proyecto')
 
     return redirect(reverse('projects.members.index', kwargs={'id_project': project.id}), request)
 
@@ -307,9 +307,12 @@ def store_role(request, id_project):
     print(name, description, perms)
     print(perms)
 
-    RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
+    result=RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
+    if result:
+        messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
+    else:
+        messages.error(request, f'Ya existe un rol llamado "{name}"')
 
-    messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
     return redirect(reverse('projects.create_role', kwargs={"id_project": id_project}), request)
 
 
@@ -386,7 +389,11 @@ def delete_role(request, id_project, id):
 
     :return: formulario de eliminacion de rol
     """
+
     role = RoleProject.objects.get(id=id)
-    RoleProject.objects.delete_role(id)
-    messages.success(request, 'El rol fue eliminado con éxito')
+    result = RoleProject.objects.delete_role(id)
+    if result:
+        messages.success(request, f'El rol "{role.role_name}" fue eliminado con éxito')
+    else:
+        messages.error(request, f'El rol "{role.role_name}" posee miembros y no puede ser eliminado')
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)

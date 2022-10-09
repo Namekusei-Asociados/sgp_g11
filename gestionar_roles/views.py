@@ -33,9 +33,11 @@ def store(request):
     print(name, description, perms)
     print(perms)
 
-    RoleSystem.objects.create_role(name, description, perms)
-
-    messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
+    result=RoleSystem.objects.create_role(name, description, perms)
+    if result:
+        messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
+    else:
+        messages.error(request, f'Ya existe un rol llamado "{name}"')
     return redirect(reverse('gestionar_roles.create'), request)
 
 
@@ -102,6 +104,10 @@ def delete(request, id):
     :return: formulario de eliminacion de rol
     """
     role = RoleSystem.objects.get(id=id)
-    RoleSystem.objects.delete_role(id)
-    messages.success(request, 'El rol fue eliminado con éxito')
+
+    result=RoleSystem.objects.delete_role(id)
+    if result:
+        messages.success(request, f'El rol "{role.role_name}" fue eliminado con éxito')
+    else:
+        messages.error(request, f'El rol "{role.role_name}" posee miembros y no puede ser eliminado')
     return redirect(reverse('gestionar_roles.index'), request)

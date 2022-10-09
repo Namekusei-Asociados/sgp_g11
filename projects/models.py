@@ -19,13 +19,17 @@ class RoleProjectManager(models.Manager):
         :param description: descripcion del rol
         :param permissions_list: lista de permisos a ser asignados al rol
         """
-        role = RoleProject.objects.create(
-            role_name=name,
-            description=description,
-            project=Project.objects.get(id=id_project)
-        )
-        self.attach_permissions(role.id, permissions_list)
-        print('rol creado exitosamente')
+        if not RoleProject.objects.filter(role_name=name).exists():
+            role = RoleProject.objects.create(
+                role_name=name,
+                description=description,
+                project=Project.objects.get(id=id_project)
+            )
+            self.attach_permissions(role.id, permissions_list)
+            print('rol creado exitosamente')
+            return True
+        else:
+            return False
 
     # funcion encargada de asignar permisos a los roles
     def attach_permissions(self, id_role, permissions_list):
@@ -76,8 +80,13 @@ class RoleProjectManager(models.Manager):
         :param id_role: id del rol a ser eliminado
         """
         role = RoleProject.objects.get(id=id_role)
-        role.delete()
-        print("Eliminado exitosamente")
+        if not ProjectMember.objects.filter(
+                roles__id=id_role).count() > 0 and role.role_name != UProjectDefaultRoles.SCRUM_MASTER:
+            role.delete()
+            print("Eliminado exitosamente")
+            return True
+        else:
+            return False
 
     @staticmethod
     def update_role(id_role, perms, name=None, description=None):
@@ -234,7 +243,7 @@ class ProjectManager(models.Manager):
         member.roles.add(*roles)
         return member
 
-    def delete_member(self, user_id,project):
+    def delete_member(self, user_id, project):
         """
 
         :param user_id:
@@ -254,6 +263,7 @@ class ProjectManager(models.Manager):
             project.members.remove(member.user)
             return True
         return False
+
     def get_project_members(self, id_project):
         return ProjectMember.objects.filter(project_id=id_project)
 
