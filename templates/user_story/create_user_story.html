@@ -45,8 +45,8 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="business_value" class="form-control"
                                                    id="id_business_value"
-                                                   placeholder="Enter Business Value">
-                                            </select>
+                                                   placeholder="Enter Business Value"
+                                                   min="1" max="10">
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -56,7 +56,6 @@
                                                    name="estimation_time" class="form-control"
                                                    id="id_estimation_time"
                                                    placeholder="Enter Estimation Time">
-                                            </select>
                                         </div>
                                     </div>
                                     <!-- /.col -->
@@ -67,7 +66,6 @@
                                             <input type="text" name="description" class="form-control"
                                                    id="id_description"
                                                    placeholder="Enter Description" maxlength="100">
-                                            </select>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -76,12 +74,12 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="technical_priority" class="form-control"
                                                    id="id_technical_priority"
-                                                   placeholder="Enter Technical Priority">
-                                            </select>
+                                                   placeholder="Enter Technical Priority"
+                                                   min="1" max="10">
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label>Tipo de US</label>
+                                            <label for="id_us_type">Tipo de US</label>
                                             <select class="form-control select2" style="width: 100%;" id="id_us_type"
                                                     name="us_type">
                                                 {% for type in type_us %}
@@ -105,7 +103,8 @@
                             {% else %}
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Crear</button>
-                                    <a href=" {% url 'user_story.backlog' id_project %} " class="btn btn-secondary mx-3">Cancelar</a>
+                                    <a href=" {% url 'user_story.backlog' id_project %} "
+                                       class="btn btn-secondary mx-3">Cancelar</a>
                                 </div>
                             {% endif %}
                         </form>
@@ -116,4 +115,23 @@
         </div>
     </section>
     <!-- /.content -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const id_business_value = document.querySelector('#id_business_value')
+        const id_technical_priority = document.querySelector('#id_technical_priority')
+
+        id_business_value.addEventListener('input', validate)
+
+        id_technical_priority.addEventListener('input', validate)
+
+        function validate (evt) {
+            const value = evt.target.value
+            if (value < 1 || value > 10) {
+                evt.target.value = 1
+            }
+        }
+
+    </script>
 {% endblock %}

@@ -1,11 +1,11 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib import messages
+
 from accounts.models import User
-from projects.models import ProjectMember
+from projects.decorators import permission_proj_required
 from type_us.models import TypeUS
 from user_story.models import UserStory
-from projects.decorators import permission_proj_required
 from utilities.UPermissionsProj import UPermissionsProject
 
 
@@ -39,16 +39,14 @@ def validate_create_user_story(request, id_project):
     description = request.POST['description']
     business_value = int(request.POST['business_value'])
     technical_priority = int(request.POST['technical_priority'])
-    # id_user = int(request.POST['assigned_to'])
+    final_priority = 0.6 * business_value + 0.4 * technical_priority
     us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
-    # project_member = ProjectMember.objects.get(user_id=id_user, project_id=id_project)
 
     UserStory.objects.create(
         title=title, description=description,
         business_value=business_value, technical_priority=technical_priority,
-        estimation_time=estimation_time,
-        # assigned_to=project_member,
+        estimation_time=estimation_time, final_priority=final_priority,
         project_id=id_project, us_type_id=us_type
     )
 
@@ -120,8 +118,6 @@ def validate_edit_user_story(request, id_project):
     """
     title = request.POST['title']
     description = request.POST['description']
-    business_value = int(request.POST['business_value'])
-    technical_priority = int(request.POST['technical_priority'])
     # id_user = int(request.POST['assigned_to'])
     # us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
@@ -132,8 +128,6 @@ def validate_edit_user_story(request, id_project):
 
     user_story.title = title
     user_story.description = description
-    user_story.business_value = business_value
-    user_story.technical_priority = technical_priority
     # user_story.assigned_to = project_member
     # user_story.us_type_id = us_type
     user_story.estimation_time = estimation_time

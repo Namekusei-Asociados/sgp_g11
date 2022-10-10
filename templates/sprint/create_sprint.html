@@ -6,13 +6,6 @@
     | Create Sprint
 {% endblock %}
 
-{% block styles %}
-    {# SELECT2   #}
-    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
-    <link rel="stylesheet"
-          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
-{% endblock %}
-
 {% block content %}
     <!--MESSAGES-->
     {% include 'base/components/success-message.html' %}
@@ -43,11 +36,11 @@
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
-                                    <label for="id_business_value">Duración (en días hábiles)</label>
+                                    <label for="id_duration">Duración (en días hábiles)</label>
                                     <input type="number" ondrop="return false;" onpaste="return false;"
                                            onkeypress="return event.charCode>=48 && event.charCode<=57" required
-                                           name="business_value" class="form-control"
-                                           id="id_business_value"
+                                           name="duration" class="form-control"
+                                           id="id_duration"
                                            placeholder="Ingresar la duración del sprint en día hábiles">
                                     </select>
                                 </div>
@@ -65,65 +58,4 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-{% endblock %}
-
-{% block scripts %}
-    <!-- Select2 -->
-    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
-    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
-    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
-    <script>
-        //validations rules
-        $(function () {
-            //Initialize Select2 Elements
-            $('.select2').select2();
-
-            $('#create_sprint_form').validate({
-                rules: {
-                    sprint_name: {
-                        required: true,
-                        minLength: 5
-                    },
-                    start_at: {
-                        required: true,
-                        minlength: 4
-                    },
-                    end_at: {
-                        required: true,
-                        minlength: 4
-                    },
-                    'user_stories[]': {
-                        required: true
-                    }
-
-                },
-                messages: {
-                    sprint_name: {
-                        required: "El nombre es obligatorio",
-                        minlength: "Ingrese un minimo de 5 caracteres"
-                    },
-                    start_at: {
-                        required: "La fecha de inicio es obligatoria",
-                    },
-                    end_at: {
-                        required: "La fecha de fin es obligatoria",
-                    },
-                    "user_stories[]": {
-                        required: "Debe seleccionar al menos una Historia de usuario",
-                    }
-                },
-                errorElement: 'span',
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
-        });
-    </script>
 {% endblock %}
