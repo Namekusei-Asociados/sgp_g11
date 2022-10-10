@@ -49,20 +49,8 @@
                                             </select>
                                         </div>
                                         <!-- /.form-group -->
-{#                                        <div class="form-group">#}
-{#                                            <label>Encargado</label>#}
-{#                                            <select class="form-control select2" style="width: 100%;"#}
-{#                                                    id="id_assigned_to"#}
-{#                                                    name="assigned_to">#}
-{#                                                {% for user in users %}#}
-{#                                                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}#}
-{#                                                        | {{ user.email }}</option>#}
-{#                                                {% endfor %}#}
-{#                                            </select>#}
-{#                                        </div>#}
-                                        <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label for="id_estimation_time">Estimación</label>
+                                            <label for="id_estimation_time">Estimación (en horas)</label>
                                             <input type="number" ondrop="return false;" onpaste="return false;"
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="estimation_time" class="form-control"
@@ -112,13 +100,12 @@
                             {% if type_us == None %}
                                 <div class="card-footer">
                                     <p>Debe crear al menos un Type US para poder crear un US</p>
-                                    <button type="submit" class="btn btn-primary" disabled>Guardar</button>
+                                    <button type="submit" class="btn btn-primary" disabled>Crear</button>
                                 </div>
                             {% else %}
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" class="btn btn-primary">Crear</button>
                                     <a href=" {% url 'user_story.backlog' id_project %} " class="btn btn-secondary mx-3">Cancelar</a>
-
                                 </div>
                             {% endif %}
                         </form>
