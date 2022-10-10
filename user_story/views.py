@@ -118,34 +118,46 @@ def validate_edit_user_story(request, id_project):
     """
     title = request.POST['title']
     description = request.POST['description']
-    # id_user = int(request.POST['assigned_to'])
-    # us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
-    # project_member = ProjectMember.objects.get(user_id=id_user, project_id=id_project)
 
     user_story_id = int(request.POST.get('id_user_story'))
     user_story = UserStory.objects.get(id=user_story_id)
-
     user_story.title = title
     user_story.description = description
-    # user_story.assigned_to = project_member
-    # user_story.us_type_id = us_type
     user_story.estimation_time = estimation_time
     user_story.save()
 
     message = 'La historia de usuario "' + user_story.title + '" fue actualizada con éxito'
     messages.success(request, message)
 
-    return redirect(reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}), request)
+    return redirect(
+        reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}),
+        request)
 
 
 @permission_proj_required(UPermissionsProject.CANCEL_US)
-def cancel_user_story(request, id_project):
-    return None
+def cancel_user_story(request, id_project, id_user_story):
+    us = UserStory.objects.get(id=id_user_story)
+
+    context = {
+        'id_project': id_project,
+        'us': us
+    }
+
+    return render(request, 'user_story/cancel_user_story.html', context)
 
 
-def validate_cancel_user_story(request):
-    return None
+def validate_cancel_user_story(request, id_project):
+    id_us = request.POST['id_us']
+    cancellation_reason = request.POST['cancellation_reason']
+
+    us = UserStory.objects.get(id=id_us)
+    us.cancellation_reason = cancellation_reason
+    us.current_status = 'canceled'
+
+    us.save()
+
+    return redirect(reverse('user_story.backlog', kwargs={'id_project': id_project}), request)
 
 
 @permission_proj_required(UPermissionsProject.READ_US)

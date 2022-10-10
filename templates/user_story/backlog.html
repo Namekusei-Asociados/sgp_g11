@@ -55,8 +55,7 @@
                                     <th>Prioridad técnica</th>
                                     <th>Prioridad final</th>
                                     <th>Tipo de US</th>
-                                    {#                                    <th>Encargado</th>#}
-                                    <th colspan="2">Acción</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -68,35 +67,32 @@
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>{{ user_story.final_priority }}</td>
                                         <td>{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}</td>
-                                        {#                                        <td>{{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}</td>#}
                                         <td class="d-flex" style="gap: 5px">
-                                            {% has_perm_project user id_project 'Update user_story' as ban %}
-                                            {% if ban %}
-                                                <form id="edit_user_story" class="m-0 p-0" method="post"
-                                                      action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
+                                            {% if user_story.current_status != 'canceled' %}
+                                                {% has_perm_project user id_project 'Update user_story' as ban %}
+                                                {% if ban %}
+                                                    <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                          action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-info btn-sm">
+                                                            <i class="fas fa-pencil-alt">
+                                                            </i>
+                                                            Editar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                <form id="cancel_user_story" class="m-0 p-0" method="post"
+                                                      action="{% url 'user_story.cancel_user_story' id_project user_story.id %}">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-info btn-sm">
-                                                        <i class="fas fa-pencil-alt">
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash">
                                                         </i>
-                                                        Editar
+                                                        Cancelar
                                                     </button>
-
                                                 </form>
+                                            {% else %}
+                                                {{ user_story.cancellation_reason }}
                                             {% endif %}
-{#                                            {% has_perm_project user id_project 'Cancel user_story' as ban %}#}
-{#                                            {% if ban %}#}
-{#                                                <form id="cancelled_user_story" class="m-0 p-0"#}
-{#                                                      action="{% url 'user_story.cancel_user_story' id_project %}">#}
-{#                                                    {% csrf_token %}#}
-{#                                                    <input type="hidden" value="{{ user_story.id }}"#}
-{#                                                           name="id_user_story">#}
-{#                                                    <button type="submit" class="btn btn-danger btn-sm">#}
-{#                                                        <i class="fas fa-trash">#}
-{#                                                        </i>#}
-{#                                                        Cancelar#}
-{#                                                    </button>#}
-{#                                                </form>#}
-{#                                            {% endif %}#}
                                         </td>
                                     </tr>
                                 {% endfor %}

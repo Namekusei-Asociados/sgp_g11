@@ -45,28 +45,28 @@
                     <table class="table table-striped projects">
                         <thead>
                         <tr>
-                            <th style="width: 1%">
+                            <th>
                                 #
                             </th>
-                            <th style="width: 20%">
+                            <th>
                                 Nombre
                             </th>
-                            <th style="width: 30%">
+                            <th>
                                 Miembros
                             </th>
-                            <th style="width: 30%">
+                            <th>
                                 Estado
                             </th>
-                            <th style="width: 20%">
+                            <th>
                                 Duración
                             </th>
-                            <th style="width: 20%">
+                            <th>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            {% for sprint in sprints %}
+                        {% for sprint in sprints %}
+                            <tr>
                                 <td>
                                     {{ sprint.number }}
                                 </td>
@@ -82,13 +82,25 @@
                                 </td>
 
                                 <td>
-                                    colocar aqui lista de miembros del sprint
+                                    <ul class="list-inline">
+                                        {% for user in sprint.members.values %}
+                                            <li class="list-inline-item">
+                                                <img alt="Avatar" class="table-avatar"
+                                                     src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
                                 </td>
 
                                 <td>
                                     <span class="badge
                                     {% if sprint.status == 'Finalizado' %}
                                         badge-success
+                                    {% elif sprint.status == 'Cancelado' %}
+                                        badge-danger
+                                    {% elif sprint.status == 'Ejecucion' %}
+                                        badge-light
                                     {% else %}
                                         badge-warning
                                     {% endif %}">{{ sprint.status.capitalize }}</span>
@@ -98,13 +110,28 @@
                                     {{ sprint.duration }} días
                                 </td>
 
-                                <td class="project-actions text-right">
-                                    HOLA
+                                <td class="project-actions d-flex justify-content-end" style="gap:10px">
+                                    <a class="btn btn-primary btn-sm" href="">
+                                        <i class="fas fa-folder">
+                                        </i>
+                                        Ver
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Editar
+                                    </a>
+                                    <form class="m-0 p-0"
+                                          action="">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Cancelar
+                                        </button>
+                                    </form>
                                 </td>
-                                </tr>
-                            {% endfor %}
-
-
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

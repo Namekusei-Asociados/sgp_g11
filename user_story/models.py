@@ -21,6 +21,7 @@ class UserStory(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
     assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, null=True)
+    cancellation_reason = models.TextField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
