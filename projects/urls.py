@@ -10,7 +10,6 @@ urlpatterns = [
     path('cancel/<int:id_project>', views.cancel, name='projects.cancel'),
     path('validate_cancel/<int:id_project>', views.validate_cancel_project, name='projects.validate_cancel'),
 
-
     path('<int:id_project>', views.dashboard, name='projects.dashboard'),
     path('<int:id_project>/members', views.members, name='projects.members.index'),
     path('<int:id_project>/members/create', views.create_member, name='projects.members.create'),
@@ -26,6 +25,7 @@ urlpatterns = [
     path('<int:id_project>/role/edit/<int:id>', views.edit_role, name='projects.edit_role'),
     path('<int:id_project>/role/update/<int:id>', views.update_role, name='projects.update_role'),
     path('<int:id_project>/role/delete/<int:id>', views.delete_role, name='projects.delete_role'),
+    path('<int:id_project>/role/import', views.import_role, name='projects.import_role'),
 
     # Users Story urls
     path('<int:id_project>/user_story/', include('user_story.urls')),

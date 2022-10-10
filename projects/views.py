@@ -1,9 +1,12 @@
+from django.forms import model_to_dict
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 from gestionar_roles.models import RoleSystem
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from .forms import ImportRole
 from .models import Project, RoleProject, PermissionsProj
 from accounts.models import User
 from django.contrib import messages
@@ -212,10 +215,8 @@ def edit_member(request, id_project, member_id):
 
     current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
     # mostrar el rol de Scrum Master solo si se posee
-    if current_roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists():
-        roles = project.roleproject_set.all()
-    else:
-        roles = project.roleproject_set.all().exclude(role_name=UProjectDefaultRoles.SCRUM_MASTER)
+
+    roles = project.roleproject_set.all().exclude(role_name=UProjectDefaultRoles.SCRUM_MASTER)
     return render(request, 'projects/members/edit.html',
                   {"roles": roles, "current_roles": current_roles, 'id_project': id_project, 'member': member})
 
@@ -307,7 +308,8 @@ def store_role(request, id_project):
     print(name, description, perms)
     print(perms)
 
-    result=RoleProject.objects.create_role(name=name, description=description, permissions_list=perms, id_project=id_project)
+    result = RoleProject.objects.create_role(name=name, description=description, permissions_list=perms,
+                                             id_project=id_project)
     if result:
         messages.success(request, 'El rol "' + name + '" fue creado exitosamente')
     else:
@@ -397,3 +399,21 @@ def delete_role(request, id_project, id):
     else:
         messages.error(request, f'El rol "{role.role_name}" posee miembros y no puede ser eliminado')
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
+
+
+def import_role(request, id_project):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = ImportRole(request.POST,id_project)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/home/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ImportRole(id_project)
+    return render(request, 'roles/import_role.html', {'form': form, 'id_project': id_project})
