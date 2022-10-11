@@ -176,3 +176,14 @@ def backlog(request, id_project):
         'user_stories': user_stories
     }
     return render(request, 'user_story/backlog.html', context)
+
+
+def details_user_story(request, id_project, id_user_story):
+    user_story = UserStory.objects.get(id=id_user_story)
+
+    context = {
+        'id_project': id_project,
+        'user_story': user_story
+    }
+
+    return render(request, 'user_story/details_user_story.html', context)

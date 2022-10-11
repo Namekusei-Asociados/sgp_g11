@@ -50,24 +50,25 @@
                                 <thead>
                                 <tr>
                                     <th>Título</th>
-                                    <th>Descripción</th>
                                     <th>Business Value</th>
                                     <th>Prioridad técnica</th>
                                     <th>Prioridad final</th>
-                                    <th>Tipo de US</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for user_story in user_stories %}
                                     <tr>
-                                        <td>{{ user_story.title }}</td>
-                                        <td>{{ user_story.description }}</td>
+                                        <td>{{ user_story.title }} | {{ user_story.us_type.prefix }}</td>
                                         <td>{{ user_story.business_value }}</td>
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>{{ user_story.final_priority }}</td>
-                                        <td>{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}</td>
                                         <td class="d-flex" style="gap: 5px">
+                                            <a class="btn btn-primary btn-sm" href="{% url 'user_story.details_user_story' id_project user_story.id %}">
+                                                <i class="fas fa-folder">
+                                                </i>
+                                                Ver
+                                            </a>
                                             {% if user_story.current_status != 'canceled' %}
                                                 {% has_perm_project user id_project 'Update user_story' as ban %}
                                                 {% if ban %}
@@ -90,8 +91,6 @@
                                                         Cancelar
                                                     </button>
                                                 </form>
-                                            {% else %}
-                                                {{ user_story.cancellation_reason }}
                                             {% endif %}
                                         </td>
                                     </tr>

@@ -99,3 +99,19 @@ def numbersSprint(id_project):
     :return: número del sprint a ser creado
     """
     return Sprint.objects.filter(project_id=id_project).count() + 1
+
+
+def edit_sprint(request):
+    return None
+
+
+def validate_edit_sprint(request):
+    return None
+
+
+def cancel_sprint(request):
+    return None
+
+
+def validate_cancel_sprint(request):
+    return None

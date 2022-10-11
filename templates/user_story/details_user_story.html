@@ -39,7 +39,7 @@
                                             <label for="id_title">Título</label>
                                             <input type="text" name="title" class="form-control" id="id_title"
                                                    placeholder="Enter Title" maxlength="100"
-                                                   value="{{ user_story.title }}">
+                                                   value="{{ user_story.title }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -48,18 +48,30 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="business_value" class="form-control"
                                                    id="id_business_value"
-                                                   placeholder="Enter Business Value"
                                                    value="{{ user_story.business_value }}" disabled>
                                         </div>
+                                        <!-- /.form-group -->
                                         <div class="form-group">
                                             <label for="id_estimation_time">Estimación</label>
                                             <input type="number" ondrop="return false;" onpaste="return false;"
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="estimation_time" class="form-control"
                                                    id="id_estimation_time"
-                                                   placeholder="Enter Estimation Time"
-                                                   value="{{ user_story.estimation_time }}">
+                                                   value="{{ user_story.estimation_time }}" disabled>
                                         </div>
+                                        {% if user_story.assigned_to.user != None %}
+                                            <!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label for="id_assigned_to">Asignado a</label>
+                                                <input type="number" ondrop="return false;" onpaste="return false;"
+                                                       onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                       required
+                                                       name="assigned_to" class="form-control"
+                                                       id="id_assigned_to"
+                                                       value="{{ user_story.assigned_to.user.email }} | {{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}"
+                                                       disabled>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-md-6">
@@ -68,8 +80,7 @@
                                             <label for="id_description">Descripción</label>
                                             <input type="text" name="description" class="form-control"
                                                    id="id_description"
-                                                   placeholder="Enter Description" maxlength="100"
-                                                   value="{{ user_story.description }}">
+                                                   value="{{ user_story.description }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -78,21 +89,28 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="technical_priority" class="form-control"
                                                    id="id_technical_priority"
-                                                   placeholder="Enter Technical Priority"
                                                    value="{{ user_story.technical_priority }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label>User Type</label>
-                                            <select class="form-control select2" style="width: 100%;" id="id_us_type"
-                                                    name="us_type" disabled>
-
-                                                <option value="{{ user_story.us_type.id }}"
-                                                        selected>{{ user_story.us_type.name }}
-                                                    | {{ user_story.us_type.prefix }}</option>
-
-                                            </select>
+                                            <label for="id_us_type">User Type</label>
+                                            <input type="text" ondrop="return false;" onpaste="return false;"
+                                                   name="us_type" class="form-control"
+                                                   id="id_us_type"
+                                                   value="{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}"
+                                                   disabled>
                                         </div>
+                                        {% if user_story.cancellation_reason != None %}
+                                            <!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label for="id_cancellation_reason">Motivo de la cancelación</label>
+                                                <input type="text" ondrop="return false;" onpaste="return false;"
+                                                       name="cancellation_reason" class="form-control"
+                                                       id="id_cancellation_reason"
+                                                       value="{{ user_story.cancellation_reason }}"
+                                                       disabled>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -100,18 +118,10 @@
                             </div>
                             <!-- /.card -->
                             <!-- /.card-body -->
-                            {% if type_us == None %}
-                                <div class="card-footer">
-                                    <p>Debe crear al menos un Type US para poder actualizar un US</p>
-                                    <button type="submit" class="btn btn-primary" disabled>Guardar Cambios</button>
-                                </div>
-                            {% else %}
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                    <a href=" {% url 'user_story.backlog' id_project %} "
-                                       class="btn btn-secondary mx-3">Cancelar</a>
-                                </div>
-                            {% endif %}
+                            <div class="card-footer">
+                                <a href=" {% url 'user_story.backlog' id_project %} "
+                                   class="btn btn-secondary mx-3">Atrás</a>
+                            </div>
                         </form>
                     </div>
                 </div>

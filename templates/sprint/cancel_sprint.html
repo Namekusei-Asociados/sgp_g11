@@ -20,12 +20,11 @@
         <div class="card card-primary m-2">
 
             <div class="card-header">
-                <h3 class="card-title"> Cancelar User Story "{{ us.title }}" </h3>
+                <h3 class="card-title"> Cancelar Sprint "{{ us.title }}" </h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="cancelProjectForm" action="{% url 'user_story.validate_cancel_user_story' id_project %}"
-                  method="post">
+            <form id="cancelProjectForm" action="{% url 'user_story.validate_cancel_user_story' id_project %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" id="id_us" name="id_us" value="{{ us.id }}">
                 <div class="card-body">
@@ -39,10 +38,9 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
+
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    <a href=" {% url 'user_story.backlog' id_project %} "
-                       class="btn btn-secondary mx-3">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div>

@@ -11,4 +11,5 @@ urlpatterns = [
     path('validate_edit_user_story/', views.validate_edit_user_story, name='user_story.validate_edit_user_story'),
     path('cancel_user_story/<int:id_user_story>', views.cancel_user_story, name='user_story.cancel_user_story'),
     path('validate_cancel_user_story/', views.validate_cancel_user_story, name='user_story.validate_cancel_user_story'),
+    path('details_user_story/<int:id_user_story>', views.details_user_story, name='user_story.details_user_story'),
 ]
