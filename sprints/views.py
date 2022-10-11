@@ -147,3 +147,13 @@ def validate_cancel_sprint(request, id_project):
     sprint.save()
 
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
+
+
+def sprint(request, id_project, id_sprint):
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint
+    }
+
+    return render(request, 'sprint/base/app.html', context)
