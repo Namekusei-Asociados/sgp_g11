@@ -37,11 +37,9 @@
                                 </a>
                             {% endif %}
                             <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <div class="input-group-append">
-
-                                    </div>
-                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -64,7 +62,8 @@
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>{{ user_story.final_priority }}</td>
                                         <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-primary btn-sm" href="{% url 'user_story.details_user_story' id_project user_story.id %}">
+                                            <a class="btn btn-primary btn-sm"
+                                               href="{% url 'user_story.details_user_story' id_project user_story.id %}">
                                                 <i class="fas fa-folder">
                                                 </i>
                                                 Ver

@@ -20,17 +20,17 @@
         <div class="card card-primary m-2">
 
             <div class="card-header">
-                <h3 class="card-title"> Cancelar Sprint "{{ us.title }}" </h3>
+                <h3 class="card-title"> Cancelar Sprint "{{ sprint.sprint_name }}" </h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="cancelProjectForm" action="{% url 'user_story.validate_cancel_user_story' id_project %}" method="post">
+            <form id="cancelProjectForm" action="{% url 'sprints.validate_cancel_sprint' id_project %}" method="post">
                 {% csrf_token %}
-                <input type="hidden" id="id_us" name="id_us" value="{{ us.id }}">
+                <input type="hidden" id="id_sprint" name="id_sprint" value="{{ sprint.id }}">
                 <div class="card-body">
                     <div class="form-group">
                         <p></p>
-                        <label class="required">Ingrese el motivo de cancelación del User Story</label>
+                        <label class="required">Ingrese el motivo de cancelación del Sprint</label>
                         <textarea class="form-control" name="cancellation_reason" id="cancellation_reason" cols="30"
                                   rows="3"
                                   maxlength="500"
@@ -38,9 +38,10 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href=" {% url 'sprints.index' id_project %} "
+                       class="btn btn-secondary mx-3">Cancelar</a>
                 </div>
             </form>
         </div>

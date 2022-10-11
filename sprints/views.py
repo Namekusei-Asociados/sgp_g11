@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+import sprints.models
 from projects.models import ProjectMember
 from user_story.models import UserStory
 from .models import Sprint
@@ -45,12 +46,8 @@ def create_sprint(request, id_project):
 
     :return: documento HTML
     """
-    user_stories = UserStory.objects.filter(project_id=id_project, sprint_id=None)
-    projectMembers = ProjectMember.objects.filter(project_id=id_project)
 
     context = {
-        'projectMembers': projectMembers,
-        'user_stories': user_stories,
         'id_project': id_project
     }
 
@@ -67,15 +64,16 @@ def validate_create_sprint(request, id_project):
     :return: template para crear un nuevo sprint
     """
     sprint_name = request.POST['sprint_name']
+    description = request.POST['description']
     duration = request.POST['duration']
 
-    Sprint.objects.create(sprint_name=sprint_name, duration=duration,
+    Sprint.objects.create(sprint_name=sprint_name, duration=duration, description=description,
                           number=numbersSprint(id_project), project_id=id_project)
 
     message = 'El sprint "' + sprint_name + '" fue creada con éxito'
     messages.success(request, message)
 
-    return redirect(reverse('sprints.create_sprint', kwargs={'id_project': id_project}), request)
+    return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
 def daterange(start_date, end_date):
@@ -101,17 +99,32 @@ def numbersSprint(id_project):
     return Sprint.objects.filter(project_id=id_project).count() + 1
 
 
-def edit_sprint(request):
+def edit_sprint(request, id_project, id_sprint):
     return None
 
 
-def validate_edit_sprint(request):
+def validate_edit_sprint(request, id_project):
     return None
 
 
-def cancel_sprint(request):
-    return None
+def cancel_sprint(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+
+    context = {
+        'id_project': id_project,
+        'sprint': sprint
+    }
+
+    return render(request, 'sprint/cancel_sprint.html', context)
 
 
-def validate_cancel_sprint(request):
-    return None
+def validate_cancel_sprint(request, id_project):
+    id_sprint = request.POST['id_sprint']
+    cancellation_reason = request.POST['cancellation_reason']
+
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.status = 'Cancelado'
+    sprint.cancellation_reason = cancellation_reason
+    sprint.save()
+
+    return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)

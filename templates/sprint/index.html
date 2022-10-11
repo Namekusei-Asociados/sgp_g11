@@ -29,56 +29,40 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <button class="btn btn-primary btn-sm" {% if existsPlanning %} disabled {% endif %} type="button" onclick="window.location.href = {% url 'sprints.create_sprint' id_project %} ">
-                        <i class="fas fa-plus"></i>
-                        Crear
-                    </button>
+                    <a href="{% url 'sprints.create_sprint' id_project %}">
+                        <button class="btn btn-primary btn-sm" {% if existsPlanning %} disabled {% endif %}>
+                            <i class="fas fa-plus"></i>
+                            Crear
+                        </button>
+                    </a>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>
                 </div>
-                <div class="card-body p-0">
-                    <table class="table table-striped projects">
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Nombre
-                            </th>
-                            <th>
-                                Miembros
-                            </th>
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-                                Duración
-                            </th>
-                            <th>
-                            </th>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Miembros</th>
+                            <th>Estado</th>
+                            <th>Duración</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for sprint in sprints %}
                             <tr>
+                                <td>{{ sprint.number }}</td>
                                 <td>
-                                    {{ sprint.number }}
-                                </td>
-
-                                <td>
-                                    <a>
-                                        {{ sprint.sprint_name }}
-                                    </a>
+                                    <a>{{ sprint.sprint_name }}</a>
                                     <br/>
-                                    <small>
-                                        Created {{ sprint.created_at.date }}
-                                    </small>
+                                    <small>Created {{ sprint.created_at.date }}</small>
                                 </td>
-
                                 <td>
                                     <ul class="list-inline">
                                         {% for user in sprint.members.values %}
@@ -87,46 +71,47 @@
                                                      src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
                                             </li>
                                         {% endfor %}
-
                                     </ul>
                                 </td>
-
                                 <td>
                                     <span class="badge
                                     {% if sprint.status == 'Finalizado' %}
                                         badge-success
                                     {% elif sprint.status == 'Cancelado' %}
                                         badge-danger
-                                    {% elif sprint.status == 'Ejecucion' %}
+                                    {% elif sprint.status == 'En progreso' %}
                                         badge-light
                                     {% else %}
                                         badge-warning
                                     {% endif %}">{{ sprint.status.capitalize }}</span>
                                 </td>
-
-                                <td>
-                                    {{ sprint.duration }} días
-                                </td>
-
-                                <td class="project-actions d-flex justify-content-end" style="gap:10px">
+                                <td>{{ sprint.duration }} días</td>
+                                <td class="d-flex" style="gap: 5px">
                                     <a class="btn btn-primary btn-sm" href="">
                                         <i class="fas fa-folder">
                                         </i>
                                         Ver
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Editar
-                                    </a>
-                                    <form class="m-0 p-0"
-                                          action="">
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                            Cancelar
-                                        </button>
-                                    </form>
+                                    {% if sprint.status != 'Cancelado' %}
+                                        <form class="m-0 p-0" method="post"
+                                              action="{% url 'sprints.edit_sprint' id_project sprint.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-info btn-sm">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Editar
+                                            </button>
+                                        </form>
+                                        <form class="m-0 p-0"
+                                              action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                Cancelar
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
