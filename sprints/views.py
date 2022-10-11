@@ -100,11 +100,30 @@ def numbersSprint(id_project):
 
 
 def edit_sprint(request, id_project, id_sprint):
-    return None
+    sprint = Sprint.objects.get(id=id_sprint)
+
+    context = {
+        'id_project': id_project,
+        'sprint': sprint
+    }
+
+    return render(request, 'sprint/edit_sprint.html', context)
 
 
 def validate_edit_sprint(request, id_project):
-    return None
+    id_sprint = request.POST['id_sprint']
+    name = request.POST['sprint_name']
+    description = request.POST['description']
+    duration = request.POST['duration']
+
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.sprint_name = name
+    sprint.description = description
+    sprint.duration = duration
+
+    sprint.save()
+
+    return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
 def cancel_sprint(request, id_project, id_sprint):
