@@ -1,0 +1,98 @@
+{% extends 'sprint/base/app.html' %}
+{% load static %}
+{% load has_perm_project %}
+
+{% block title %}
+    | Miembros del Sprint
+{% endblock %}
+
+{% block content %}
+    {% has_perm_project user id_project 'Create projectmember' as can_create %}
+    {% has_perm_project user id_project 'Update projectmember' as can_edit %}
+    {% has_perm_project user id_project 'Delete projectmember' as can_delete %}
+    <br>
+    <section class="content">
+        {% include 'base/components/success-message.html' %}
+        <div class="container-fluid">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Miembros del Sprint</h1>
+                        </div>
+
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            {% if can_create %}
+                                <a class="btn btn-primary btn-sm" href="{% url 'sprints.members.create' id_project id_sprint %}">
+                                    <i class="fas fa-plus">
+                                    </i>
+                                    Agregar
+                                </a>
+                            {% endif %}
+                        </div>
+                        <!-- /.card-header -->
+
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th colspan="2">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for member in members %}
+                                    <tr>
+                                        <td> {{ member.user.username }}</td>
+                                        <td> {{ member.user.email }}</td>
+
+                                        <td class="d-flex" style="gap: 5px">
+
+                                            {% if can_edit %}
+                                                <a class="btn btn-info btn-sm"
+                                                   href="{% url 'sprints.members.edit' id_project id_sprint member.user.id %}">
+                                                    <i class="fas fa-pencil-alt">
+                                                    </i>
+                                                    Editar
+                                                </a>
+                                            {% endif %}
+
+                                            {% if can_delete%}
+                                                <form action="{% url 'sprints.members.delete' id_project id_sprint member.user.id %}"
+                                                      method="post">
+                                                    {% csrf_token %}
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash">
+                                                        </i>
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </section>
+
+{% endblock %}

@@ -3,10 +3,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-import sprints.models
-from projects.models import ProjectMember
-from user_story.models import UserStory
-from .models import Sprint
+from projects.models import Project
+from .models import Sprint, SprintMember
 
 
 # Create your views here.
@@ -150,10 +148,67 @@ def validate_cancel_sprint(request, id_project):
 
 
 def sprint(request, id_project, id_sprint):
-
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint
     }
 
     return render(request, 'sprint/base/app.html', context)
+
+
+def members(request, id_project, id_sprint):
+    members = SprintMember.objects.filter(sprint_id=id_sprint)
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'members': members
+    }
+
+    return render(request, 'sprint/members/index.html', context)
+
+
+def create_member(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    project = Project.objects.get(id=id_project)
+
+    current_members = sprint.members.all()
+    all_users_this_project = project.members.all()
+
+    users_sprint = list(set(all_users_this_project) - set(current_members))
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'users_sprint': users_sprint
+    }
+
+    return render(request, 'sprint/members/create.html', context)
+
+
+def store_member(request, id_project, id_sprint):
+    user_id = request.POST['user_id']
+    workload = request.POST['workload']
+
+    member = SprintMember.objects.create(sprint_id=id_sprint, user_id=user_id, workload=workload)
+
+    messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint
+    }
+
+    return redirect(reverse('sprints.members.create', context), request)
+
+
+def edit_member(request, id_project, id_sprint, member_id):
+    return None
+
+
+def update_member(request, id_project, id_sprint, member_id):
+    return None
+
+
+def delete_member(request, id_project, id_sprint, member_id):
+    return None
