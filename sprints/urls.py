@@ -17,7 +17,7 @@ urlpatterns = [
     path('<int:id_sprint>/members', views.members, name='sprints.members.index'),
     path('<int:id_sprint>/members/create', views.create_member, name='sprints.members.create'),
     path('<int:id_sprint>/members/edit/<int:member_id>', views.edit_member, name='sprints.members.edit'),
-    path('<int:id_sprint>/members/update/<int:member_id>', views.update_member, name='sprints.members.update'),
+    path('<int:id_sprint>/members/update', views.update_member, name='sprints.members.update'),
     path('<int:id_sprint>/members/store', views.store_member, name='sprints.members.store'),
-    path('<int:id_sprint>/members/destroy/<int:user_id>', views.delete_member, name='sprints.members.delete'),
+    path('<int:id_sprint>/members/destroy/<int:member_id>', views.delete_member, name='sprints.members.delete'),
 ]

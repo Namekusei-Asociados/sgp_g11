@@ -61,7 +61,7 @@
 
                                             {% if can_edit %}
                                                 <a class="btn btn-info btn-sm"
-                                                   href="{% url 'sprints.members.edit' id_project id_sprint member.user.id %}">
+                                                   href="{% url 'sprints.members.edit' id_project id_sprint member.id %}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                     Editar
@@ -69,7 +69,7 @@
                                             {% endif %}
 
                                             {% if can_delete%}
-                                                <form action="{% url 'sprints.members.delete' id_project id_sprint member.user.id %}"
+                                                <form action="{% url 'sprints.members.delete' id_project id_sprint member.id %}"
                                                       method="post">
                                                     {% csrf_token %}
                                                     <button class="btn btn-danger btn-sm">

@@ -194,21 +194,40 @@ def store_member(request, id_project, id_sprint):
 
     messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
 
-    context = {
-        'id_project': id_project,
-        'id_sprint': id_sprint
-    }
-
-    return redirect(reverse('sprints.members.create', context), request)
+    return redirect(reverse('sprints.members.create', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+                    request)
 
 
 def edit_member(request, id_project, id_sprint, member_id):
-    return None
+    member = SprintMember.objects.get(id=member_id)
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'member': member
+    }
+
+    return render(request, 'sprint/members/edit.html', context)
 
 
-def update_member(request, id_project, id_sprint, member_id):
-    return None
+def update_member(request, id_project, id_sprint):
+    member_id = request.POST['member_id']
+    workload = request.POST['workload']
+
+    member = SprintMember.objects.get(id=member_id)
+    member.workload = workload
+
+    member.save()
+
+    return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+                    request)
 
 
 def delete_member(request, id_project, id_sprint, member_id):
-    return None
+    sprint = Sprint.objects.get(id=id_sprint)
+    member = SprintMember.objects.get(id=member_id)
+
+    sprint.members.remove(member.user)
+
+    return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+                    request)
