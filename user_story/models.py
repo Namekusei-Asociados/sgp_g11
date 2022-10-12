@@ -1,7 +1,7 @@
 from django.db import models
 
-from projects.models import Project, ProjectMember
-from sprints.models import Sprint
+from projects.models import Project
+from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
 
 
@@ -20,7 +20,7 @@ class UserStory(models.Model):
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
-    assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, null=True)
+    assigned_to = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
     cancellation_reason = models.TextField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

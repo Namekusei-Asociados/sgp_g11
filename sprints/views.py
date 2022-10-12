@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from projects.models import Project
+from user_story.models import UserStory
 from .models import Sprint, SprintMember
 
 
@@ -168,7 +169,7 @@ def members(request, id_project, id_sprint):
     return render(request, 'sprint/members/index.html', context)
 
 
-def create_member(request, id_project, id_sprint):
+def add_member(request, id_project, id_sprint):
     sprint = Sprint.objects.get(id=id_sprint)
     project = Project.objects.get(id=id_project)
 
@@ -194,7 +195,7 @@ def store_member(request, id_project, id_sprint):
 
     messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
 
-    return redirect(reverse('sprints.members.create', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+    return redirect(reverse('sprints.members.add', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
 
 
@@ -231,3 +232,58 @@ def delete_member(request, id_project, id_sprint, member_id):
 
     return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
+
+
+def sprint_backlog(request, id_project, id_sprint):
+    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'sprint_backlog': sprint_backlog
+    }
+    return render(request, 'sprint/sprint_backlog/index.html', context)
+
+
+def add_sprint_backlog(request, id_project, id_sprint):
+    user_stories = get_user_stories(id_project)
+    members = get_sprint_member(id_sprint)
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'user_stories': user_stories,
+        'members': members
+    }
+    return render(request, 'sprint/sprint_backlog/create.html', context)
+
+
+def store_sprint_backlog(request, id_project, id_sprint):
+    id_user_story = request.POST['id_user_story']
+    id_member = request.POST['id_member']
+
+    user_story = UserStory.objects.get(id=id_user_story)
+    member = SprintMember.objects.get(id=id_member)
+
+    user_story.assigned_to = member
+    user_story.sprint_id = id_sprint
+    user_story.save()
+
+    user_stories = get_user_stories(id_project)
+    members = get_sprint_member(id_sprint)
+    kwargs = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'user_stories': user_stories,
+        'members': members
+    }
+
+    return redirect(reverse('sprints.sprint_backlog.add', kwargs=kwargs), request)
+
+
+def get_user_stories(id_project):
+    return UserStory.objects.filter(project_id=id_project, assigned_to=None)
+
+
+def get_sprint_member(id_sprint):
+    return SprintMember.objects.filter(sprint_id=id_sprint)

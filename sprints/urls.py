@@ -15,9 +15,14 @@ urlpatterns = [
 
     # Members
     path('<int:id_sprint>/members', views.members, name='sprints.members.index'),
-    path('<int:id_sprint>/members/create', views.create_member, name='sprints.members.create'),
+    path('<int:id_sprint>/members/add', views.add_member, name='sprints.members.add'),
     path('<int:id_sprint>/members/edit/<int:member_id>', views.edit_member, name='sprints.members.edit'),
     path('<int:id_sprint>/members/update', views.update_member, name='sprints.members.update'),
     path('<int:id_sprint>/members/store', views.store_member, name='sprints.members.store'),
     path('<int:id_sprint>/members/destroy/<int:member_id>', views.delete_member, name='sprints.members.delete'),
+
+    # Sprint backlog
+    path('<int:id_sprint>/sprint_bakclog', views.sprint_backlog, name='sprints.sprint_backlog.index'),
+    path('<int:id_sprint>/sprint_bakclog/add', views.add_sprint_backlog, name='sprints.sprint_backlog.add'),
+    path('<int:id_sprint>/sprint_bakclog/store', views.store_sprint_backlog, name='sprints.sprint_backlog.store'),
 ]
