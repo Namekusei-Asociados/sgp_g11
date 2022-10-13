@@ -71,7 +71,7 @@
                                             | {{ user_story.assigned_to.user.email }}</td>
                                         <td class="d-flex" style="gap: 5px">
                                             <a class="btn btn-primary btn-sm"
-                                               href="{% url 'user_story.details_user_story' id_project user_story.id %}">
+                                               href="{% url 'sprints.sprint_backlog.details' id_project id_sprint user_story.id %}">
                                                 <i class="fas fa-folder">
                                                 </i>
                                                 Ver
@@ -90,12 +90,12 @@
                                                     </form>
                                                 {% endif %}
                                                 <form id="cancel_user_story" class="m-0 p-0" method="post"
-                                                      action="{% url 'user_story.cancel_user_story' id_project user_story.id %}">
+                                                      action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash">
                                                         </i>
-                                                        Cancelar
+                                                        Delete
                                                     </button>
                                                 </form>
                                             {% endif %}

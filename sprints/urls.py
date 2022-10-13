@@ -25,4 +25,12 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_bakclog', views.sprint_backlog, name='sprints.sprint_backlog.index'),
     path('<int:id_sprint>/sprint_bakclog/add', views.add_sprint_backlog, name='sprints.sprint_backlog.add'),
     path('<int:id_sprint>/sprint_bakclog/store', views.store_sprint_backlog, name='sprints.sprint_backlog.store'),
+    path('<int:id_sprint>/sprint_backlog/details/<int:id_user_story>', views.details_sprint_backlog,
+         name='sprints.sprint_backlog.details'),
+    path('<int:id_sprint>/sprint_backlog/edit/<int:id_user_story>', views.edit_sprint_backlog,
+         name='sprints.sprint_backlog.edit'),
+    path('<int:id_sprint>/sprint_bakclog/update', views.update_sprint_backlog, name='sprints.sprint_backlog.update'),
+    path('<int:id_sprint>/sprint_backlog/destroy/<int:id_user_story>', views.delete_sprint_backlog,
+         name='sprints.sprint_backlog.delete'),
+
 ]

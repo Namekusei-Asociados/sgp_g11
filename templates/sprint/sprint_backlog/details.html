@@ -1,9 +1,9 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'sprint/base/app.html' %}
 
 {% load static %}
 
 {% block title %}
-    | Create User Story
+    | Información del User Story
 {% endblock %}
 
 {% block content %}
@@ -117,7 +117,7 @@
                             <!-- /.card -->
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <a href=" {% url 'user_story.backlog' id_project %} "
+                                <a href=" {% url 'sprints.sprint_backlog.index' id_project id_sprint %} "
                                    class="btn btn-secondary mx-3">Atrás</a>
                             </div>
                         </form>
