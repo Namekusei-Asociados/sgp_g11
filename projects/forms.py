@@ -3,6 +3,7 @@ from django import forms
 from projects.models import Project, RoleProject
 from sgp import widgets
 
+
 class ImportRole(forms.Form):
     """
     Implementa un formulario que permite importar roles definidos de un proyecto a otro
@@ -11,7 +12,14 @@ class ImportRole(forms.Form):
     def __init__(self, id_project, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.id_project = id_project
-        self.fields['project'] = forms.ModelChoiceField(
-            queryset=Project.objects.exclude(id=id_project),
-            empty_label='Seleccione un proyecto',
-            label='Proyecto',widget=widgets.SelectInput())
+        projects = Project.objects.exclude(id=self.id_project)
+        # excluimos los roles que ya poseemos con el mismo nombre
+        current_roles = RoleProject.objects.get_project_roles(id_project=id_project)
+        current_roles_names = [role.role_name for role in current_roles]
+
+        roles = RoleProject.objects.exclude(role_name__in=current_roles_names)
+
+        self.fields['roles'] = forms.ModelMultipleChoiceField(
+            queryset=roles,
+            label='Roles', widget=forms.CheckboxSelectMultiple)
+

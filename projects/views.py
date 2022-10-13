@@ -213,7 +213,8 @@ def edit_member(request, id_project, member_id):
     project = Project.objects.get(id=id_project)
     member = User.objects.get(id=member_id)
 
-    current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project)
+    current_roles = RoleProject.objects.get_member_roles(id_user=member_id, id_project=id_project).exclude(
+        role_name=UProjectDefaultRoles.SCRUM_MASTER)
     # mostrar el rol de Scrum Master solo si se posee
 
     roles = project.roleproject_set.all().exclude(role_name=UProjectDefaultRoles.SCRUM_MASTER)
@@ -402,18 +403,26 @@ def delete_role(request, id_project, id):
 
 
 def import_role(request, id_project):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = ImportRole(request.POST,id_project)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/home/')
+    if request.method == "POST":
+        roles_project = request.POST.getlist("roles")
+        form = ImportRole(id_project,request.POST)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = ImportRole(id_project)
-    return render(request, 'roles/import_role.html', {'form': form, 'id_project': id_project})
+        if form.is_valid():
+            for role in roles_project:
+                rol = RoleProject.objects.get(id=role)
+                new_role = RoleProject(
+                    role_name=rol.role_name,
+                    description=rol.description,
+                    project_id=id_project,
+                )
+                perms = RoleProject.objects.list_role_permission(id_role=role)
+                new_role.save()
+                # asignamos los permisos al rol
+                RoleProject.objects.attach_permissions(id_role=new_role.id, permissions_list=perms)
+            messages.success(request, f'La importación fue realizada exitosamente')
+            return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
+
+    form = ImportRole(id_project=id_project)
+    context = {"form": form, "id_project": id_project}
+
+    return render(request, "roles/import_role.html", context)
