@@ -118,13 +118,11 @@ def validate_edit_user_story(request, id_project):
     """
     title = request.POST['title']
     description = request.POST['description']
-    estimation_time = int(request.POST['estimation_time'])
 
     user_story_id = int(request.POST.get('id_user_story'))
     user_story = UserStory.objects.get(id=user_story_id)
     user_story.title = title
     user_story.description = description
-    user_story.estimation_time = estimation_time
     user_story.save()
 
     message = 'La historia de usuario "' + user_story.title + '" fue actualizada con éxito'

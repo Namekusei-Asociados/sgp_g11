@@ -66,9 +66,7 @@
                                         <td>{{ user_story.business_value }}</td>
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>{{ user_story.final_priority }}</td>
-                                        <td>{{ user_story.assigned_to.user.username }}
-                                            | {{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }}
-                                            | {{ user_story.assigned_to.user.email }}</td>
+                                        <td>{{ user_story.assigned_to.user.email }}</td>
                                         <td class="d-flex" style="gap: 5px">
                                             <a class="btn btn-primary btn-sm"
                                                href="{% url 'sprints.sprint_backlog.details' id_project id_sprint user_story.id %}">
@@ -76,29 +74,27 @@
                                                 </i>
                                                 Ver
                                             </a>
-                                            {% if user_story.current_status != 'canceled' %}
-                                                {% has_perm_project user id_project 'Update user_story' as ban %}
-                                                {% if ban %}
-                                                    <form id="edit_user_story" class="m-0 p-0" method="post"
-                                                          action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-info btn-sm">
-                                                            <i class="fas fa-pencil-alt">
-                                                            </i>
-                                                            Editar
-                                                        </button>
-                                                    </form>
-                                                {% endif %}
-                                                <form id="cancel_user_story" class="m-0 p-0" method="post"
-                                                      action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
+                                            {% has_perm_project user id_project 'Update user_story' as ban %}
+                                            {% if ban %}
+                                                <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                      action="{% url 'sprints.sprint_backlog.edit' id_project id_sprint user_story.id %}">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash">
+                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                        <i class="fas fa-pencil-alt">
                                                         </i>
-                                                        Delete
+                                                        Editar
                                                     </button>
                                                 </form>
                                             {% endif %}
+                                            <form id="cancel_user_story" class="m-0 p-0" method="post"
+                                                  action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 {% endfor %}

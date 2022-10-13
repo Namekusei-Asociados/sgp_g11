@@ -278,9 +278,7 @@ def store_sprint_backlog(request, id_project, id_sprint):
 
     kwargs = {
         'id_project': id_project,
-        'id_sprint': id_sprint,
-        'user_stories': user_stories,
-        'members': members
+        'id_sprint': id_sprint
     }
 
     return redirect(reverse('sprints.sprint_backlog.add', kwargs=kwargs), request)
@@ -306,12 +304,34 @@ def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return render(request, 'sprint/sprint_backlog/details.html', context)
 
 
-def edit_sprint_backlog(request):
-    return None
+def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
+    user_story = UserStory.objects.get(id=id_user_story)
+    members = get_sprint_member(id_sprint)
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'user_story': user_story,
+        'members': members
+    }
+
+    return render(request, 'sprint/sprint_backlog/edit.html', context)
 
 
-def update_sprint_backlog(request):
-    return None
+def update_sprint_backlog(request, id_project, id_sprint):
+    id_user_story = request.POST['id_user_story']
+    id_member = request.POST['id_member']
+
+    user_story = UserStory.objects.get(id=id_user_story)
+    user_story.assigned_to_id = id_member
+    user_story.save()
+
+    kwargs = {
+        'id_project': id_project,
+        'id_sprint': id_sprint
+    }
+
+    return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
 def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
@@ -321,12 +341,9 @@ def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
     user_story.sprint = None
     user_story.save()
 
-    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
-
     kwargs = {
         'id_project': id_project,
-        'id_sprint': id_sprint,
-        'sprint_backlog': sprint_backlog
+        'id_sprint': id_sprint
     }
 
     return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)

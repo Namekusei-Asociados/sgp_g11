@@ -24,32 +24,29 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="createProjectForm" action="{% url 'sprints.sprint_backlog.store' id_project id_sprint %}"
+            <form id="createProjectForm" action="{% url 'sprints.sprint_backlog.update' id_project id_sprint %}"
                   method="post">
                 {% csrf_token %}
+
+                <input type="hidden" id="id_user_story" name="id_user_story" value="{{ user_story.id }}">
 
                 <div class="card-body">
                     <!-- /.form-group -->
                     <div class="form-group">
-                        <label for="id_user_story" class="required">User Story</label>
-                        <select class="form-control" name="id_user_story" id="id_user_story" required>
-                            <option value="">Seleccione un User Story</option>
-                            {% for user_story in user_stories %}
-                                <option value="{{ user_story.id }}">
-                                    {{ user_story.title }} | {{ user_story.us_type.prefix }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_user_story_title" class="required">User Story</label>
+                        <input type="text" name="id_user_story_title" class="form-control" id="id_user_story_title"
+                               value="{{ user_story.title }} | {{ user_story.us_type.name }}" disabled>
                     </div>
 
                     <!-- /.form-group -->
                     <div class="form-group">
                         <label for="id_member" class="required">Asignado a </label>
                         <select class="form-control" name="id_member" id="id_member" required>
-                            <option value="">Seleccione a quien se le asigna el US</option>
+                            <option>Seleccione a quien se le asigna el US</option>
                             {% for member in members %}
-                                <option value="{{ member.id }}">
-                                    {{ member.user.username }} | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}
+                                <option value="{{ member.id }}" {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
+                                    {{ member.user.username }}
+                                    | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}
                                 </option>
                             {% endfor %}
                         </select>
@@ -57,7 +54,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     <a href=" {% url 'sprints.sprint_backlog.index' id_project id_sprint %} "
                        class="btn btn-secondary mx-3">Cancelar</a>
                 </div>
