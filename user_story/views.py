@@ -135,6 +135,15 @@ def validate_edit_user_story(request, id_project):
 
 @permission_proj_required(UPermissionsProject.CANCEL_US)
 def cancel_user_story(request, id_project, id_user_story):
+    """
+    Devuelve el template solicitando el motivo de la cancelación del US
+
+    :param request
+    :param id_project: id del proyecto al que pertenece el US a ser cancelado
+    :param id_user_story: id del US a ser cancelado
+
+    :return: template para ingresar el motivo de la cancelación del US
+    """
     us = UserStory.objects.get(id=id_user_story)
 
     context = {
@@ -146,6 +155,15 @@ def cancel_user_story(request, id_project, id_user_story):
 
 
 def validate_cancel_user_story(request, id_project):
+    """
+    Guarda el motivo de la cancelación de un US y realiza la
+    actualización de su estado a "canceled"
+
+    :param request
+    :param id_project: id del proyecto al que pertenece el US a ser cancelado
+
+    :return: template del backlog
+    """
     id_us = request.POST['id_us']
     cancellation_reason = request.POST['cancellation_reason']
 
@@ -161,12 +179,12 @@ def validate_cancel_user_story(request, id_project):
 @permission_proj_required(UPermissionsProject.READ_US)
 def backlog(request, id_project):
     """
-    Retorna el template del backlog de un proyecto
+    Retorna el documento HTML del backlog de un proyecto
 
     :param request:
     :param id_project: id del proyecto del que se quiere su backlog
 
-    :return: template del backlog de un proyecto
+    :return: documento HTML del backlog de un proyecto
     """
     user_stories = UserStory.objects.filter(project_id=id_project)
     context = {
@@ -177,6 +195,16 @@ def backlog(request, id_project):
 
 
 def details_user_story(request, id_project, id_user_story):
+    """
+    Devuelve un documento HTML donde se pueden visualizar todos los
+    detalles de una historia de usuario
+
+    :param request
+    :param id_project: id del proyecto al que pertenece la historia de usuario
+    :param id_user_story: id de la historia de usuario de la cual se quiere visualizar sus detalles
+
+    :return: Documento HTML con los detalles de la historia de usuario
+    """
     user_story = UserStory.objects.get(id=id_user_story)
 
     context = {
