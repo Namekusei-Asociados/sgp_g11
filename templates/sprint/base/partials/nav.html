@@ -5,21 +5,21 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
             <a href="{% url 'sprints.members.index' id_project id_sprint %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-users"></i>
                 <p>Miembros</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="{% url 'sprints.sprint_backlog.index' id_project id_sprint %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-table"></i>
                 <p>Sprint Backlog</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="{% url 'sprints.index' id_project %}" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-arrow-circle-left"></i>
                 <p>Volver</p>
             </a>
         </li>

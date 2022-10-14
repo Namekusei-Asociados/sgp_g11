@@ -29,9 +29,9 @@ def index(request):
     # get all projects related to the current user
     user = request.user
     if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('id')
     else:
-        projects = user.project_set.all()
+        projects = user.project_set.all().order_by('id')
 
     return render(request, 'projects/index.html', {"projects": projects})
 
@@ -172,7 +172,7 @@ def members(request, id_project):
 
     :return: documento html
     """
-    members = Project.objects.get_project_members(id_project)
+    members = Project.objects.get_project_members(id_project).order_by('id')
     print(members)
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 

@@ -29,7 +29,7 @@ def index(request):
        :return: documento html
     """
     user = request.user
-    users = User.objects.all()
+    users = User.objects.all().order_by('id')
     users = filter(lambda x: not x.is_staff and user.username != x.username, users)
     return render(request, 'accounts/user.html', {'users': users})
 

@@ -18,7 +18,7 @@ from utilities.UProject import UProject
 def index(request, id_project):
     # get all projects related to the current user
     project = Project.objects.get(id=id_project)
-    types_us = project.typeus_set.all()
+    types_us = project.typeus_set.all().order_by('id')
     return render(request, 'type_us/index.html', {"types_us": types_us, "id_project": id_project})
 
 

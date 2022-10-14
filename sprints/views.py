@@ -20,7 +20,7 @@ def index(request, id_project):
 
     :return: documento HTML
     """
-    sprints = Sprint.objects.filter(project_id=id_project)
+    sprints = Sprint.objects.filter(project_id=id_project).order_by('id')
     existsPlanning = False
 
     for sprint in sprints:

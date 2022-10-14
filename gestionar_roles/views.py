@@ -44,7 +44,7 @@ def store(request):
 @permission_sys_required(UPermissions.READ_ROLE)
 def index(request):
     # get all Roles
-    roles = RoleSystem.objects.all()
+    roles = RoleSystem.objects.all().order_by('id')
 
     return render(request, 'gestionar_roles/index.html', {"roles": roles})
 

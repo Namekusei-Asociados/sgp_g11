@@ -60,7 +60,7 @@ class RoleProjectManager(models.Manager):
 
         :param id_project: id del proyecto
         """
-        return RoleProject.objects.filter(project_id=id_project)
+        return RoleProject.objects.filter(project_id=id_project).order_by('id')
 
     def get_member_roles(self, id_user, id_project):
         """
