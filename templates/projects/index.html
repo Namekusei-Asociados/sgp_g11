@@ -126,11 +126,15 @@
                                 </td>
 
                                 <td class="project-actions d-flex justify-content-end" style="gap:10px">
-                                    <a class="btn btn-primary btn-sm" href="{% url 'projects.dashboard' project.id %}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Ver
-                                    </a>
+                                    {% is_member user project.id as ban %}
+                                    {% if ban %}
+                                        <a class="btn btn-primary btn-sm"
+                                           href="{% url 'projects.dashboard' project.id %}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Ver
+                                        </a>
+                                    {% endif %}
                                     {% has_perm_project user project.id 'Update project' as ban %}
                                     {% if ban and project.status != 'canceled' %}
                                         <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
