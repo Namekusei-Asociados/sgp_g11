@@ -14,12 +14,7 @@ class ImportRole(forms.Form):
         self.id_project = id_project
         projects = Project.objects.exclude(id=self.id_project)
         # excluimos los roles que ya poseemos con el mismo nombre
-        current_roles = RoleProject.objects.get_project_roles(id_project=id_project)
-        current_roles_names = [role.role_name for role in current_roles]
 
-        roles = RoleProject.objects.exclude(role_name__in=current_roles_names)
-
-        self.fields['roles'] = forms.ModelMultipleChoiceField(
-            queryset=roles,
-            label='Roles', widget=forms.CheckboxSelectMultiple)
-
+        self.fields['projects'] = forms.ModelChoiceField(
+            queryset=projects,
+            label='Proyectos', widget=widgets.SelectInput())

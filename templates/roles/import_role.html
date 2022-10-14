@@ -30,6 +30,18 @@
                     {% csrf_token %}
 
                     {{ form }}
+
+                    <div class="form-group">
+                        <label>Roles</label>
+                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion" name="roles[]"
+                                data-dropdown-css-class="select2-purple"
+                                style="width: 100%;" id="id_roles" required>
+                            <option value="" disabled selected>---------</option>
+                            {% for role in roles %}
+                                <option value="{{ role.project_id }}">{{ role.role_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <input type="submit" class="btn btn-primary" value="Importar">
@@ -40,17 +52,21 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
     <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
     <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+
     <script>
         $(function () {
-            $("[name='projects']").on('change', function () {
+            $('.select2').select2();
+            $(document).ready(function () {
+                var $projectvar = $('#id_projects')
                 var $rolesvar = $('#id_roles');
                 var $rolesoptions = $rolesvar.find('option');
-                $rolesvar.html($rolesoptions.filter(function (id_proy) {
-                        return id_proy === $rolesoptions.project
-                    }
-                ));
+                $projectvar.on('change', function () {
+                    $rolesvar.html($rolesoptions.filter('[value="' + this.value + '"]'
+                    ));
+                }).trigger('change');
             });
         });
     </script>

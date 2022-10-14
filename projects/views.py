@@ -405,7 +405,7 @@ def delete_role(request, id_project, id):
 def import_role(request, id_project):
     if request.method == "POST":
         roles_project = request.POST.getlist("roles")
-        form = ImportRole(id_project,request.POST)
+        form = ImportRole(id_project, request.POST)
 
         if form.is_valid():
             for role in roles_project:
@@ -423,6 +423,10 @@ def import_role(request, id_project):
             return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
 
     form = ImportRole(id_project=id_project)
-    context = {"form": form, "id_project": id_project}
+    current_roles = RoleProject.objects.get_project_roles(id_project=id_project)
+    current_roles_names = [role.role_name for role in current_roles]
+
+    roles = RoleProject.objects.exclude(role_name__in=current_roles_names)
+    context = {"form": form, "id_project": id_project, "roles": roles}
 
     return render(request, "roles/import_role.html", context)
