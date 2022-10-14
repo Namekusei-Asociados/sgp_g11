@@ -109,7 +109,7 @@ def get_user_story_context(id_project):
 @permission_proj_required(UPermissionsProject.UPDATE_US)
 def validate_edit_user_story(request, id_project):
     """
-    Actualiza la historia de usuario que debe ser editada
+    Actualiza los datos de la historia de usuario que se está editando
 
     :param request:
     :param id_project: id del proyecto actual, al que pertenece la historia de usuario
@@ -136,7 +136,7 @@ def validate_edit_user_story(request, id_project):
 @permission_proj_required(UPermissionsProject.CANCEL_US)
 def cancel_user_story(request, id_project, id_user_story):
     """
-    Devuelve el template solicitando el motivo de la cancelación del US
+    Devuelve un template solicitando el motivo de la cancelación del US
 
     :param request
     :param id_project: id del proyecto al que pertenece el US a ser cancelado
@@ -160,9 +160,9 @@ def validate_cancel_user_story(request, id_project):
     actualización de su estado a "canceled"
 
     :param request
-    :param id_project: id del proyecto al que pertenece el US a ser cancelado
+    :param id_project: id del proyecto actual, al que pertenece el US a ser cancelado
 
-    :return: template del backlog
+    :return: documento HTML del backlog
     """
     id_us = request.POST['id_us']
     cancellation_reason = request.POST['cancellation_reason']

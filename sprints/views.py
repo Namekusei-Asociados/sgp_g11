@@ -15,8 +15,8 @@ def index(request, id_project):
     """
     Devuelve la lista de sprints del proyecto
 
-    :param id_project:
-    :param request:
+    :param id_project: id del proyecto actual
+    :param request
 
     :return: documento HTML
     """
@@ -40,7 +40,7 @@ def create_sprint(request, id_project):
     """
     Devuelve el template para crear un nuevo sprint
 
-    :param request:
+    :param request
     :param id_project: id del proyecto en el cual se debe crear el sprint
 
     :return: documento HTML
@@ -99,6 +99,15 @@ def numbersSprint(id_project):
 
 
 def edit_sprint(request, id_project, id_sprint):
+    """
+    Retorna el template para editar un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint a ser editado
+
+    :return: template para editar los detalles de un sprint
+    """
     sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
@@ -110,6 +119,14 @@ def edit_sprint(request, id_project, id_sprint):
 
 
 def validate_edit_sprint(request, id_project):
+    """
+    Actualiza los datos que se están editando de un sprint
+
+    :param request:
+    :param id_project: id del proyecto actual, al que pertenece el sprint que se está editando
+
+    :return: documento HTML con la lista de sprints, con el sprint editado ya actualizado
+    """
     id_sprint = request.POST['id_sprint']
     name = request.POST['sprint_name']
     description = request.POST['description']
@@ -126,6 +143,15 @@ def validate_edit_sprint(request, id_project):
 
 
 def cancel_sprint(request, id_project, id_sprint):
+    """
+    Devuelve un template solicitando el motivo de la cancelación del sprint
+
+    :param request
+    :param id_project: id del proyecto al que pertenece el sprint a ser cancelado
+    :param id_sprint: id del sprint a ser cancelado
+
+    :return: template para ingresar el motivo de la cancelación del sprint
+    """
     sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
@@ -137,6 +163,15 @@ def cancel_sprint(request, id_project, id_sprint):
 
 
 def validate_cancel_sprint(request, id_project):
+    """
+    Guarda el motivo de la cancelación de un sprint y realiza la
+    actualización de su estado a "Cancelado"
+
+    :param request
+    :param id_project: id del proyecto actual, al que pertenece el sprint a ser cancelado
+
+    :return: documento HTML de la lista de sprints del proyecto actual
+    """
     id_sprint = request.POST['id_sprint']
     cancellation_reason = request.POST['cancellation_reason']
 
@@ -149,6 +184,15 @@ def validate_cancel_sprint(request, id_project):
 
 
 def sprint(request, id_project, id_sprint):
+    """
+    Retorna el documento HTML con la vista de un sprint dentro de un proyecto
+
+    :param request
+    :param id_project: id del proyecto actual, al que pertenece el sprint
+    :param id_sprint: id del sprint que se quiere visualizar
+
+    :return: documento HTML con la vista del sprint
+    """
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint
@@ -158,6 +202,15 @@ def sprint(request, id_project, id_sprint):
 
 
 def members(request, id_project, id_sprint):
+    """
+    Muestra la lista de miembros de un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint actual, del que se quiere visualizar sus miembros
+
+    :return: documento HTML con la lista de miembros del sprint
+    """
     members = SprintMember.objects.filter(sprint_id=id_sprint)
 
     context = {
@@ -170,6 +223,15 @@ def members(request, id_project, id_sprint):
 
 
 def add_member(request, id_project, id_sprint):
+    """
+    Devuelve la página para añadir un miembro a un sprint
+
+    :param request:
+    :param id_project: id del proyecto actual, al que pertenece el sprint
+    :param id_sprint: id del sprint actual, al que se quiere añadir un miembro
+
+    :return: Documento HTML para añadir miembros a un sprint
+    """
     sprint = Sprint.objects.get(id=id_sprint)
     project = Project.objects.get(id=id_project)
 
@@ -188,12 +250,21 @@ def add_member(request, id_project, id_sprint):
 
 
 def store_member(request, id_project, id_sprint):
+    """
+    Agrega un miembro a un sprint, con su respectiva carga horaria diaria
+
+    :param request:
+    :param id_project: id del proyecto actual, al que pertenece el sprint
+    :param id_sprint: id del sprint actual, al que se quiere añadir un miembro
+
+    :return: documento HTML para seguir agregando miembros al sprint
+    """
     user_id = request.POST['user_id']
     workload = request.POST['workload']
 
     member = SprintMember.objects.create(sprint_id=id_sprint, user_id=user_id, workload=workload)
 
-    messages.success(request, f'El miembro {member.user.username} se agrego al proyecto con exito')
+    messages.success(request, f'El miembro "{member.user.username}" se agrego al sprint con éxito')
 
     return redirect(reverse('sprints.members.add', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
