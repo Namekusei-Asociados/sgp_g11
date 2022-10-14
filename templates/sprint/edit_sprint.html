@@ -20,25 +20,28 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Crear Nuevo Sprint</small></h3>
+                            <h3 class="card-title"><small>Editar Sprint</small></h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form id="create_sprint_form" method="post"
-                              action="{% url 'sprints.validate_create_sprint' id_project %}">
+                              action="{% url 'sprints.validate_edit_sprint' id_project %}">
                             {% csrf_token %}
                             <div class="card-body">
+                                <!-- /.form-group -->
+                                <input type="hidden" id="id_sprint" name="id_sprint" value="{{ sprint.id }}">
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="id_sprint_name">Nombre del Sprint</label>
                                     <input type="text" name="sprint_name" class="form-control" id="id_sprint_name"
-                                           placeholder="Ingresar el nombre del sprint">
+                                           placeholder="Ingresar el nombre del sprint" value="{{ sprint.sprint_name }}">
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label for="id_description">Descripción</label>
                                     <input type="text" name="description" class="form-control" id="id_description"
-                                           placeholder="Ingresar la descriptión del sprint">
+                                           placeholder="Ingresar la descriptión del sprint"
+                                           value="{{ sprint.description }}">
                                 </div>
                                 <!-- /.form-group -->
                                 <div class="form-group">
@@ -46,7 +49,7 @@
                                     <input type="number" ondrop="return false;" onpaste="return false;"
                                            onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                            name="duration" class="form-control"
-                                           id="id_duration"
+                                           id="id_duration" value="{{ sprint.duration }}"
                                            placeholder="Ingresar la duración del sprint en día hábiles">
                                 </div>
                                 <!-- /.card-body -->

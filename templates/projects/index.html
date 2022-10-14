@@ -67,41 +67,22 @@
                     <table class="table table-striped projects">
                         <thead>
                         <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Nombre del Proyecto
-                            </th>
-                            <th>
-                                Miembros
-                            </th>
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-
-                            </th>
-
+                            <th>#</th>
+                            <th>Nombre del Proyecto</th>
+                            <th>Miembros</th>
+                            <th>Estado</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for project in projects %}
                             <tr>
+                                <td>#</td>
                                 <td>
-                                    #
-                                </td>
-
-                                <td>
-                                    <a>
-                                        {{ project.name }}
-                                    </a>
+                                    <a>{{ project.name }}</a>
                                     <br/>
-                                    <small>
-                                        Created {{ project.created_at.date }}
-                                    </small>
+                                    <small>Created {{ project.created_at.date }}</small>
                                 </td>
-
                                 <td>
                                     <ul class="list-inline">
                                         {% for user in project.members.values %}
@@ -110,10 +91,8 @@
                                                      src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
                                             </li>
                                         {% endfor %}
-
                                     </ul>
                                 </td>
-
                                 <td>
                                     <span class="badge
                                     {% if project.status == 'success' %}
@@ -124,7 +103,6 @@
                                         badge-danger
                                     {% endif %}">{{ project.status.capitalize }}</span>
                                 </td>
-
                                 <td class="project-actions d-flex justify-content-end" style="gap:10px">
                                     {% is_member user project.id as ban %}
                                     {% if ban %}
@@ -154,7 +132,6 @@
                                             </button>
                                         </form>
                                     {% endif %}
-
                                 </td>
                             </tr>
                         {% endfor %}
