@@ -402,6 +402,7 @@ def delete_role(request, id_project, id):
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
 
 
+@permission_proj_required('Import role')
 def import_role(request, id_project):
     if request.method == "POST":
         roles_project = request.POST.getlist("roles")
