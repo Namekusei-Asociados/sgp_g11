@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    | Importar Roles
+    | Importar Tipos de US
 {% endblock %}
 {% block styles %}
     {# SELECT2   #}
@@ -23,21 +23,21 @@
         <!-- Default box -->
         <div class="card card-primary m-2">
             <div class="card-header">
-                <h3 class="card-title">Importar Roles</h3>
+                <h3 class="card-title">Importar Tipos de Us</h3>
             </div>
-            <form id="importRole" action="{% url 'projects.import_role' id_project %}" method="post">
+            <form id="importRole" action="{% url 'type_us.import_type_us' id_project %}" method="post">
                 <div class="card-body">
                     {% csrf_token %}
 
                     {{ form }}
 
                     <div class="form-group">
-                        <label>Roles</label>
-                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion" name="roles"
+                        <label>Tipos</label>
+                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion" name="types"
                                 data-dropdown-css-class="select2-purple"
-                                style="width: 100%;" id="id_roles" required>
-                            {% for role in roles %}
-                                <option value="{{ role.id }}">{{ role.role_name }}</option>
+                                style="width: 100%;" id="id_types" required>
+                            {% for typeUs in typesUs %}
+                                <option value="{{ typeUs.id }}">{{ typeUs.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -60,10 +60,10 @@
             $('.select2').select2();
             $(document).ready(function () {
                 var $projectvar = $('#id_projects')
-                var $rolesvar = $('#id_roles');
-                var $rolesoptions = $rolesvar.find('option');
+                var $typesvar = $('#id_types');
+                var $typesoptions = $typesvar.find('option');
                 $projectvar.on('change', function () {
-                    $rolesvar.html($rolesoptions.filter(role =>role.project_id=this.value
+                    $typesvar.html($typesoptions.filter(type =>type.project_id=this.value
                     ));
                 }).trigger('change');
             });
