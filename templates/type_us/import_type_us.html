@@ -37,7 +37,7 @@
                                 data-dropdown-css-class="select2-purple"
                                 style="width: 100%;" id="id_types" required>
                             {% for typeUs in typesUs %}
-                                <option value="{{ typeUs.id }}">{{ typeUs.name }}</option>
+                                <option data-id-project="{{ typeUs.project_id }}" value="{{ typeUs.id }}">{{ typeUs.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -63,7 +63,7 @@
                 var $typesvar = $('#id_types');
                 var $typesoptions = $typesvar.find('option');
                 $projectvar.on('change', function () {
-                    $typesvar.html($typesoptions.filter(type =>type.project_id=this.value
+                    $typesvar.html($typesoptions.filter('[data-id-project="'+this.value+'"]'
                     ));
                 }).trigger('change');
             });

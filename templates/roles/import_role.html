@@ -33,11 +33,13 @@
 
                     <div class="form-group">
                         <label>Roles</label>
-                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion" name="roles"
+                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion"
+                                name="roles"
                                 data-dropdown-css-class="select2-purple"
                                 style="width: 100%;" id="id_roles" required>
                             {% for role in roles %}
-                                <option value="{{ role.id }}">{{ role.role_name }}</option>
+                                <option data-id-project="{{ role.project_id }}"
+                                        value="{{ role.id }}">{{ role.role_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -59,11 +61,12 @@
         $(function () {
             $('.select2').select2();
             $(document).ready(function () {
-                var $projectvar = $('#id_projects')
+
+                var $projectvar = $('#id_projects');
                 var $rolesvar = $('#id_roles');
                 var $rolesoptions = $rolesvar.find('option');
                 $projectvar.on('change', function () {
-                    $rolesvar.html($rolesoptions.filter(role =>role.project_id=this.value
+                    $rolesvar.html($rolesoptions.filter('[data-id-project="'+this.value+'"]'
                     ));
                 }).trigger('change');
             });
