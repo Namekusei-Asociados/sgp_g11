@@ -20,13 +20,13 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Crear Historia de Usuario</small></h3>
+                            <h3 class="card-title">Historia de Usuario</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form id="create_user_story_form" method="post"
-                              action="{% url 'user_story.validate_create_user_story' id_project %}">
-                            {% csrf_token %}
+                        <form id="create_user_story_form">
+                            <input type="hidden" value="{{ user_story.id }}"
+                                   name="id_user_story">
                             <!-- TEST -->
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -36,7 +36,8 @@
                                         <div class="form-group">
                                             <label for="id_title">Título</label>
                                             <input type="text" name="title" class="form-control" id="id_title"
-                                                   placeholder="Enter Title" maxlength="100">
+                                                   placeholder="Enter Title" maxlength="100"
+                                                   value="{{ user_story.title }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -45,18 +46,30 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="business_value" class="form-control"
                                                    id="id_business_value"
-                                                   placeholder="Enter Business Value"
-                                                   min="1" max="10">
+                                                   value="{{ user_story.business_value }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label for="id_estimation_time">Estimación (en horas)</label>
+                                            <label for="id_estimation_time">Estimación</label>
                                             <input type="number" ondrop="return false;" onpaste="return false;"
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="estimation_time" class="form-control"
                                                    id="id_estimation_time"
-                                                   placeholder="Enter Estimation Time">
+                                                   value="{{ user_story.estimation_time }}" disabled>
                                         </div>
+                                        {% if user_story.assigned_to.user != None %}
+                                            <!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label for="id_assigned_to">Asignado a</label>
+                                                <input type="text" ondrop="return false;" onpaste="return false;"
+                                                       onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                       required
+                                                       name="assigned_to" class="form-control"
+                                                       id="id_assigned_to"
+                                                       value="{{ user_story.assigned_to.user.username }} | {{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }} | {{ user_story.assigned_to.user.email }}"
+                                                       disabled>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-md-6">
@@ -65,7 +78,7 @@
                                             <label for="id_description">Descripción</label>
                                             <input type="text" name="description" class="form-control"
                                                    id="id_description"
-                                                   placeholder="Enter Description" maxlength="100">
+                                                   value="{{ user_story.description }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
@@ -74,20 +87,28 @@
                                                    onkeypress="return event.charCode>=48 && event.charCode<=57" required
                                                    name="technical_priority" class="form-control"
                                                    id="id_technical_priority"
-                                                   placeholder="Enter Technical Priority"
-                                                   min="1" max="10">
+                                                   value="{{ user_story.technical_priority }}" disabled>
                                         </div>
                                         <!-- /.form-group -->
                                         <div class="form-group">
-                                            <label for="id_us_type">Tipo de US</label>
-                                            <select class="form-control select2" style="width: 100%;" id="id_us_type"
-                                                    name="us_type">
-                                                {% for type in type_us %}
-                                                    <option value="{{ type.id }}">{{ type.name }}
-                                                        | {{ type.prefix }}</option>
-                                                {% endfor %}
-                                            </select>
+                                            <label for="id_us_type">User Type</label>
+                                            <input type="text" ondrop="return false;" onpaste="return false;"
+                                                   name="us_type" class="form-control"
+                                                   id="id_us_type"
+                                                   value="{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}"
+                                                   disabled>
                                         </div>
+                                        {% if user_story.cancellation_reason != None %}
+                                            <!-- /.form-group -->
+                                            <div class="form-group">
+                                                <label for="id_cancellation_reason">Motivo de la cancelación</label>
+                                                <input type="text" ondrop="return false;" onpaste="return false;"
+                                                       name="cancellation_reason" class="form-control"
+                                                       id="id_cancellation_reason"
+                                                       value="{{ user_story.cancellation_reason }}"
+                                                       disabled>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -95,18 +116,10 @@
                             </div>
                             <!-- /.card -->
                             <!-- /.card-body -->
-                            {% if type_us == None %}
-                                <div class="card-footer">
-                                    <p>Debe crear al menos un Type US para poder crear un US</p>
-                                    <button type="submit" class="btn btn-primary" disabled>Crear</button>
-                                </div>
-                            {% else %}
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Crear</button>
-                                    <a href=" {% url 'user_story.backlog' id_project %} "
-                                       class="btn btn-secondary mx-3">Cancelar</a>
-                                </div>
-                            {% endif %}
+                            <div class="card-footer">
+                                <a href=" {% url 'user_story.backlog' id_project %} "
+                                   class="btn btn-secondary mx-3">Atrás</a>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -115,23 +128,4 @@
         </div>
     </section>
     <!-- /.content -->
-{% endblock %}
-
-{% block scripts %}
-    <script>
-        const id_business_value = document.querySelector('#id_business_value')
-        const id_technical_priority = document.querySelector('#id_technical_priority')
-
-        id_business_value.addEventListener('input', validate)
-
-        id_technical_priority.addEventListener('input', validate)
-
-        function validate (evt) {
-            const value = evt.target.value
-            if (value < 1 || value > 10) {
-                evt.target.value = 1
-            }
-        }
-
-    </script>
 {% endblock %}

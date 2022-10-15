@@ -13,9 +13,6 @@ from utilities.UPermissions import UPermissions
 @login_required()
 def home(request):
     user = request.user
-    if user.role.all().count() == 0:
-        role_visitor = RoleSystem.objects.get(role_name='Visitante')
-        RoleSystem.objects.assing_role_to_user(role_visitor, user)
     if user.role.filter(role_name='Visitante'):
         return render(request, 'accounts/visitor.html')
     return projects.views.index(request)
@@ -32,7 +29,7 @@ def index(request):
        :return: documento html
     """
     user = request.user
-    users = User.objects.all()
+    users = User.objects.all().order_by('id')
     users = filter(lambda x: not x.is_staff and user.username != x.username, users)
     return render(request, 'accounts/user.html', {'users': users})
 
@@ -53,7 +50,7 @@ def edit_user(request, username):
 
     :return: documento HTML con la información del usuario a ser actualizado
     """
-    roles = RoleSystem.objects.all()
+    roles = RoleSystem.objects.all().exclude(role_name='Admin')
     user = User.objects.get(username=username)
     try:
         role_system = RoleSystem.objects.get(user=user)

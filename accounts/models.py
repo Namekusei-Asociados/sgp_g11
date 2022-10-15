@@ -1,13 +1,36 @@
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-# Create your models here.
-from accounts.manager import CustomUserManager
+from django.contrib.auth.models import BaseUserManager, User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 """
     Este modulo tiene el modelo de user personalizado de nuestro sistema
     Para manejo de roles y campos de formularios
 """
+from gestionar_roles.models import RoleSystem
+
+
+class CustomUserManager(BaseUserManager):
+    """
+    Hereda BaseUserManager de Django para el manejo del modelo del User del sistema
+    """
+
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError('Users must have an email address')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        print(user)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields['role'] = 'admin'
+        extra_fields['is_active'] = True
+        return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractUser):
@@ -15,32 +38,21 @@ class User(AbstractUser):
     El User hereda el AbstractUser de DJango.
     Se personaliza atributos
     """
-    ROLE_SYS = (
-        ('user', 'user'),
-        ('admin', 'admin'),
-        ('visitor', 'visitor'),
-    )
-
-    ROLE_SYS_VALUE = {role: value for value, role in ROLE_SYS}
-    role_sys = models.CharField(max_length=7, choices=ROLE_SYS, default='visitor')
-    role_project = models.CharField(max_length=50, default='develop')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
 
-    #objects = CustomUserManager()
+    objects = CustomUserManager()
 
     def __str__(self):
         return f'''Username: {self.username}'''
 
-    def is_user(self):
-        if self.role_sys == 'user':
-            return True
-        else:
-            return False
 
-    def is_admin(self):
-        if self.role_sys == 'admin':
-            return True
-        else:
-            return False
+@receiver(post_save, sender=User)
+def assing_iniciate_rol(sender, instance, **kwargs):
+    role_admin = RoleSystem.objects.get(role_name='Admin')
+    role_visitor = RoleSystem.objects.get(role_name='Visitante')
+    if User.objects.all().count() == 1:
+        instance.role.add(role_admin)
+    elif instance.role.all().count() == 0:
+        instance.role.add(role_visitor)

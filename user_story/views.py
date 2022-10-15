@@ -1,11 +1,11 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib import messages
+
 from accounts.models import User
-from projects.models import ProjectMember
+from projects.decorators import permission_proj_required
 from type_us.models import TypeUS
 from user_story.models import UserStory
-from projects.decorators import permission_proj_required
 from utilities.UPermissionsProj import UPermissionsProject
 
 
@@ -39,16 +39,14 @@ def validate_create_user_story(request, id_project):
     description = request.POST['description']
     business_value = int(request.POST['business_value'])
     technical_priority = int(request.POST['technical_priority'])
-    # id_user = int(request.POST['assigned_to'])
+    final_priority = 0.6 * business_value + 0.4 * technical_priority
     us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
-    # project_member = ProjectMember.objects.get(user_id=id_user, project_id=id_project)
 
     UserStory.objects.create(
         title=title, description=description,
         business_value=business_value, technical_priority=technical_priority,
-        estimation_time=estimation_time,
-        # assigned_to=project_member,
+        estimation_time=estimation_time, final_priority=final_priority,
         project_id=id_project, us_type_id=us_type
     )
 
@@ -111,7 +109,7 @@ def get_user_story_context(id_project):
 @permission_proj_required(UPermissionsProject.UPDATE_US)
 def validate_edit_user_story(request, id_project):
     """
-    Actualiza la historia de usuario que debe ser editada
+    Actualiza los datos de la historia de usuario que se está editando
 
     :param request:
     :param id_project: id del proyecto actual, al que pertenece la historia de usuario
@@ -120,53 +118,99 @@ def validate_edit_user_story(request, id_project):
     """
     title = request.POST['title']
     description = request.POST['description']
-    business_value = int(request.POST['business_value'])
-    technical_priority = int(request.POST['technical_priority'])
-    # id_user = int(request.POST['assigned_to'])
-    # us_type = request.POST['us_type']
-    estimation_time = int(request.POST['estimation_time'])
-    # project_member = ProjectMember.objects.get(user_id=id_user, project_id=id_project)
 
     user_story_id = int(request.POST.get('id_user_story'))
     user_story = UserStory.objects.get(id=user_story_id)
-
     user_story.title = title
     user_story.description = description
-    user_story.business_value = business_value
-    user_story.technical_priority = technical_priority
-    # user_story.assigned_to = project_member
-    # user_story.us_type_id = us_type
-    user_story.estimation_time = estimation_time
     user_story.save()
 
     message = 'La historia de usuario "' + user_story.title + '" fue actualizada con éxito'
     messages.success(request, message)
 
-    return redirect(reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}), request)
+    return redirect(
+        reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}),
+        request)
 
 
 @permission_proj_required(UPermissionsProject.CANCEL_US)
-def cancel_user_story(request, id_project):
-    return None
+def cancel_user_story(request, id_project, id_user_story):
+    """
+    Devuelve un template solicitando el motivo de la cancelación del US
+
+    :param request
+    :param id_project: id del proyecto al que pertenece el US a ser cancelado
+    :param id_user_story: id del US a ser cancelado
+
+    :return: template para ingresar el motivo de la cancelación del US
+    """
+    us = UserStory.objects.get(id=id_user_story)
+
+    context = {
+        'id_project': id_project,
+        'us': us
+    }
+
+    return render(request, 'user_story/cancel_user_story.html', context)
 
 
-def validate_cancel_user_story(request):
-    return None
+def validate_cancel_user_story(request, id_project):
+    """
+    Guarda el motivo de la cancelación de un US y realiza la
+    actualización de su estado a "canceled"
+
+    :param request
+    :param id_project: id del proyecto actual, al que pertenece el US a ser cancelado
+
+    :return: documento HTML del backlog
+    """
+    id_us = request.POST['id_us']
+    cancellation_reason = request.POST['cancellation_reason']
+
+    us = UserStory.objects.get(id=id_us)
+    us.cancellation_reason = cancellation_reason
+    us.current_status = 'canceled'
+
+    us.save()
+
+    return redirect(reverse('user_story.backlog', kwargs={'id_project': id_project}), request)
 
 
 @permission_proj_required(UPermissionsProject.READ_US)
 def backlog(request, id_project):
     """
-    Retorna el template del backlog de un proyecto
+    Retorna el documento HTML del backlog de un proyecto
 
     :param request:
     :param id_project: id del proyecto del que se quiere su backlog
 
-    :return: template del backlog de un proyecto
+    :return: documento HTML del backlog de un proyecto
     """
-    user_stories = UserStory.objects.filter(project_id=id_project)
+    user_stories = UserStory.objects.filter(project_id=id_project).order_by('final_priority').reverse()
+
     context = {
         'id_project': id_project,
         'user_stories': user_stories
     }
     return render(request, 'user_story/backlog.html', context)
+
+
+def details_user_story(request, id_project, id_user_story):
+    """
+    Devuelve un documento HTML donde se pueden visualizar todos los
+    detalles de una historia de usuario
+
+    :param request
+    :param id_project: id del proyecto al que pertenece la historia de usuario
+    :param id_user_story: id de la historia de usuario de la cual se quiere visualizar sus detalles
+
+    :return: Documento HTML con los detalles de la historia de usuario
+    """
+    user_story = UserStory.objects.get(id=id_user_story)
+
+    context = {
+        'id_project': id_project,
+        'user_story': user_story
+    }
+
+    return render(request, 'user_story/details_user_story.html', context)

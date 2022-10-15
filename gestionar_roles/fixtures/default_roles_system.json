@@ -3,17 +3,19 @@
     "model": "gestionar_roles.RoleSystem",
     "pk": 1,
     "fields": {
-      "role_name":"Admin",
-      "description":"Posee todos los permisos a nivel sistema",
-      "perms": [1,2,3,4,5,6,7,8,9,10,11]
+      "role_name": "Admin",
+      "description": "Posee todos los permisos a nivel sistema",
+      "perms": [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+      ]
     }
   },
   {
     "model": "gestionar_roles.RoleSystem",
     "pk": 2,
     "fields": {
-      "role_name":"Usuario",
-      "description":"Puede ver sus proyectos",
+      "role_name": "Visitante",
+      "description": "Es un visitante del sistema",
       "perms": []
     }
   },
@@ -21,8 +23,8 @@
     "model": "gestionar_roles.RoleSystem",
     "pk": 3,
     "fields": {
-      "role_name":"Visitante",
-      "description":"Es un visitante del sistema",
+      "role_name": "Usuario",
+      "description": "Puede ver sus proyectos",
       "perms": []
     }
   }

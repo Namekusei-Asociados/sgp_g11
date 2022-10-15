@@ -1,9 +1,9 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'sprint/base/app.html' %}
 {% load static %}
 {% load has_perm_project %}
 
 {% block title %}
-    | Miembros del Proyecto
+    | Miembros del Sprint
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
                 <div class="container-fluid">
                     <div class="d-flex mb-2 justify-content-between">
                         <div class="col-sm-6">
-                            <h1>Miembros del Proyecto</h1>
+                            <h1>Miembros del Sprint</h1>
                         </div>
 
                     </div>
@@ -33,7 +33,7 @@
                         <div class="card-header">
 
                             {% if can_create %}
-                                <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
+                                <a class="btn btn-primary btn-sm" href="{% url 'sprints.members.add' id_project id_sprint %}">
                                     <i class="fas fa-plus">
                                     </i>
                                     Agregar
@@ -48,36 +48,28 @@
                                 <tr>
                                     <th>Username</th>
                                     <th>Email</th>
-                                    <th colspan="2">Acción</th>
+                                    <th colspan="2">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for member in members %}
                                     <tr>
-
-                                        <td>
-                                            {% is_scrum_master member as ban %}
-                                            {% if ban %}
-                                                <i class="fas fa-crown"></i>
-                                            {% endif %}
-                                            {{ member.user.username }}
-                                        </td>
-
+                                        <td> {{ member.user.username }}</td>
                                         <td> {{ member.user.email }}</td>
 
                                         <td class="d-flex" style="gap: 5px">
 
                                             {% if can_edit %}
                                                 <a class="btn btn-info btn-sm"
-                                                   href="{% url 'projects.members.edit' id_project member.user.id %}">
+                                                   href="{% url 'sprints.members.edit' id_project id_sprint member.id %}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                     Editar
                                                 </a>
                                             {% endif %}
 
-                                            {% if can_delete %}
-                                                <form action="{% url 'projects.members.delete' id_project member.user.id %}"
+                                            {% if can_delete%}
+                                                <form action="{% url 'sprints.members.delete' id_project id_sprint member.id %}"
                                                       method="post">
                                                     {% csrf_token %}
                                                     <button class="btn btn-danger btn-sm">

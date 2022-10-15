@@ -1,4 +1,5 @@
-**/__pycache__
+../__pycache__
+*.pyc
 venv/
 .idea/
 conf/Heroku.json
@@ -7,3 +8,4 @@ conf/local_settings.py
 docs/_build/
 .env
 staticfiles/
+migrations/

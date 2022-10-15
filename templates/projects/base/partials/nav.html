@@ -7,7 +7,7 @@
         {% if ban %}
             <li class="nav-item">
                 <a href="{% url 'projects.members.index' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-users"></i>
                     <p>Miembros</p>
                 </a>
             </li>
@@ -16,7 +16,7 @@
         {% if ban %}
             <li class="nav-item">
                 <a href="{% url 'projects.index_role' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-user-cog"></i>
                     <p>Roles de proyecto</p>
                 </a>
             </li>
@@ -25,7 +25,7 @@
         {% if ban %}
             <li class="nav-item">
                 <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-table"></i>
                     <p>Backlog</p>
                 </a>
             </li>
@@ -35,22 +35,29 @@
 
             <li class="nav-item">
                 <a href="{% url 'type_us.index' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-project-diagram"></i>
                     <p>Tipos de US</p>
                 </a>
             </li>
         {% endif %}
 
-     {% has_perm_project user id_project 'Read sprint' as ban %}
+        {% has_perm_project user id_project 'Read sprint' as ban %}
         {% if ban %}
 
             <li class="nav-item">
                 <a href="{% url 'sprints.index' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-layer-group"></i>
                     <p>Sprint</p>
                 </a>
             </li>
         {% endif %}
+
+        <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link">
+                <i class="nav-icon fas fa-arrow-circle-left"></i>
+                <p>Volver</p>
+            </a>
+        </li>
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

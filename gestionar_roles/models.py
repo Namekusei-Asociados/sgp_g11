@@ -19,13 +19,17 @@ class RoleSystemManager(models.Manager):
         :param description: descripcion del rol
         :param permissions_list: lista de permisos a ser asignados al rol
         """
-        role = RoleSystem.objects.create(
-            role_name=name,
-            description=description
-        )
-        role.save()
-        self.attach_permissions(role.id, permissions_list)
-        print('rol creado exitosamente')
+        if not RoleSystem.objects.filter(role_name=name).exists():
+            role = RoleSystem.objects.create(
+                role_name=name,
+                description=description
+            )
+            role.save()
+            self.attach_permissions(role.id, permissions_list)
+            print('rol creado exitosamente')
+            return True
+        else:
+            return False
 
     # funcion encargada de asignar permisos a los roles
     def attach_permissions(self, id_role, permissions_list):
@@ -90,7 +94,7 @@ class RoleSystemManager(models.Manager):
         :param user: usuario al cual sera asignado el rol
         """
         try:
-            role=RoleSystem.objects.get(user=user)
+            role = RoleSystem.objects.get(user=user)
             role.user.remove(user)
         except RoleSystem.DoesNotExist:
             pass
@@ -110,9 +114,13 @@ class RoleSystemManager(models.Manager):
 
         :param id_role: id del rol a ser eliminado
         """
-        role=RoleSystem.objects.get(id=id_role)
-        role.delete()
-        print("Eliminado exitosamente")
+        role = RoleSystem.objects.get(id=id_role)
+        if role.user.all().count() > 0 and role.role_name != 'Admin':
+            role.delete()
+            print("Eliminado exitosamente")
+            return True
+        else:
+            return False
 
     @staticmethod
     def update_role(id_role, name, description, perms):
@@ -134,7 +142,7 @@ class RoleSystemManager(models.Manager):
         # permisos a eliminar
         perms_to_remove = list(set(original_permissions_id) - set(selected_id_permissions))
         print("permisos a eliminar: ", perms_to_remove)
-        perms_to_add= list(set(selected_id_permissions) - set(original_permissions_id))
+        perms_to_add = list(set(selected_id_permissions) - set(original_permissions_id))
 
         for perm in perms:
             if perm.id in perms_to_add:
@@ -148,11 +156,11 @@ class RoleSystemManager(models.Manager):
             role.role_name = name
         if description:
             role.description = description
-        #guardamos los cambios
+        # guardamos los cambios
         role.save()
         print("Editado exitosamente")
 
-    def list_role_permission(self,id_role):
+    def list_role_permission(self, id_role):
         """
         Funcion para listar los permisos de un rol
 
