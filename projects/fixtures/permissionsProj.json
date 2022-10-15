@@ -201,6 +201,14 @@
   },
   {
     "model": "projects.PermissionsProj",
+    "pk": 35,
+    "fields": {
+      "name":"Initialize project",
+      "description":"Puede iniciar un proyecto"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
     "pk": 26,
     "fields": {
       "name":"Create sprintmember",
