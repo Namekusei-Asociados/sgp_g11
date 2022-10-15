@@ -155,6 +155,24 @@ def validate_cancel_project(request, id_project):
     return redirect(reverse('projects.index'), request)
 
 
+@permission_proj_required(UPermissionsProject.INIT_PROJECT)
+def init_project(request, id_project):
+    """
+    Inicia un proyecto
+
+    :param request:
+    :param id_project: id del proyecto a ser iniciado
+
+    :return: template con la lista de proyectos
+    """
+    # get project and update
+    project = Project.objects.get(id=id_project)
+    project.status = UProject.STATUS_IN_EXECUTION
+    project.save()
+    messages.success(request, 'El proyecto "' + project.name + '" se ha iniciado')
+    return redirect(reverse('projects.index'), request)
+
+
 def dashboard(request, id_project):
     if request.user.project_set.filter(id=id_project).exists():
         return render(request, 'projects/base/app.html', {'id_project': id_project})

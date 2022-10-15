@@ -6,7 +6,7 @@ class UProject:
     STATUS_PENDING = "pending"
     STATUS_FINISHED = "finished"
     STATUS_CANCELED = "canceled"
-
+    STATUS_IN_EXECUTION = "in execution"
     # CUSTOM FIELDS LOGIC
 
     CUSTOM_FIELD_TYPE_DATE = 'Fecha'
