@@ -198,5 +198,69 @@
       "name":"Import typeus",
       "description":"Puede importar typeus"
     }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 26,
+    "fields": {
+      "name":"Create sprintmember",
+      "description":"Puede crear miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 27,
+    "fields": {
+      "name":"Read sprintmember",
+      "description":"Puede leer miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 28,
+    "fields": {
+      "name":"Update sprintmember",
+      "description":"Puede actualizar miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 29,
+    "fields": {
+      "name":"Delete sprintmember",
+      "description":"Puede eliminar miembros"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 30,
+    "fields": {
+      "name":"Create sprint_backlog",
+      "description":"Puede agregar us en el baklog"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 31,
+    "fields": {
+      "name":"Read sprint_backlog",
+      "description":"Puede leer los us en el baklog"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 32,
+    "fields": {
+      "name":"Update sprint_backlog",
+      "description":"Puede actualizar los us en el baklog"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 33,
+    "fields": {
+      "name":"Delete sprint_backlog",
+      "description":"Puede eliminar los us en el baklog"
+    }
   }
 ]

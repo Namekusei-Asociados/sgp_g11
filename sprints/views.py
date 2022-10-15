@@ -3,13 +3,14 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from projects.decorators import permission_proj_required
 from projects.models import Project
 from user_story.models import UserStory
+from utilities.UPermissionsProj import UPermissionsProject
 from .models import Sprint, SprintMember
 
 
 # Create your views here.
-
 
 def index(request, id_project):
     """
@@ -201,6 +202,11 @@ def sprint(request, id_project, id_sprint):
     return render(request, 'sprint/base/app.html', context)
 
 
+##################################################################
+###################### SRPINT MEMBER #############################
+##################################################################
+
+@permission_proj_required(UPermissionsProject.READ_SPRINTMEMBER)
 def members(request, id_project, id_sprint):
     """
     Muestra la lista de miembros de un sprint
@@ -222,6 +228,7 @@ def members(request, id_project, id_sprint):
     return render(request, 'sprint/members/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINTMEMBER)
 def add_member(request, id_project, id_sprint):
     """
     Devuelve la página para añadir un miembro a un sprint
@@ -249,6 +256,7 @@ def add_member(request, id_project, id_sprint):
     return render(request, 'sprint/members/create.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINTMEMBER)
 def store_member(request, id_project, id_sprint):
     """
     Agrega un miembro a un sprint, con su respectiva carga horaria diaria
@@ -270,6 +278,7 @@ def store_member(request, id_project, id_sprint):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINTMEMBER)
 def edit_member(request, id_project, id_sprint, member_id):
     member = SprintMember.objects.get(id=member_id)
 
@@ -282,6 +291,7 @@ def edit_member(request, id_project, id_sprint, member_id):
     return render(request, 'sprint/members/edit.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINTMEMBER)
 def update_member(request, id_project, id_sprint):
     member_id = request.POST['member_id']
     workload = request.POST['workload']
@@ -295,6 +305,7 @@ def update_member(request, id_project, id_sprint):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINTMEMBER)
 def delete_member(request, id_project, id_sprint, member_id):
     sprint = Sprint.objects.get(id=id_sprint)
     member = SprintMember.objects.get(id=member_id)

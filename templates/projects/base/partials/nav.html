@@ -21,15 +21,6 @@
                 </a>
             </li>
         {% endif %}
-        {% has_perm_project user id_project 'Read user_story' as ban %}
-        {% if ban %}
-            <li class="nav-item">
-                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-table"></i>
-                    <p>Backlog</p>
-                </a>
-            </li>
-        {% endif %}
         {% has_perm_project user id_project 'Read typeus' as ban %}
         {% if ban %}
 
@@ -37,6 +28,15 @@
                 <a href="{% url 'type_us.index' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-project-diagram"></i>
                     <p>Tipos de US</p>
+                </a>
+            </li>
+        {% endif %}
+        {% has_perm_project user id_project 'Read user_story' as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>Backlog</p>
                 </a>
             </li>
         {% endif %}

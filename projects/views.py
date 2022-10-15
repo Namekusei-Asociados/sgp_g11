@@ -291,7 +291,7 @@ def create_role(request, id_project):
 
     :return: documento html
     """
-    permission = PermissionsProj.objects.all()
+    permission = PermissionsProj.objects.all().order_by('id')
     return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
 
 
@@ -348,7 +348,7 @@ def edit_role(request, id_project, id):
     """
     # get project
     role = RoleProject.objects.get(id=id)
-    permissions = PermissionsProj.objects.all()
+    permissions = PermissionsProj.objects.all().order_by('id')
     perms_role = role.perms.all()
     return render(request, 'roles/edit.html',
                   {'role': role, 'permissions': permissions, 'perms_role': perms_role, "id_project": id_project,
@@ -402,7 +402,7 @@ def delete_role(request, id_project, id):
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
 
 
-@permission_proj_required('Import role')
+@permission_proj_required(UPermissionsProject.IMPORT_ROLE)
 def import_role(request, id_project):
     """
     Importacion de roles de proyectos

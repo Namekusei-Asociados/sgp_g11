@@ -5,6 +5,7 @@ class UPermissionsProject:
     READ_ROLE = 'Read role'
     UPDATE_ROLE = 'Update role'
     DELETE_ROLE = 'Delete role'
+    IMPORT_ROLE = 'Import role'
 
     # Project
     UPDATE_PROJECT = 'Update project'
@@ -21,6 +22,7 @@ class UPermissionsProject:
     READ_TYPEUS = 'Read typeus'
     UPDATE_TYPEUS = 'Update typeus'
     DELETE_TYPEUS = 'Delete typeus'
+    IMPORT_TYPEUS = 'Import typeus'
 
     # US
     CREATE_US = 'Create user_story'
@@ -32,4 +34,16 @@ class UPermissionsProject:
     CREATE_SPRINT = 'Create sprint'
     READ_SPRINT = 'Read sprint'
     UPDATE_SPRINT = 'Update sprint'
-    DELETE_SPRINT = 'Delete sprint'
+    DELETE_SPRINT = 'Cancel sprint'
+
+    # SPRINT MEMBER
+    CREATE_SPRINTMEMBER = 'Create sprintmember'
+    READ_SPRINTMEMBER = 'Read sprintmember'
+    UPDATE_SPRINTMEMBER = 'Update sprintmember'
+    DELETE_SPRINTMEMBER = 'Delete sprintmember'
+
+    # SPRINT BACKLOG
+    CREATE_SPRINT_BACKLOG = 'Create sprint_backlog'
+    READ_SPRINT_BACKLOG = 'Read sprint_backlog'
+    UPDATE_SPRINT_BACKLOG = 'Update sprint_backlog'
+    DELETE_SPRINT_BACKLOG = 'Delete sprint_backlog'
