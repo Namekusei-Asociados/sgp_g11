@@ -142,7 +142,9 @@ def validate_edit_user_story(request, id_project):
     message = 'La historia de usuario "' + user_story.title + '" fue actualizada con éxito'
     messages.success(request, message)
 
-    return redirect(reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}), request)
+    return redirect(
+        reverse('user_story.edit_user_story', kwargs={'id_project': id_project, 'id_user_story': user_story_id}),
+        request)
 
 
 @permission_proj_required(UPermissionsProject.CANCEL_US)
@@ -170,3 +172,10 @@ def backlog(request, id_project):
         'user_stories': user_stories
     }
     return render(request, 'user_story/backlog.html', context)
+
+
+def is_final_status(id_us):
+    user_story = UserStory.objects.get(id=id_us)
+    final_status = TypeUS.objects.get_final_status(id=user_story.us_type_id)
+
+    return user_story.current_status == final_status

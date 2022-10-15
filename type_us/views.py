@@ -16,6 +16,13 @@ from utilities.UProject import UProject
 # Create your views here.
 @permission_proj_required('Read typeus')
 def index(request, id_project):
+    """
+     Obtiene todos los type_us relacionados al proyecto actual
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: documento html
+    """
     # get all projects related to the current user
     project = Project.objects.get(id=id_project)
     types_us = project.typeus_set.all()
@@ -29,15 +36,27 @@ def create(request, id_project):
     :param request:
     :return:documento html
     """
-    type_custom_fields = UProject.CUSTOM_FIELDS_LIST
     columns = ['To do', 'Doing', 'Done']
-    return render(request, 'type_us/create.html',{'type_custom_fields':type_custom_fields, 'id_project':id_project, 'columns':columns})
+    return render(request, 'type_us/create.html', {'id_project': id_project, 'columns': columns})
+
+
+# @permission_proj_required('Update typeus')
+def edit(request, id_project, id):
+    """
+    Retorna un formulario de edicion para Tipos de historias de usuario
+    :param request:
+    :return:documento html
+    """
+    type_us = TypeUS.objects.get(id=id)
+    flow = json.loads(type_us.flow)
+    return render(request, 'type_us/edit.html', {'flow': flow, 'id_project': id_project, 'type_us': type_us})
 
 
 @permission_proj_required('Create typeus')
 def store(request, id_project):
     """
     Crea un nuevo recurso del modelo TypeUS
+
     :param request:
     """
     # getting attributes
@@ -46,11 +65,29 @@ def store(request, id_project):
     flow = request.POST.getlist('flow[]')
 
     # create type us
-    type_us = TypeUS.objects.create_type_us(name=name, prefix=prefix,flow=flow, project_id=id_project)
+    type_us = TypeUS.objects.create_type_us(name=name, prefix=prefix, flow=flow, project_id=id_project)
 
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" fue creado exitosamente')
     return redirect(reverse('type_us.create', kwargs={'id_project': id_project}), request)
+def update(request, id_project, id):
+    """
+    Actualiza un nuevo recurso del modelo TypeUS
+
+    :param request:
+    """
+    # getting attributes
+    name = request.POST['name']
+    prefix = request.POST['prefix']
+    flow = request.POST.getlist('flow[]')
+
+
+    # update type us
+    type_us = TypeUS.objects.update_type_us(name=name, prefix=prefix, flow=flow, type_us_id=id)
+
+    # redirect back with success message
+    messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se actualizo exitosamente')
+    return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
 
 
 @permission_proj_required('Import typeus')
