@@ -9,6 +9,7 @@ class UPermissionsProject:
     # Project
     UPDATE_PROJECT = 'Update project'
     CANCEL_PROJECT = 'Cancel project'
+    INIT_PROJECT = 'Initialize project'
 
     # Project Member
     CREATE_PROJECTMEMBER = 'Create projectmember'

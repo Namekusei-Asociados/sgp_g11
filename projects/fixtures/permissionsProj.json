@@ -198,5 +198,13 @@
       "name":"Import typeus",
       "description":"Puede importar typeus"
     }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 26,
+    "fields": {
+      "name":"Initialize project",
+      "description":"Puede iniciar un proyecto"
+    }
   }
 ]

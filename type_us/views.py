@@ -30,7 +30,8 @@ def create(request, id_project):
     :return:documento html
     """
     type_custom_fields = UProject.CUSTOM_FIELDS_LIST
-    return render(request, 'type_us/create.html', {'type_custom_fields': type_custom_fields, 'id_project': id_project})
+    columns = ['To do', 'Doing', 'Done']
+    return render(request, 'type_us/create.html',{'type_custom_fields':type_custom_fields, 'id_project':id_project, 'columns':columns})
 
 
 @permission_proj_required('Create typeus')
@@ -42,13 +43,10 @@ def store(request, id_project):
     # getting attributes
     name = request.POST['name']
     prefix = request.POST['prefix']
-    custom_fields_name = request.POST.getlist('custom_fields[name]')
-    custom_fields_type = request.POST.getlist('custom_fields[type]')
     flow = request.POST.getlist('flow[]')
 
     # create type us
-    type_us = TypeUS.objects.create_type_us(name=name, prefix=prefix, custom_fields_type=custom_fields_type,
-                                            custom_fields_name=custom_fields_name, flow=flow, project_id=id_project)
+    type_us = TypeUS.objects.create_type_us(name=name, prefix=prefix,flow=flow, project_id=id_project)
 
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" fue creado exitosamente')

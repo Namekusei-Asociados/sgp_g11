@@ -15,15 +15,15 @@
         {% include 'base/components/success-message.html' %}
         <!--MESSAGES END-->
 
+        <form id="form" action="{% url 'type_us.store' id_project %}" method="post">
+            {% csrf_token %}
 
-        <div class="card card-primary m-2">
-            <div class="card-header">
-                <h3 class="card-title">Crear Tipo de Historia de Usuario</h3>
-            </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-            <form id="form" action="{% url 'type_us.store' id_project %}" method="post">
-                {% csrf_token %}
+            <div class="card card-primary m-2">
+                <div class="card-header">
+                    <h3 class="card-title">Crear Tipo de Historia de Usuario</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
 
 
                 <div class="card-body">
@@ -38,97 +38,75 @@
                     </div>
 
                     <hr>
-                    <div class="my-2">
-                        <div class="d-flex justify-content-between">
-                            <h4>Campos Customizados</h4>
-
-                            <button class="btn btn-primary" type="button" id="btn-add-custom-field">
-                                <i class="fas fa-plus"></i>
-                                Agregar
-                            </button>
-                        </div>
-                        {#Clone#}
-                        <div class="d-none">
-                            <div class="form-group d-flex align-content-center custom-field-item" style="gap:5px"
-                                 id="custom-field-clone">
-                                <input type="text" class="form-control" placeholder="Nombre de empresa externa">
-                                <select class="form-select form-control">
-                                    {% for type in type_custom_fields %}
-                                        <option value="{{ type }}">{{ type }}</option>
-                                    {% endfor %}
-                                </select>
-                                <button class="btn btn-danger btn-delete-custom-field" type="button">
-                                    Borrar
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="border rounded p-2 mt-2 d-none" id="custom-field-container">
-                            <div class="d-flex justify-content-around">
-                                <label for="type_us_name">Nombre</label>
-                                <label for="type_us_name">Tipo</label>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <hr>
-                    <div class="my-2">
-                        <div class="d-flex justify-content-between">
-                            <h4>Estados/Columnas</h4>
-
-                            <button class="btn btn-primary" type="button" id="btn-add-column">
-                                <i class="fas fa-plus"></i>
-                                Agregar
-                            </button>
-                        </div>
-                        {#Clone#}
-                        <div class="d-none">
-                            <div class="form-group d-flex align-content-center column-item" style="gap:5px"
-                                 id="column-clone">
-                                <input type="text" class="form-control" id="type_us_name" placeholder="To do">
-                                <button class="btn btn-danger btn-delete-column" type="button">
-                                    Borrar
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="border rounded p-2 mt-2" id="columns-container">
-                            <label for="type_us_name">Nombre</label>
-                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
-                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="To do" name="flow[]">
-                                <button class="btn btn-danger btn-delete-column" type="button">
-                                    Borrar
-                                </button>
-                            </div>
-                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
-                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Doing" name="flow[]">
-                                <button class="btn btn-danger btn-delete-column" type="button">
-                                    Borrar
-                                </button>
-                            </div>
-                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">
-                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Done" name="flow[]">
-                                <button class="btn btn-danger btn-delete-column" type="button">
-                                    Borrar
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
                 <!-- /.card-body -->
+
+                <!-- Flow List -->
+
+                <!--ITEM CLONE-->
+                <li class="d-none" id="flow-clone">
+                    <!-- drag handle -->
+                    <span class="handle">
+                              <i class="fas fa-ellipsis-v"></i>
+                              <i class="fas fa-ellipsis-v"></i>
+                            </span>
+                    <!-- checkbox -->
+
+                    <div class="form-control d-inline ml-2">
+                        <input type="text" placeholder="To do" value="" class="border-0 bg-transparent">
+                    </div>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                        <i class="fas fa-trash btn-delete-column" ></i>
+                    </div>
+                </li>
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="ion ion-clipboard mr-1"></i>
+                        Columnas/Estados
+                    </h3>
+                    <button class="btn btn-success float-right" type="button" id="btn-add-column">
+                        <i class="fas fa-plus"></i>
+                        Agregar
+                    </button>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <ul class="todo-list form-group" data-widget="todo-list" id="columns-container">
+
+                        {% for column in columns %}
+                            <li class="column-item">
+                                <!-- drag handle -->
+                                <span class="handle">
+                                  <i class="fas fa-ellipsis-v"></i>
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </span>
+                                <!-- checkbox -->
+
+                                <div class="form-control d-inline ml-2">
+                                    <input type="text" placeholder="{{ column}}" value="{{ column}}"
+                                           class="border-0 bg-transparent" name="flow[]">
+                                </div>
+                                <!-- General tools such as edit or delete-->
+                                <div class="tools">
+
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                     <a href=" {% url 'type_us.index' id_project %} " class="btn btn-secondary mx-3">Cancelar</a>
                 </div>
-            </form>
-        </div>
-        <!-- /.card -->
+            </div>
 
+            <!-- /.card -->
+        </form>
     </section>
 
 {% endblock %}
@@ -150,6 +128,9 @@
                         required: true,
                         minlength: 1,
                     },
+                    "flow[]":{
+                        required:true
+                    }
 
                 },
                 messages: {
@@ -161,6 +142,9 @@
                         required: "El campo prefijo obligatorio",
                         minlength: "Ingrese un minimo de 1 caracteres",
                     },
+                    "flow[]":{
+                        required:"Este campo es obligatorio",
+                    }
 
                 },
                 errorElement: 'span',
@@ -180,16 +164,17 @@
              * Add a new column Item
              * */
             $('#btn-add-column').on('click', () => {
-                let clone = document.getElementById('column-clone').cloneNode(true);
+                let clone = document.getElementById('flow-clone').cloneNode(true);
                 const container = document.getElementById('columns-container')
 
                 //modify attr
                 clone.removeAttribute('id');
-                $(clone).children('input').attr('name', 'flow[]').attr('required','required')
+                $(clone).find('input').attr('name', 'flow[]').attr('required', 'required')
                 container.append(clone)
 
                 //add item to the container
-                container.classList.remove('d-none')
+                clone.classList.remove('d-none')
+                clone.classList.add('column-item')
             });
 
             $('#columns-container').on('click', '.btn-delete-column', (el) => {
@@ -204,31 +189,6 @@
 
             });
 
-            $('#btn-add-custom-field').on('click', () => {
-                let clone = document.getElementById('custom-field-clone').cloneNode(true);
-                const container = document.getElementById('custom-field-container')
-
-                //modify attr
-                clone.removeAttribute('id');
-                 $(clone).children('input').attr('name', 'custom_fields[name]').attr('required','required')
-                 $(clone).children('select').attr('name', 'custom_fields[type]').attr('required','required')
-                container.append(clone)
-
-                //add item to the container
-                container.classList.remove('d-none')
-            });
-
-            $('#custom-field-container').on('click', '.btn-delete-custom-field', (el) => {
-
-                //remove element
-                $(el.target).closest('.custom-field-item').remove()
-
-                //verify if we don't have more elements
-                if (!$('#custom-field-container .custom-field-item').length) {
-                    document.getElementById('custom-field-container').classList.add('d-none')
-                }
-
-            });
         });
     </script>
 {% endblock %}

@@ -114,16 +114,11 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        {% if projects.count == 0 %}
+                        {% if types_us.count == 0 %}
                             <tr class="text-center">
-                                <td colspan="6"><span class="text-danger">Aun no perteneces a ningun proyecto!</span>
+                                <td colspan="6"><span class="text-danger">Aun no posees ningun registro!</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
-                                <td colspan="6"><span class="text-warning">Contacte con el administrador de su empresa para ser agregado a un proyecto </span>
-                                </td>
-                            </tr>
-
                         {% endif %}
                         </tbody>
                     </table>
