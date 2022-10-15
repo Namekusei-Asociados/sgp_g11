@@ -271,6 +271,17 @@ def store_member(request, id_project, id_sprint):
 
 
 def edit_member(request, id_project, id_sprint, member_id):
+    """
+    Muestra los datos para la edición de un miembro de un Sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece el miembro
+    :param member_id: id del miembro de sprint a ser editado
+
+    :return: documento HTML para la edición de los datos
+    """
+
     member = SprintMember.objects.get(id=member_id)
 
     context = {
@@ -283,6 +294,15 @@ def edit_member(request, id_project, id_sprint, member_id):
 
 
 def update_member(request, id_project, id_sprint):
+    """
+    Guarda los cambios realizados sobre un miembro de un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece el miembro
+
+    :return: documento HTML con la lista de miembros del sprint, con los datos actualizados
+    """
     member_id = request.POST['member_id']
     workload = request.POST['workload']
 
@@ -296,6 +316,17 @@ def update_member(request, id_project, id_sprint):
 
 
 def delete_member(request, id_project, id_sprint, member_id):
+    """
+    Elimina un miembro de un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece el miembro
+    :param member_id: id del miembro de sprint a eliminado
+
+    :return: documento HTML con la lista de miembros del sprint
+    """
+
     sprint = Sprint.objects.get(id=id_sprint)
     member = SprintMember.objects.get(id=member_id)
 
@@ -310,6 +341,15 @@ def delete_member(request, id_project, id_sprint, member_id):
 
 
 def sprint_backlog(request, id_project, id_sprint):
+    """
+    Muestra el backlog de un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint del que se va a visualizar su backlog
+
+    :return: Documento HTML con el backlog del sprint
+    """
     sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
 
     context = {
@@ -321,6 +361,16 @@ def sprint_backlog(request, id_project, id_sprint):
 
 
 def add_sprint_backlog(request, id_project, id_sprint):
+    """
+    Muestra la página para agregar historias de usuario a un sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que se va a agregar la historia de usuario
+
+    :return: Documento HTML donde se puede elegir la historia de usuario a ser
+    agregada al sprint y el responsable de la misma
+    """
     user_stories = get_user_stories(id_project)
     members = get_sprint_member(id_sprint)
 
@@ -334,6 +384,17 @@ def add_sprint_backlog(request, id_project, id_sprint):
 
 
 def store_sprint_backlog(request, id_project, id_sprint):
+    """
+    Guarda la historia de usuario en el backlog de un sprint con su respectivo encargado y
+    retorna la página para seguir agregad historias de usuario al sprint
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que se va a agregar la historia de usuario
+
+    :return: Documento HTML donde se puede elegir la historia de usuario a ser
+    agregada al sprint y el responsable de la misma
+    """
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
 
@@ -356,14 +417,40 @@ def store_sprint_backlog(request, id_project, id_sprint):
 
 
 def get_user_stories(id_project):
+    """
+    Función para obtener todas las historias de usuario de un proyecto
+    y que no tengan un encargado asignado
+
+    :param id_project: id del proyecto del que se quiere obtener las historias de usuario
+
+    :return: lista de las historias de usuario del proyecto
+    """
     return UserStory.objects.filter(project_id=id_project, assigned_to=None)
 
 
 def get_sprint_member(id_sprint):
+    """
+    Función para obtener la lista de miembros de un sprint
+
+    :param id_sprint: id del sprint del que se quiere obtener sus miembros
+
+    :return: lista de miembros del sprint
+    """
     return SprintMember.objects.filter(sprint_id=id_sprint)
 
 
 def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
+    """
+    Muestra los detalles de una historia de usuario del sprint backlog
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece la historia de usuario
+    :param id_user_story: id de la historia de usuario cuyos detalles se van a visualizar
+
+    :return: documento HTML con los detalles de la historia de usuario
+    """
+
     user_story = UserStory.objects.get(id=id_user_story)
 
     context = {
@@ -376,6 +463,16 @@ def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
 
 
 def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
+    """
+    Muestra la página para editar los detalles de una historia de usuario dentro del sprint backlog
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece la historia de usuario
+    :param id_user_story: id de la historia de usuario cuyos detalles se quiere editar
+
+    :return: Documento HTML para editar los detalles de la historia de usuario
+    """
     user_story = UserStory.objects.get(id=id_user_story)
     members = get_sprint_member(id_sprint)
 
@@ -390,6 +487,15 @@ def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
 
 
 def update_sprint_backlog(request, id_project, id_sprint):
+    """
+    Guarda los cambios realizados a la historia de usuario dentro del sprint backlog
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece la historia de usuario
+
+    :return: Documento HTML del backlog del sprint
+    """
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
 
@@ -406,6 +512,16 @@ def update_sprint_backlog(request, id_project, id_sprint):
 
 
 def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
+    """
+    Elimina una historia de usuario del sprint backlog
+
+    :param request:
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param id_sprint: id del sprint al que pertenece la historia de usuario
+    :param id_user_story: id de la historia de usuario que se quiere eliminar
+
+    :return: Documento HTML del backlog del sprint
+    """
     user_story = UserStory.objects.get(id=id_user_story)
 
     user_story.assigned_to = None
