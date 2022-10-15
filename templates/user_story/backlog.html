@@ -60,7 +60,16 @@
                                         <td>{{ user_story.title }} | {{ user_story.us_type.prefix }}</td>
                                         <td>{{ user_story.business_value }}</td>
                                         <td>{{ user_story.technical_priority }}</td>
-                                        <td>{{ user_story.final_priority }}</td>
+                                        <td>
+                                            <span class="badge
+                                            {% if user_story.final_priority <= 3 %}
+                                                badge-success
+                                            {% elif user_story.final_priority > 3 and user_story.final_priority <= 6 %}
+                                                badge-warning
+                                            {% elif user_story.final_priority > 6 %}
+                                                badge-danger
+                                            {% endif %}">{{ user_story.final_priority }}</span>
+                                        </td>
                                         <td class="d-flex" style="gap: 5px">
                                             <a class="btn btn-primary btn-sm"
                                                href="{% url 'user_story.details_user_story' id_project user_story.id %}">

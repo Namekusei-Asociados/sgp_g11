@@ -57,6 +57,14 @@ def store(request, id_project):
 
 @permission_proj_required('Import typeus')
 def import_type_us(request, id_project):
+    """
+        Importacion de roles de proyectos
+
+        :param request: posee los campos
+        :param id_project: id del proyecto actual
+
+        :return: Documento Html
+        """
     if request.method == "POST":
         types_to_import = request.POST.getlist("types")
         form = ImportTypeUs(id_project, request.POST)

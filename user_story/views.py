@@ -186,7 +186,8 @@ def backlog(request, id_project):
 
     :return: documento HTML del backlog de un proyecto
     """
-    user_stories = UserStory.objects.filter(project_id=id_project)
+    user_stories = UserStory.objects.filter(project_id=id_project).order_by('final_priority').reverse()
+
     context = {
         'id_project': id_project,
         'user_stories': user_stories

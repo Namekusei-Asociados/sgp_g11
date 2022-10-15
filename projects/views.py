@@ -404,6 +404,14 @@ def delete_role(request, id_project, id):
 
 @permission_proj_required('Import role')
 def import_role(request, id_project):
+    """
+    Importacion de roles de proyectos
+
+    :param request: posee los campos
+    :param id_project: id del proyecto actual
+
+    :return: Documento Html
+    """
     if request.method == "POST":
         roles_project = request.POST.getlist("roles")
         form = ImportRole(id_project, request.POST)
