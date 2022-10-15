@@ -25,7 +25,8 @@ def create(request,id_project):
     :return:documento html
     """
     type_custom_fields = UProject.CUSTOM_FIELDS_LIST
-    return render(request, 'type_us/create.html',{'type_custom_fields':type_custom_fields, 'id_project':id_project})
+    columns = ['To do', 'Doing', 'Done']
+    return render(request, 'type_us/create.html',{'type_custom_fields':type_custom_fields, 'id_project':id_project, 'columns':columns})
 
 
 def store(request,id_project):
