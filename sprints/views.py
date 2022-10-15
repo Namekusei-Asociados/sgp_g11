@@ -2,7 +2,6 @@ from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
 from projects.decorators import permission_proj_required
 from projects.models import Project
 from user_story.models import UserStory

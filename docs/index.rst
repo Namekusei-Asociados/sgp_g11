@@ -10,6 +10,14 @@ Welcome to SGP's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   user_story
+   type_us
+   sprints
+   sgp
+   projects
+   gestionar_roles
+   accounts
+
 
 
 Indices and tables
