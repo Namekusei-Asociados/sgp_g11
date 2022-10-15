@@ -11,6 +11,7 @@ from .models import Sprint, SprintMember
 
 # Create your views here.
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT)
 def index(request, id_project):
     """
     Devuelve la lista de sprints del proyecto
@@ -36,6 +37,7 @@ def index(request, id_project):
     return render(request, 'sprint/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT)
 def create_sprint(request, id_project):
     """
     Devuelve el template para crear un nuevo sprint
@@ -53,6 +55,7 @@ def create_sprint(request, id_project):
     return render(request, 'sprint/create_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT)
 def validate_create_sprint(request, id_project):
     """
     Función para guardar un nuevo sprint
@@ -98,6 +101,7 @@ def numbersSprint(id_project):
     return Sprint.objects.filter(project_id=id_project).count() + 1
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT)
 def edit_sprint(request, id_project, id_sprint):
     """
     Retorna el template para editar un sprint
@@ -118,6 +122,7 @@ def edit_sprint(request, id_project, id_sprint):
     return render(request, 'sprint/edit_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT)
 def validate_edit_sprint(request, id_project):
     """
     Actualiza los datos que se están editando de un sprint
@@ -142,6 +147,7 @@ def validate_edit_sprint(request, id_project):
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT)
 def cancel_sprint(request, id_project, id_sprint):
     """
     Devuelve un template solicitando el motivo de la cancelación del sprint
@@ -162,6 +168,7 @@ def cancel_sprint(request, id_project, id_sprint):
     return render(request, 'sprint/cancel_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT)
 def validate_cancel_sprint(request, id_project):
     """
     Guarda el motivo de la cancelación de un sprint y realiza la
@@ -183,6 +190,7 @@ def validate_cancel_sprint(request, id_project):
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT)
 def sprint(request, id_project, id_sprint):
     """
     Retorna el documento HTML con la vista de un sprint dentro de un proyecto
@@ -319,6 +327,7 @@ def delete_member(request, id_project, id_sprint, member_id):
     return redirect(reverse('sprints.members.index', kwargs=kwargs), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT_BACKLOG)
 def sprint_backlog(request, id_project, id_sprint):
     sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
 
@@ -330,6 +339,7 @@ def sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def add_sprint_backlog(request, id_project, id_sprint):
     user_stories = get_user_stories(id_project)
     members = get_sprint_member(id_sprint)
@@ -343,6 +353,7 @@ def add_sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/create.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def store_sprint_backlog(request, id_project, id_sprint):
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
@@ -373,6 +384,7 @@ def get_sprint_member(id_sprint):
     return SprintMember.objects.filter(sprint_id=id_sprint)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT_BACKLOG)
 def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
     user_story = UserStory.objects.get(id=id_user_story)
 
@@ -385,6 +397,7 @@ def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return render(request, 'sprint/sprint_backlog/details.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
     user_story = UserStory.objects.get(id=id_user_story)
     members = get_sprint_member(id_sprint)
@@ -399,6 +412,7 @@ def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return render(request, 'sprint/sprint_backlog/edit.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def update_sprint_backlog(request, id_project, id_sprint):
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
@@ -415,6 +429,7 @@ def update_sprint_backlog(request, id_project, id_sprint):
     return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT_BACKLOG)
 def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
     user_story = UserStory.objects.get(id=id_user_story)
 
