@@ -38,54 +38,13 @@
                     </div>
 
                     <hr>
-                    {#                    <div class="my-2">#}
-                    {#                        <div class="d-flex justify-content-between">#}
-                    {#                            <h4>Estados/Columnas</h4>#}
-                    {##}
-                    {#                            <button class="btn btn-primary" type="button" id="btn-add-column">#}
-                    {#                                <i class="fas fa-plus"></i>#}
-                    {#                                Agregar#}
-                    {#                            </button>#}
-                    {#                        </div>#}
-                    {#Clone#}
-                    {#                        <div class="d-none">#}
-                    {#                            <div class="form-group d-flex align-content-center column-item" style="gap:5px"#}
-                    {#                                 id="column-clone">#}
-                    {#                                <input type="text" class="form-control" id="type_us_name" placeholder="To do">#}
-                    {#                                <button class="btn btn-danger btn-delete-column" type="button">#}
-                    {#                                    Borrar#}
-                    {#                                </button>#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {##}
-                    {#                        <div class="border rounded p-2 mt-2" id="columns-container">#}
-                    {#                            <label for="type_us_name">Nombre</label>#}
-                    {#                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">#}
-                    {#                                <div class="d-flex flex-column">#}
-                    {#                                    <button>#}
-                    {#                                        <i class=""></i>#}
-                    {#                                    </button>#}
-                    {##}
-                    {#                                </div>#}
-                    {#                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="To do" name="flow[]">#}
-                    {#                            </div>#}
-                    {#                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">#}
-                    {#                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Doing" name="flow[]">#}
-                    {#                            </div>#}
-                    {#                            <div class="form-group d-flex align-content-center column-item" style="gap:5px">#}
-                    {#                                <input type="text" class="form-control" id="type_us_name" placeholder="To do" value="Done" name="flow[]">#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {##}
-                    {#                    </div>#}
-
                 </div>
                 <!-- /.card-body -->
 
                 <!-- Flow List -->
 
                 <!--ITEM CLONE-->
-                <li class="d-none">
+                <li class="d-none" id="flow-clone">
                     <!-- drag handle -->
                     <span class="handle">
                               <i class="fas fa-ellipsis-v"></i>
@@ -98,7 +57,7 @@
                     </div>
                     <!-- General tools such as edit or delete-->
                     <div class="tools">
-                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-trash btn-delete-column" ></i>
                     </div>
                 </li>
 
@@ -114,15 +73,15 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <ul class="todo-list" data-widget="todo-list">
+                    <ul class="todo-list form-group" data-widget="todo-list" id="columns-container">
 
                         {% for column in columns %}
-                            <li>
+                            <li class="column-item">
                                 <!-- drag handle -->
                                 <span class="handle">
-                              <i class="fas fa-ellipsis-v"></i>
-                              <i class="fas fa-ellipsis-v"></i>
-                            </span>
+                                  <i class="fas fa-ellipsis-v"></i>
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </span>
                                 <!-- checkbox -->
 
                                 <div class="form-control d-inline ml-2">
@@ -131,7 +90,7 @@
                                 </div>
                                 <!-- General tools such as edit or delete-->
                                 <div class="tools">
-                                    <i class="fas fa-trash"></i>
+
                                 </div>
                             </li>
                         {% endfor %}
@@ -169,6 +128,9 @@
                         required: true,
                         minlength: 1,
                     },
+                    "flow[]":{
+                        required:true
+                    }
 
                 },
                 messages: {
@@ -180,6 +142,9 @@
                         required: "El campo prefijo obligatorio",
                         minlength: "Ingrese un minimo de 1 caracteres",
                     },
+                    "flow[]":{
+                        required:"Este campo es obligatorio",
+                    }
 
                 },
                 errorElement: 'span',
@@ -199,16 +164,17 @@
              * Add a new column Item
              * */
             $('#btn-add-column').on('click', () => {
-                let clone = document.getElementById('column-clone').cloneNode(true);
+                let clone = document.getElementById('flow-clone').cloneNode(true);
                 const container = document.getElementById('columns-container')
 
                 //modify attr
                 clone.removeAttribute('id');
-                $(clone).children('input').attr('name', 'flow[]').attr('required', 'required')
+                $(clone).find('input').attr('name', 'flow[]').attr('required', 'required')
                 container.append(clone)
 
                 //add item to the container
-                container.classList.remove('d-none')
+                clone.classList.remove('d-none')
+                clone.classList.add('column-item')
             });
 
             $('#columns-container').on('click', '.btn-delete-column', (el) => {
