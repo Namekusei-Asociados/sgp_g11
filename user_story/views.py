@@ -192,14 +192,9 @@ def backlog(request, id_project):
     :return: documento HTML del backlog de un proyecto
     """
     user_stories_data = UserStory.objects.filter(project_id=id_project)
-    final_us = []
-    not_final_us = []
     #dividimos entre estados finales y no finales
-    for us in user_stories_data:
-        if UserStory.objects.is_final_status(us.id):
-            final_us.append(us)
-        else:
-            not_final_us.append(us)
+    final_us = UserStory.objects.get_us_finished(id_project=id_project)
+    not_final_us = UserStory.objects.get_us_non_finished(id_project=id_project)
     user_stories = chain(not_final_us, final_us)
     context = {
         'id_project': id_project,
