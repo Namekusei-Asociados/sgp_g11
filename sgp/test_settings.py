@@ -36,12 +36,16 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+
+    # templatetags
+    'sgp.templatetags',
     # Projects management
     'projects',
     # TypeUS
     'type_us',
     # App para gestionar los roles
     'gestionar_roles',
+    # App para gestionar los sprints
     'sprints',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,8 +68,7 @@ INSTALLED_APPS = [
 
     # Account
     'accounts',
-    # libreria [ara uso de roles
-    'guardian',
+
 
     # App of the User Story
     'user_story'

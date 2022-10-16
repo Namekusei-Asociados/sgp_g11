@@ -1,0 +1,112 @@
+{% extends 'sprint/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | User Story del Sprint
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+{% endblock %}
+
+{% block content %}
+    <br>
+    <section class="content">
+        {% include 'base/components/success-message.html' %}
+
+        <div class="card card-primary m-2">
+            <div class="card-header">
+                <h3 class="card-title">Agregar US</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="createProjectForm" action="{% url 'sprints.sprint_backlog.update' id_project id_sprint %}"
+                  method="post">
+                {% csrf_token %}
+
+                <input type="hidden" id="id_user_story" name="id_user_story" value="{{ user_story.id }}">
+
+                <div class="card-body">
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label for="id_user_story_title" class="required">User Story</label>
+                        <input type="text" name="id_user_story_title" class="form-control" id="id_user_story_title"
+                               value="{{ user_story.title }} | {{ user_story.us_type.name }}" disabled>
+                    </div>
+
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label for="id_member" class="required">Asignado a </label>
+                        <select class="form-control" name="id_member" id="id_member" required>
+                            <option>Seleccione a quien se le asigna el US</option>
+                            {% for member in members %}
+                                <option value="{{ member.id }}" {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
+                                    {{ member.user.username }}
+                                    | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <a href=" {% url 'sprints.sprint_backlog.index' id_project id_sprint %} "
+                       class="btn btn-secondary mx-3">Cancelar</a>
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            $('#createProjectForm').validate({
+                rules: {
+                    user_id: {
+                        required: true
+                    },
+                    'roles[]': {
+                        required: true
+                    }
+
+                },
+                messages: {
+                    user_id: {
+                        required: "Debe seleccionar un miembro"
+                    },
+                    'roles[]': {
+                        required: "Debe seleccionar al menos un rol"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
+{% endblock %}

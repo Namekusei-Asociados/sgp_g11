@@ -21,15 +21,6 @@
                 </a>
             </li>
         {% endif %}
-        {% has_perm_project user id_project 'Read user_story' as ban %}
-        {% if ban %}
-            <li class="nav-item">
-                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
-                    <i class="nav-icon fas fa-table"></i>
-                    <p>Backlog</p>
-                </a>
-            </li>
-        {% endif %}
         {% has_perm_project user id_project 'Read typeus' as ban %}
         {% if ban %}
 
@@ -40,10 +31,18 @@
                 </a>
             </li>
         {% endif %}
+        {% has_perm_project user id_project 'Read user_story' as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>Backlog</p>
+                </a>
+            </li>
+        {% endif %}
 
         {% has_perm_project user id_project 'Read sprint' as ban %}
         {% if ban %}
-
             <li class="nav-item">
                 <a href="{% url 'sprints.index' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-layer-group"></i>
@@ -51,6 +50,13 @@
                 </a>
             </li>
         {% endif %}
+
+        <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link">
+                <i class="nav-icon fas fa-arrow-circle-left"></i>
+                <p>Volver</p>
+            </a>
+        </li>
     </ul>
 </nav>
 <!-- /.sidebar-menu -->

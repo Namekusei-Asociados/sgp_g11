@@ -15,7 +15,7 @@ def create(request):
     :param request:
     :return: documento html
     """
-    permission = Permissions.objects.all()
+    permission = Permissions.objects.all().order_by('id')
     return render(request, 'gestionar_roles/create.html', {"permissions": permission})
 
 
@@ -44,7 +44,7 @@ def store(request):
 @permission_sys_required(UPermissions.READ_ROLE)
 def index(request):
     # get all Roles
-    roles = RoleSystem.objects.all()
+    roles = RoleSystem.objects.all().order_by('id')
 
     return render(request, 'gestionar_roles/index.html', {"roles": roles})
 
@@ -61,7 +61,7 @@ def edit(request, id):
     """
     # get project
     role = RoleSystem.objects.get(id=id)
-    permissions = Permissions.objects.all()
+    permissions = Permissions.objects.all().order_by('id')
     perms_role = role.perms.all()
     return render(request, 'gestionar_roles/edit.html',
                   {'role': role, 'permissions': permissions, 'perms_role': perms_role})

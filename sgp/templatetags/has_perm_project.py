@@ -1,4 +1,5 @@
 from django import template
+from projects.models import RoleProject, ProjectMember, Project
 from projects.models import RoleProject, ProjectMember
 from type_us.models import TypeUS
 from user_story.models import UserStory
@@ -21,6 +22,11 @@ def is_scrum_master(member):
 @register.simple_tag
 def is_member(user, id_project):
     return ProjectMember.objects.filter(user_id=user.id, project_id=id_project).exists()
+
+
+@register.simple_tag
+def get_project_name(id_project):
+    return Project.objects.get(id=id_project).name
 
 @register.simple_tag
 def can_edit_type_us(type_us_id):

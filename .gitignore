@@ -9,3 +9,5 @@ docs/_build/
 .env
 staticfiles/
 migrations/
+*.rst
+!index.rst
