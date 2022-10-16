@@ -1,5 +1,8 @@
 from django import template
 from projects.models import RoleProject, ProjectMember, Project
+from projects.models import RoleProject, ProjectMember
+from type_us.models import TypeUS
+from user_story.models import UserStory
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 
 register = template.Library()
@@ -24,3 +27,13 @@ def is_member(user, id_project):
 @register.simple_tag
 def get_project_name(id_project):
     return Project.objects.get(id=id_project).name
+
+@register.simple_tag
+def can_edit_type_us(type_us_id):
+    """
+    Comprueba si el tipo de us actual puede o no ser editado
+    :param type_us_id: id de type us
+    :return: boolean
+    """
+    return not UserStory.objects.filter(us_type=type_us_id).exists()
+

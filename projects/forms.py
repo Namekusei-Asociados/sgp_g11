@@ -24,3 +24,5 @@ class ImportRole(forms.Form):
         # self.fields['roles'] = forms.ModelChoiceField(
         #     queryset=roles,
         #     label='Roles', widget=widgets.SelectMultipleInput())
+
+
