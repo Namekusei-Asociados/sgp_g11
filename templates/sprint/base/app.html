@@ -1,4 +1,5 @@
 {% load static %}
+{% load has_perm_project %} {# libreria pra extraer el nombre del proyecto #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +47,7 @@
     <!-- Brand Logo -->
     <a href="{% url 'home' %}" class="brand-link">
       <img src="{% static "lib/adminlte-3.2.0/img/AdminLTELogo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">SGP</span>
+      <span class="brand-text font-weight-light">{%get_project_name id_project%}</span>
     </a>
 
     <!-- Sidebar -->

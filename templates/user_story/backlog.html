@@ -48,6 +48,7 @@
                                 <thead>
                                 <tr>
                                     <th>Título</th>
+                                    <th>Estado Actual</th>
                                     <th>Business Value</th>
                                     <th>Prioridad técnica</th>
                                     <th>Prioridad final</th>
@@ -58,6 +59,15 @@
                                 {% for user_story in user_stories %}
                                     <tr>
                                         <td>{{ user_story.title }} | {{ user_story.us_type.prefix }}</td>
+                                        <td><span class="badge
+                                            {% current_status user_story.id as status %}
+                                            {% if status == 'initial' %}
+                                                badge-warning
+                                            {% elif  status == 'final' %}
+                                                badge-danger
+                                            {% else %}
+                                                badge-light
+                                            {% endif %}">{{ user_story.current_status }}</span></td>
                                         <td>{{ user_story.business_value }}</td>
                                         <td>{{ user_story.technical_priority }}</td>
                                         <td>{{ user_story.final_priority }}</td>

@@ -35,7 +35,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="createProjectForm" action="{% url 'gestionar_roles.store' %}" method="post">
+            <form id="createRoleForm" action="{% url 'gestionar_roles.store' %}" method="post">
                 {% csrf_token %}
 
 
@@ -81,4 +81,52 @@
 
     </section>
 
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script>
+        //validations rules
+        $(function () {
+
+            $('#createRoleForm').validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 4
+                    },
+                    description: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 500
+                    }
+
+                },
+                messages: {
+                    name: {
+                        required: "El nombre es obligatorio",
+                        minlength: "Ingrese un minimo de 4 caracteres"
+                    },
+                    description: {
+                        required: "La descripcion del rol es obligatoria",
+                        minlength: "Ingrese un minimo de 4 caracteres",
+                        maxLength: "Ingrese un maximo de 500 caracteres"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
 {% endblock %}

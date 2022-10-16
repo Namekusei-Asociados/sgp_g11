@@ -25,7 +25,7 @@
             <div class="card-header">
                 <h3 class="card-title">Importar Tipos de Us</h3>
             </div>
-            <form id="importRole" action="{% url 'type_us.import_type_us' id_project %}" method="post">
+            <form id="importTypeUsForm" action="{% url 'type_us.import_type_us' id_project %}" method="post">
                 <div class="card-body">
                     {% csrf_token %}
 
@@ -33,11 +33,13 @@
 
                     <div class="form-group">
                         <label>Tipos</label>
-                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion" name="types"
+                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion"
+                                name="types"
                                 data-dropdown-css-class="select2-purple"
-                                style="width: 100%;" id="id_types" required>
+                                style="width: 100%;" id="id_types">
                             {% for typeUs in typesUs %}
-                                <option data-id-project="{{ typeUs.project_id }}" value="{{ typeUs.id }}">{{ typeUs.name }}</option>
+                                <option data-id-project="{{ typeUs.project_id }}"
+                                        value="{{ typeUs.id }}">{{ typeUs.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -63,11 +65,36 @@
                 var $typesvar = $('#id_types');
                 var $typesoptions = $typesvar.find('option');
                 $projectvar.on('change', function () {
-                    $typesvar.html($typesoptions.filter('[data-id-project="'+this.value+'"]'
+                    $typesvar.html($typesoptions.filter('[data-id-project="' + this.value + '"]'
                     ));
                 }).trigger('change');
             });
+            $('#importTypeUsForm').validate({
+                rules: {
+                    types: {
+                        required: true
+                    }
+
+                },
+                messages: {
+                    types: {
+                        required: "Debe seleccionar al menos un tipo de US"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
         });
+
     </script>
 
 

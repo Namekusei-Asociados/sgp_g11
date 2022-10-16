@@ -2,15 +2,16 @@ from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
+from projects.decorators import permission_proj_required
 from projects.models import Project
 from user_story.models import UserStory
+from utilities.UPermissionsProj import UPermissionsProject
 from .models import Sprint, SprintMember
 
 
 # Create your views here.
 
-
+@permission_proj_required(UPermissionsProject.READ_SPRINT)
 def index(request, id_project):
     """
     Devuelve la lista de sprints del proyecto
@@ -20,7 +21,7 @@ def index(request, id_project):
 
     :return: documento HTML
     """
-    sprints = Sprint.objects.filter(project_id=id_project)
+    sprints = Sprint.objects.filter(project_id=id_project).order_by('id')
     existsPlanning = False
 
     for sprint in sprints:
@@ -36,6 +37,7 @@ def index(request, id_project):
     return render(request, 'sprint/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT)
 def create_sprint(request, id_project):
     """
     Devuelve el template para crear un nuevo sprint
@@ -53,6 +55,7 @@ def create_sprint(request, id_project):
     return render(request, 'sprint/create_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT)
 def validate_create_sprint(request, id_project):
     """
     Función para guardar un nuevo sprint
@@ -98,6 +101,7 @@ def numbersSprint(id_project):
     return Sprint.objects.filter(project_id=id_project).count() + 1
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT)
 def edit_sprint(request, id_project, id_sprint):
     """
     Retorna el template para editar un sprint
@@ -118,6 +122,7 @@ def edit_sprint(request, id_project, id_sprint):
     return render(request, 'sprint/edit_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT)
 def validate_edit_sprint(request, id_project):
     """
     Actualiza los datos que se están editando de un sprint
@@ -142,6 +147,7 @@ def validate_edit_sprint(request, id_project):
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT)
 def cancel_sprint(request, id_project, id_sprint):
     """
     Devuelve un template solicitando el motivo de la cancelación del sprint
@@ -162,6 +168,7 @@ def cancel_sprint(request, id_project, id_sprint):
     return render(request, 'sprint/cancel_sprint.html', context)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT)
 def validate_cancel_sprint(request, id_project):
     """
     Guarda el motivo de la cancelación de un sprint y realiza la
@@ -183,6 +190,7 @@ def validate_cancel_sprint(request, id_project):
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT)
 def sprint(request, id_project, id_sprint):
     """
     Retorna el documento HTML con la vista de un sprint dentro de un proyecto
@@ -201,6 +209,11 @@ def sprint(request, id_project, id_sprint):
     return render(request, 'sprint/base/app.html', context)
 
 
+##################################################################
+###################### SRPINT MEMBER #############################
+##################################################################
+
+@permission_proj_required(UPermissionsProject.READ_SPRINTMEMBER)
 def members(request, id_project, id_sprint):
     """
     Muestra la lista de miembros de un sprint
@@ -222,6 +235,7 @@ def members(request, id_project, id_sprint):
     return render(request, 'sprint/members/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINTMEMBER)
 def add_member(request, id_project, id_sprint):
     """
     Devuelve la página para añadir un miembro a un sprint
@@ -249,6 +263,7 @@ def add_member(request, id_project, id_sprint):
     return render(request, 'sprint/members/create.html', context)
 
 
+@permission_proj_required(UPermissionsProject.CREATE_SPRINTMEMBER)
 def store_member(request, id_project, id_sprint):
     """
     Agrega un miembro a un sprint, con su respectiva carga horaria diaria
@@ -270,6 +285,7 @@ def store_member(request, id_project, id_sprint):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINTMEMBER)
 def edit_member(request, id_project, id_sprint, member_id):
     """
     Muestra los datos para la edición de un miembro de un Sprint
@@ -293,6 +309,7 @@ def edit_member(request, id_project, id_sprint, member_id):
     return render(request, 'sprint/members/edit.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINTMEMBER)
 def update_member(request, id_project, id_sprint):
     """
     Guarda los cambios realizados sobre un miembro de un sprint
@@ -315,6 +332,7 @@ def update_member(request, id_project, id_sprint):
                     request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINTMEMBER)
 def delete_member(request, id_project, id_sprint, member_id):
     """
     Elimina un miembro de un sprint
@@ -340,6 +358,7 @@ def delete_member(request, id_project, id_sprint, member_id):
     return redirect(reverse('sprints.members.index', kwargs=kwargs), request)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT_BACKLOG)
 def sprint_backlog(request, id_project, id_sprint):
     """
     Muestra el backlog de un sprint
@@ -360,6 +379,7 @@ def sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def add_sprint_backlog(request, id_project, id_sprint):
     """
     Muestra la página para agregar historias de usuario a un sprint
@@ -383,6 +403,7 @@ def add_sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/create.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def store_sprint_backlog(request, id_project, id_sprint):
     """
     Guarda la historia de usuario en el backlog de un sprint con su respectivo encargado y
@@ -439,6 +460,7 @@ def get_sprint_member(id_sprint):
     return SprintMember.objects.filter(sprint_id=id_sprint)
 
 
+@permission_proj_required(UPermissionsProject.READ_SPRINT_BACKLOG)
 def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
     """
     Muestra los detalles de una historia de usuario del sprint backlog
@@ -462,6 +484,7 @@ def details_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return render(request, 'sprint/sprint_backlog/details.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
     """
     Muestra la página para editar los detalles de una historia de usuario dentro del sprint backlog
@@ -486,6 +509,7 @@ def edit_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return render(request, 'sprint/sprint_backlog/edit.html', context)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
 def update_sprint_backlog(request, id_project, id_sprint):
     """
     Guarda los cambios realizados a la historia de usuario dentro del sprint backlog
@@ -513,6 +537,7 @@ def update_sprint_backlog(request, id_project, id_sprint):
     return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_SPRINT_BACKLOG)
 def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
     """
     Elimina una historia de usuario del sprint backlog

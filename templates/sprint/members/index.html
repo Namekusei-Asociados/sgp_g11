@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block content %}
-    {% has_perm_project user id_project 'Create projectmember' as can_create %}
-    {% has_perm_project user id_project 'Update projectmember' as can_edit %}
-    {% has_perm_project user id_project 'Delete projectmember' as can_delete %}
+    {% has_perm_project user id_project 'Create sprintmember' as can_create %}
+    {% has_perm_project user id_project 'Update sprintmember' as can_edit %}
+    {% has_perm_project user id_project 'Delete sprintmember' as can_delete %}
     <br>
     <section class="content">
         {% include 'base/components/success-message.html' %}

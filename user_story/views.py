@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -43,11 +45,14 @@ def validate_create_user_story(request, id_project):
     us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
 
+    # obetenemos el primer estado del tipo de US
+    initial_status = UserStory.objects.get_initial_status(id_type_us=us_type)
+
     UserStory.objects.create(
         title=title, description=description,
         business_value=business_value, technical_priority=technical_priority,
         estimation_time=estimation_time, final_priority=final_priority,
-        project_id=id_project, us_type_id=us_type
+        project_id=id_project, us_type_id=us_type, current_status=initial_status,
     )
 
     message = 'La historia de usuario "' + title + '" fue creada con éxito'
@@ -186,7 +191,16 @@ def backlog(request, id_project):
 
     :return: documento HTML del backlog de un proyecto
     """
-    user_stories = UserStory.objects.filter(project_id=id_project)
+    user_stories_data = UserStory.objects.filter(project_id=id_project)
+    final_us = []
+    not_final_us = []
+    #dividimos entre estados finales y no finales
+    for us in user_stories_data:
+        if UserStory.objects.is_final_status(us.id):
+            final_us.append(us)
+        else:
+            not_final_us.append(us)
+    user_stories = chain(not_final_us, final_us)
     context = {
         'id_project': id_project,
         'user_stories': user_stories
