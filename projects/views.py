@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -29,9 +31,11 @@ def index(request):
     # get all projects related to the current user
     user = request.user
     if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
-        projects = Project.objects.all().order_by('id')
+        admin_projects = user.project_set.all().order_by('updated_at').reverse()
+        projects_all = Project.objects.all().exclude(projectmember__user_id=user.id).order_by('updated_at').reverse()
+        projects = chain(admin_projects, projects_all)
     else:
-        projects = user.project_set.all().order_by('id')
+        projects = user.project_set.all().order_by('updated_at').reverse()
 
     return render(request, 'projects/index.html', {"projects": projects})
 
@@ -250,7 +254,7 @@ def update_member(request, id_project, member_id):
     isScrumMaster = ProjectMember.objects.filter(user_id=member_id, project_id=id_project,
                                                  roles__role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
     if isScrumMaster:
-        sm = RoleProject.objects.get(role_name=UProjectDefaultRoles.SCRUM_MASTER,project_id=id_project)
+        sm = RoleProject.objects.get(role_name=UProjectDefaultRoles.SCRUM_MASTER, project_id=id_project)
         roles.append(sm)
 
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
