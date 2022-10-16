@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.urls import reverse
 from type_us.forms import ImportTypeUs
 from type_us.models import TypeUS
-
+from utilities.UPermissionsProj import UPermissionsProject
+from sgp.templatetags import has_perm_project as PermFun
 
 # Create your views here.
 @permission_proj_required('Read typeus')
@@ -65,6 +66,8 @@ def store(request, id_project):
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" fue creado exitosamente')
     return redirect(reverse('type_us.create', kwargs={'id_project': id_project}), request)
+
+@permission_proj_required(UPermissionsProject.UPDATE_TYPEUS)
 def update(request, id_project, id):
     """
     Actualiza un nuevo recurso del modelo TypeUS
@@ -83,18 +86,21 @@ def update(request, id_project, id):
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se actualizo exitosamente')
     return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
+@permission_proj_required(UPermissionsProject.DELETE_TYPEUS)
 def destroy(request, id_project, id):
     """
     ELimina un registro del modelo TypeUs
 
     :param request:
     """
-    # update type us
-    type_us = TypeUS.objects.get(id=id)
-    type_us.delete()
+    if PermFun.can_delete_type_us(id):
+        # delete type us
+        type_us = TypeUS.objects.get(id=id)
+        type_us.delete()
+        messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se elimino exitosamente')
+    else:
+        messages.error(request, 'El tipo de historia de usuario esta en uso y no puede ser eliminado')
 
-    # redirect back with success message
-    messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se elimino exitosamente')
     return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
 
 
