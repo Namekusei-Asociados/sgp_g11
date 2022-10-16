@@ -10,11 +10,12 @@ from django.urls import reverse
 
 from type_us.forms import ImportTypeUs
 from type_us.models import TypeUS
+from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 
 
 # Create your views here.
-@permission_proj_required('Read typeus')
+@permission_proj_required(UPermissionsProject.READ_TYPEUS)
 def index(request, id_project):
     """
      Obtiene todos los type_us relacionados al proyecto actual
@@ -25,11 +26,11 @@ def index(request, id_project):
     """
     # get all projects related to the current user
     project = Project.objects.get(id=id_project)
-    types_us = project.typeus_set.all()
+    types_us = project.typeus_set.all().order_by('id')
     return render(request, 'type_us/index.html', {"types_us": types_us, "id_project": id_project})
 
 
-@permission_proj_required('Create typeus')
+@permission_proj_required(UPermissionsProject.CREATE_TYPEUS)
 def create(request, id_project):
     """
     Retorna un formulario de creacion para Tipos de historias de usuario
@@ -52,7 +53,7 @@ def edit(request, id_project, id):
     return render(request, 'type_us/edit.html', {'flow': flow, 'id_project': id_project, 'type_us': type_us})
 
 
-@permission_proj_required('Create typeus')
+@permission_proj_required(UPermissionsProject.CREATE_TYPEUS)
 def store(request, id_project):
     """
     Crea un nuevo recurso del modelo TypeUS
@@ -90,8 +91,16 @@ def update(request, id_project, id):
     return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
 
 
-@permission_proj_required('Import typeus')
+@permission_proj_required(UPermissionsProject.IMPORT_TYPEUS)
 def import_type_us(request, id_project):
+    """
+        Importacion de roles de proyectos
+
+        :param request: posee los campos
+        :param id_project: id del proyecto actual
+
+        :return: Documento Html
+        """
     if request.method == "POST":
         types_to_import = request.POST.getlist("types")
         form = ImportTypeUs(id_project, request.POST)

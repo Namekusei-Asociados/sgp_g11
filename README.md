@@ -1,16 +1,15 @@
-# Project management system
+# Sistema de Gestión de Proyectos
 
-#### Following the next steps to run the project 
+#### Sigue los pasos para ejecutar el proyecto
 
-First install all dependencies comming from requirements.txt 
+* Instale las dependecias que están en requirements.txt 
 
-Then run the following commands
+Para ejecutar, siga los sigueientes comandos
 
 ```
-  - python3 manage.py makemigrations
-  - python3 manage.py migrate
-  - python3 manage.py runserver
-  
+  python3 manage.py makemigrations
+  python3 manage.py migrate
+  python3 manage.py runserver
 ```
 
 !Remember to add your `.env` file for your local environment!
@@ -25,7 +24,6 @@ pytest
 ```
 
 ## Documentación
-Para generar la documentación automática, ejecutar los comandos en /docs/
+Para generar la documentación automática, ejecutar
 ```
-sphinx-apidoc -o . ..
-make html
+./scripts/doc.sh

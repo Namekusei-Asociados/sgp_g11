@@ -7,7 +7,7 @@ from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .forms import ImportRole
-from .models import Project, RoleProject, PermissionsProj
+from .models import Project, RoleProject, PermissionsProj, ProjectMember
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
@@ -29,9 +29,9 @@ def index(request):
     # get all projects related to the current user
     user = request.user
     if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
-        projects = Project.objects.all()
+        projects = Project.objects.all().order_by('id')
     else:
-        projects = user.project_set.all()
+        projects = user.project_set.all().order_by('id')
 
     return render(request, 'projects/index.html', {"projects": projects})
 
@@ -190,7 +190,7 @@ def members(request, id_project):
 
     :return: documento html
     """
-    members = Project.objects.get_project_members(id_project)
+    members = Project.objects.get_project_members(id_project).order_by('id')
     print(members)
     return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
 
@@ -247,6 +247,12 @@ def update_member(request, id_project, member_id):
     # attach new members to the project
     project = Project.objects.get(id=id_project)
     roles = [RoleProject.objects.get(id=item) for item in roles_id]
+    isScrumMaster = ProjectMember.objects.filter(user_id=member_id, project_id=id_project,
+                                                 roles__role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+    if isScrumMaster:
+        sm = RoleProject.objects.get(role_name=UProjectDefaultRoles.SCRUM_MASTER,project_id=id_project)
+        roles.append(sm)
+
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
 
     messages.success(request, 'El miembro se actualizo con exito')
@@ -309,7 +315,7 @@ def create_role(request, id_project):
 
     :return: documento html
     """
-    permission = PermissionsProj.objects.all()
+    permission = PermissionsProj.objects.all().order_by('id')
     return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
 
 
@@ -366,7 +372,7 @@ def edit_role(request, id_project, id):
     """
     # get project
     role = RoleProject.objects.get(id=id)
-    permissions = PermissionsProj.objects.all()
+    permissions = PermissionsProj.objects.all().order_by('id')
     perms_role = role.perms.all()
     return render(request, 'roles/edit.html',
                   {'role': role, 'permissions': permissions, 'perms_role': perms_role, "id_project": id_project,
@@ -420,8 +426,16 @@ def delete_role(request, id_project, id):
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
 
 
-@permission_proj_required('Import role')
+@permission_proj_required(UPermissionsProject.IMPORT_ROLE)
 def import_role(request, id_project):
+    """
+    Importacion de roles de proyectos
+
+    :param request: posee los campos
+    :param id_project: id del proyecto actual
+
+    :return: Documento Html
+    """
     if request.method == "POST":
         roles_project = request.POST.getlist("roles")
         form = ImportRole(id_project, request.POST)
