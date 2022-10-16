@@ -11,6 +11,7 @@
     {% has_perm_project user id_project 'Create typeus' as can_create_typeus %}
     {% has_perm_project user id_project 'Import typeus' as can_import_typeus %}
     {% has_perm_project user id_project 'Update typeus' as can_update_typeus %}
+    {% has_perm_project user id_project 'Delete typeus' as can_delete_typeus %}
 
     <!-- Main content -->
     <section class="content">
@@ -96,25 +97,33 @@
                                 </td>
 
 
-                                <td class="project-actions text-right">
+                                <td class="project-actions d-flex" style="gap: 5px">
                                     {#                                    <a class="btn btn-primary btn-sm" href="#">#}
                                     {#                                        <i class="fas fa-folder">#}
                                     {#                                        </i>#}
                                     {#                                        Ver#}
                                     {#                                    </a>#}
                                     {% if can_update_typeus %}
-                                        <a class="btn btn-info btn-sm" href="{% url 'type_us.edit' id_project type_us.id %}">
+                                        <a class="btn btn-info btn-sm"
+                                           href="{% url 'type_us.edit' id_project type_us.id %}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Editar
                                         </a>
                                     {% endif %}
 
-                                    {#                                    <a class="btn btn-danger btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-trash">#}
-                                    {#                                        </i>#}
-                                    {#                                        Delete#}
-                                    {#                                    </a>#}
+                                    {% can_delete_type_us type_us.id as ban %}
+
+                                    {% if can_delete_typeus and ban %}
+                                        <form action="{% url 'type_us.delete' id_project type_us.id %}" method="post" class="m-0 p-0">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
