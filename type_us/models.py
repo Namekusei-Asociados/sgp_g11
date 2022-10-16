@@ -45,6 +45,11 @@ class TypeUSManager(models.Manager):
         flow = json.loads(type_us.flow)
         return flow[-1]
 
+    def get_initial_status(self, id_type_us):
+        type_us = TypeUS.objects.get(id=id_type_us)
+        flow = json.loads(type_us.flow)
+        return flow[0]
+
 # Create your models here.
 class TypeUS(models.Model):
     prefix = models.CharField(max_length=50)
