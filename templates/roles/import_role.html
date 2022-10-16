@@ -1,0 +1,77 @@
+{% extends 'projects/base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Importar Roles
+{% endblock %}
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+
+{% endblock %}
+{% block content %}
+
+    {% include 'base/components/success-message.html' %}
+    <!--MESSAGES END-->
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card card-primary m-2">
+            <div class="card-header">
+                <h3 class="card-title">Importar Roles</h3>
+            </div>
+            <form id="importRole" action="{% url 'projects.import_role' id_project %}" method="post">
+                <div class="card-body">
+                    {% csrf_token %}
+
+                    {{ form }}
+
+                    <div class="form-group">
+                        <label>Roles</label>
+                        <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion"
+                                name="roles"
+                                data-dropdown-css-class="select2-purple"
+                                style="width: 100%;" id="id_roles" required>
+                            {% for role in roles %}
+                                <option data-id-project="{{ role.project_id }}"
+                                        value="{{ role.id }}">{{ role.role_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary" value="Importar">
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+
+    <script>
+        $(function () {
+            $('.select2').select2();
+            $(document).ready(function () {
+
+                var $projectvar = $('#id_projects');
+                var $rolesvar = $('#id_roles');
+                var $rolesoptions = $rolesvar.find('option');
+                $projectvar.on('change', function () {
+                    $rolesvar.html($rolesoptions.filter('[data-id-project="'+this.value+'"]'
+                    ));
+                }).trigger('change');
+            });
+        });
+    </script>
+
+
+{% endblock %}

@@ -498,9 +498,11 @@ def update_sprint_backlog(request, id_project, id_sprint):
     """
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
+    estimation_time = request.POST['estimation_time']
 
     user_story = UserStory.objects.get(id=id_user_story)
     user_story.assigned_to_id = id_member
+    user_story.estimation_time = estimation_time
     user_story.save()
 
     kwargs = {

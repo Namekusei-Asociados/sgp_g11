@@ -101,14 +101,20 @@
                                         badge-warning
                                     {% elif project.status == 'canceled' %}
                                         badge-danger
-                                    {% endif %}">{{ project.status.capitalize }}</span>
+                                    {% elif project.status == 'in execution' %}
+                                        badge-info
+                                    {% endif %}">{{    project.status.capitalize}}</span>
                                 </td>
                                 <td class="project-actions d-flex justify-content-end" style="gap:10px">
-                                    <a class="btn btn-primary btn-sm" href="{% url 'projects.dashboard' project.id %}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Ver
-                                    </a>
+                                    {% is_member user project.id as ban %}
+                                    {% if ban %}
+                                        <a class="btn btn-primary btn-sm"
+                                           href="{% url 'projects.dashboard' project.id %}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Ver
+                                        </a>
+                                    {% endif %}
                                     {% has_perm_project user project.id 'Update project' as ban %}
                                     {% if ban and project.status != 'canceled' %}
                                         <a class="btn btn-info btn-sm" href="{% url 'projects.edit' project.id %}">
@@ -117,6 +123,18 @@
                                             Editar
                                         </a>
                                     {% endif %}
+
+                                    {% has_perm_project user project.id 'Initialize project' as ban %}
+                                    {% if ban and project.status == 'pending' %}
+                                        <form class="m-0 p-0"
+                                              action="{% url 'projects.init_project' project.id %}">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fa fa-play" aria-hidden="true"></i>
+                                                Iniciar Proyecto
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
                                     {% has_perm_project user project.id 'Cancel project' as ban %}
                                     {% if ban and project.status != 'canceled' %}
                                         <form class="m-0 p-0"

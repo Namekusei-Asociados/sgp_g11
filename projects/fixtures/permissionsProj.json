@@ -179,8 +179,32 @@
     "model": "projects.PermissionsProj",
     "pk": 23,
     "fields": {
-      "name":"Delete sprint",
-      "description":"Puede eliminar sprint"
+      "name":"Cancel sprint",
+      "description":"Puede cancelar sprint"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 24,
+    "fields": {
+      "name":"Import role",
+      "description":"Puede importar roles"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 25,
+    "fields": {
+      "name":"Import typeus",
+      "description":"Puede importar typeus"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 26,
+    "fields": {
+      "name":"Initialize project",
+      "description":"Puede iniciar un proyecto"
     }
   }
 ]

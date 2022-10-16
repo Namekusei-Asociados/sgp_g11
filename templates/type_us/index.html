@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+    {% has_perm_project user id_project 'Create typeus' as can_create_typeus %}
+    {% has_perm_project user id_project 'Import typeus' as can_import_typeus %}
+    {% has_perm_project user id_project 'Update typeus' as can_update_typeus %}
 
     <!-- Main content -->
     <section class="content">
@@ -33,15 +36,19 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% has_perm_project user id_project 'Create typeus' as ban %}
-                    {% if ban %}
+                    {% if can_create_typeus %}
                         <a class="btn btn-primary btn-sm" href="{% url 'type_us.create' id_project %}">
                             <i class="fas fa-plus">
                             </i>
                             Crear
                         </a>
                     {% endif %}
-
+                    {% if can_import_typeus %}
+                        <a href="{% url 'type_us.import_type_us' id_project %}" class="btn btn-info btn-sm">
+                            <i class="nav-icon fas fa-download"></i>
+                            Importar
+                        </a>
+                    {% endif %}
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -95,11 +102,14 @@
                                     {#                                        </i>#}
                                     {#                                        Ver#}
                                     {#                                    </a>#}
-                                    {#                                    <a class="btn btn-info btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-pencil-alt">#}
-                                    {#                                        </i>#}
-                                    {#                                        Editar#}
-                                    {#                                    </a>#}
+                                    {% if can_update_typeus %}
+                                        <a class="btn btn-info btn-sm" href="{% url 'type_us.edit' id_project type_us.id %}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Editar
+                                        </a>
+                                    {% endif %}
+
                                     {#                                    <a class="btn btn-danger btn-sm" href="#">#}
                                     {#                                        <i class="fas fa-trash">#}
                                     {#                                        </i>#}
@@ -108,16 +118,11 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                        {% if projects.count == 0 %}
+                        {% if types_us.count == 0 %}
                             <tr class="text-center">
-                                <td colspan="6"><span class="text-danger">Aun no perteneces a ningun proyecto!</span>
+                                <td colspan="6"><span class="text-danger">Aun no posees ningun registro!</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
-                                <td colspan="6"><span class="text-warning">Contacte con el administrador de su empresa para ser agregado a un proyecto </span>
-                                </td>
-                            </tr>
-
                         {% endif %}
                         </tbody>
                     </table>

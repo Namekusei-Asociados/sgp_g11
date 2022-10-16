@@ -8,6 +8,11 @@
 {% endblock %}
 
 {% block content %}
+    {% has_perm_project user id_project 'Create role' as can_create_role %}
+
+    {% has_perm_project user id_project 'Update role' as can_update_role %}
+    {% has_perm_project user id_project 'Delete role' as can_delete_role %}
+    {% has_perm_project user id_project 'Import role' as can_import_role %}
 
     <!-- Main content -->
     <section class="content">
@@ -33,15 +38,19 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% has_perm_project user id_project 'Create role' as ban %}
-                    {% if ban %}
+                    {% if can_create_role %}
                         <a class="btn btn-primary btn-sm" href="{% url 'projects.create_role' id_project %}">
                             <i class="fas fa-plus">
                             </i>
                             Crear
                         </a>
                     {% endif %}
-
+                    {% if can_import_role %}
+                        <a href="{% url 'projects.import_role' id_project %}" class="btn btn-info btn-sm">
+                            <i class="nav-icon fas fa-download"></i>
+                            Importar
+                        </a>
+                    {% endif %}
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -89,8 +98,8 @@
                                     {#                                        </i>#}
                                     {#                                        View#}
                                     {#                                    </a>#}
-                                    {% has_perm_project user id_project 'Update role' as ban %}
-                                    {% if ban %}
+
+                                    {% if can_update_role %}
                                         <a class="btn btn-info btn-sm"
                                            href="{% url 'projects.edit_role' id_project role.id %}">
                                             <i class="fas fa-pencil-alt">
@@ -98,8 +107,7 @@
                                             Editar
                                         </a>
                                     {% endif %}
-                                    {% has_perm_project user id_project 'Delete role' as ban %}
-                                    {% if ban and role.role_name != 'Scrum Master' %}
+                                    {% if can_delete_role and role.role_name != 'Scrum Master' %}
                                         <a class="btn btn-danger btn-sm"
                                            href="{% url 'projects.delete_role' id_project role.id %}">
                                             <i class="fas fa-trash">

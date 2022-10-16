@@ -44,12 +44,23 @@
                         <select class="form-control" name="id_member" id="id_member" required>
 {#                            <option>Seleccione a quien se le asigna el US</option>#}
                             {% for member in members %}
-                                <option value="{{ member.id }}" {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
+                                <option value="{{ member.id }}"
+                                        {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
                                     {{ member.user.username }}
                                     | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}
                                 </option>
                             {% endfor %}
                         </select>
+                    </div>
+
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label for="id_estimation_time">Estimación (en horas)</label>
+                        <input type="number" ondrop="return false;" onpaste="return false;"
+                               onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                               name="estimation_time" class="form-control"
+                               id="id_estimation_time" value="{{ user_story.estimation_time }}"
+                               placeholder="Enter Estimation Time">
                     </div>
                 </div>
                 <!-- /.card-body -->

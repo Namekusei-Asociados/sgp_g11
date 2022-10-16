@@ -48,13 +48,21 @@
                                 <tr>
                                     <th>Username</th>
                                     <th>Email</th>
-                                    <th colspan="2">Action</th>
+                                    <th colspan="2">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for member in members %}
                                     <tr>
-                                        <td> {{ member.user.username }}</td>
+
+                                        <td>
+                                            {% is_scrum_master member as ban %}
+                                            {% if ban %}
+                                                <i class="fas fa-crown"></i>
+                                            {% endif %}
+                                            {{ member.user.username }}
+                                        </td>
+
                                         <td> {{ member.user.email }}</td>
 
                                         <td class="d-flex" style="gap: 5px">
@@ -68,7 +76,7 @@
                                                 </a>
                                             {% endif %}
 
-                                            {% if can_delete%}
+                                            {% if can_delete %}
                                                 <form action="{% url 'projects.members.delete' id_project member.user.id %}"
                                                       method="post">
                                                     {% csrf_token %}
