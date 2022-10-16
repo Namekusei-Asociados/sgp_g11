@@ -1,16 +1,11 @@
 import json
-
 from django.shortcuts import render, redirect
-
 from projects.decorators import permission_proj_required
 from projects.models import Project
-from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
-
 from type_us.forms import ImportTypeUs
 from type_us.models import TypeUS
-from utilities.UProject import UProject
 
 
 # Create your views here.
@@ -87,6 +82,19 @@ def update(request, id_project, id):
 
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se actualizo exitosamente')
+    return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
+def destroy(request, id_project, id):
+    """
+    ELimina un registro del modelo TypeUs
+
+    :param request:
+    """
+    # update type us
+    type_us = TypeUS.objects.get(id=id)
+    type_us.delete()
+
+    # redirect back with success message
+    messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se elimino exitosamente')
     return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
 
 
