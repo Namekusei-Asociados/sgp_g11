@@ -7,7 +7,7 @@ from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .forms import ImportRole
-from .models import Project, RoleProject, PermissionsProj
+from .models import Project, RoleProject, PermissionsProj, ProjectMember
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
@@ -247,6 +247,12 @@ def update_member(request, id_project, member_id):
     # attach new members to the project
     project = Project.objects.get(id=id_project)
     roles = [RoleProject.objects.get(id=item) for item in roles_id]
+    isScrumMaster = ProjectMember.objects.filter(user_id=member_id, project_id=id_project,
+                                                 roles__role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+    if isScrumMaster:
+        sm = RoleProject.objects.get(role_name=UProjectDefaultRoles.SCRUM_MASTER,project_id=id_project)
+        roles.append(sm)
+
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
 
     messages.success(request, 'El miembro se actualizo con exito')
