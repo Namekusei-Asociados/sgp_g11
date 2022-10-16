@@ -58,7 +58,7 @@
                                 <tbody>
                                 {% for user_story in user_stories %}
                                     <tr>
-                                        <td>{{ user_story.title }} | {{ user_story.us_type.prefix }}</td>
+                                        <td>{{ user_story.us_type.prefix }}-{{ user_story.title }}</td>
                                         <td><span class="badge
                                             {% current_status user_story.id as status %}
                                             {% if status == 'initial' %}

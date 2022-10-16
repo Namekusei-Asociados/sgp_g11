@@ -339,9 +339,11 @@ def sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
 
-@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT_BACKLOG)
 def add_sprint_backlog(request, id_project, id_sprint):
-    user_stories = get_user_stories(id_project)
+    #agregamos los us no finalizados y ademas lo no existentes
+    user_stories = UserStory.objects.get_us_non_finished(id_project=id_project).exclude(project_id=id_project,
+                                                                                        sprint_id=id_sprint)
     members = get_sprint_member(id_sprint)
 
     context = {
@@ -353,7 +355,7 @@ def add_sprint_backlog(request, id_project, id_sprint):
     return render(request, 'sprint/sprint_backlog/create.html', context)
 
 
-@permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
+@permission_proj_required(UPermissionsProject.CREATE_SPRINT_BACKLOG)
 def store_sprint_backlog(request, id_project, id_sprint):
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
