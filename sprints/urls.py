@@ -11,7 +11,7 @@ urlpatterns = [
     path('validate_cancel_sprint/', views.validate_cancel_sprint, name="sprints.validate_cancel_sprint"),
 
     # View sprint
-    path('<int:id_sprint>/', views.sprint, name="sprints.sprint"),
+    path('<int:id_sprint>/dashboard', views.dashboard, name='sprints.dashboard'),
 
     # Members
     path('<int:id_sprint>/members', views.members, name='sprints.members.index'),

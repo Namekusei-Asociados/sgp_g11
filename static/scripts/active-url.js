@@ -7,7 +7,6 @@ function getActiveNavOption(){
         if (e.getAttribute('data-section-active') === activeSection){
             e.classList.add('active')
         }
-        console.log('hola')
     })
 }
 getActiveNavOption()

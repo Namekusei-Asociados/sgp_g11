@@ -32,67 +32,67 @@
             </div>
 
 
-{#            <div class="row">#}
-{#                <div class="col-lg-3 col-6">#}
-{#                    <!-- small box -->#}
-{#                    <div class="small-box bg-info">#}
-{#                        <div class="inner">#}
-{#                            <h3>{{ project.members.count }}</h3>#}
-{##}
-{#                            <p>Miembros</p>#}
-{#                        </div>#}
-{#                        <div class="icon">#}
-{#                            <i class="ion ion-person-add"></i>#}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-{#                </div>#}
-{#                <!-- ./col -->#}
-{#                <div class="col-lg-3 col-6">#}
-{#                    <!-- small box -->#}
-{#                    <div class="small-box bg-success">#}
-{#                        <div class="inner">#}
-{#                            <h3>{{  project.name }}</h3>#}
-{##}
-{#                            <p>Nombre del projecto</p>#}
-{#                        </div>#}
-{#                        <div class="icon">#}
-{#                            <i class="ion ion-stats-bars"></i>#}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-{#                </div>#}
-{#                <!-- ./col -->#}
-{#                <div class="col-lg-3 col-6">#}
-{#                    <!-- small box -->#}
-{#                    <div class="small-box bg-warning">#}
-{#                        <div class="inner">#}
-{#                            <h3 class="text-white"> {{ project.created_at.date }}</h3>#}
-{##}
-{#                            <p class="text-white">Fecha de creacion</p>#}
-{#                        </div>#}
-{#                        <div class="icon">#}
-{#                            <i class="ion ion-bag"></i>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <!-- ./col -->#}
-{#                <div class="col-lg-3 col-6">#}
-{#                    <!-- small box -->#}
-{#                    <div class="small-box bg-danger">#}
-{#                        <div class="inner">#}
-{#                            <h3>-</h3>#}
-{##}
-{#                            <p>Acciones</p>#}
-{#                        </div>#}
-{#                        <div class="icon">#}
-{#                            <i class="ion ion-pie-graph"></i>#}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-{#                </div>#}
-{#                <!-- ./col -->#}
-{#            </div>#}
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{ sprint.members.count }}</h3>
+
+                            <p>Miembros</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{  sprint.sprint_name }}</h3>
+
+                            <p>Nombre del Sprint</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 class="text-white"> {{ sprint.capacity }}</h3>
+
+                            <p class="text-white">Capacidad</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{ sprint.duration }} dias</h3>
+
+                            <p>Duracion</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
         </div>
     </section>
 

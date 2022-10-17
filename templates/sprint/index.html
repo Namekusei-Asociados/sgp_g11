@@ -52,7 +52,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover text-nowrap projects">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -82,6 +82,7 @@
                                         {% endfor %}
                                     </ul>
                                 </td>
+
                                 <td>
                                     <span class="badge
                                     {% if sprint.status == 'Finalizado' %}
@@ -96,7 +97,7 @@
                                 </td>
                                 <td>{{ sprint.duration }} días</td>
                                 <td class="d-flex" style="gap: 5px">
-                                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.sprint' id_project sprint.id %}">
+                                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.dashboard' id_project sprint.id %}">
                                         <i class="fas fa-folder">
                                         </i>
                                         Ver

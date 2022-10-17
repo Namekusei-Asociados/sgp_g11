@@ -91,6 +91,14 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                {% if members.count == 0 %}
+                                    <tr class="text-center">
+                                        <td colspan="6"><span
+                                                class="text-danger">Aun no posees ningun registro!</span>
+                                        </td>
+                                    </tr>
+
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>
