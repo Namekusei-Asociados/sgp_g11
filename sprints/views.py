@@ -183,13 +183,18 @@ def cancel_sprint(request, id_project, id_sprint):
     :return: template para ingresar el motivo de la cancelación del sprint
     """
     sprint = Sprint.objects.get(id=id_sprint)
+    is_all_no_finished = UserStory.objects.get_us_non_finished(id_project=id_project).filter(
+        sprint_id=id_sprint).exists()
 
-    context = {
-        'id_project': id_project,
-        'sprint': sprint
-    }
-
-    return render(request, 'sprint/cancel_sprint.html', context)
+    if not is_all_no_finished:
+        context = {
+            'id_project': id_project,
+            'sprint': sprint
+        }
+        return render(request, 'sprint/cancel_sprint.html', context)
+    else:
+        messages.error(request, f'No se puede cancelar un sprint que no tenga sus US en estados finales')
+        return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
 @permission_proj_required(UPermissionsProject.DELETE_SPRINT)
@@ -207,14 +212,10 @@ def validate_cancel_sprint(request, id_project):
     cancellation_reason = request.POST['cancellation_reason']
 
     sprint = Sprint.objects.get(id=id_sprint)
-    is_all_finished = UserStory.objects.get_us_non_finished(id_project=id_project).filter(sprint_id=id_sprint).exists()
-    if is_all_finished:
-        sprint.status = USprint.STATUS_CANCELED
-        sprint.cancellation_reason = cancellation_reason
-        sprint.save()
-        messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
-    else:
-        messages.error(request, f'No se puede cancelar un sprint que no tenga sus US en estados finales')
+    sprint.status = USprint.STATUS_CANCELED
+    sprint.cancellation_reason = cancellation_reason
+    sprint.save()
+    messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
 
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
@@ -469,8 +470,9 @@ def add_sprint_backlog(request, id_project, id_sprint):
         return render(request, 'sprint/sprint_backlog/create.html', context)
     else:
         messages.error(request, 'No se puede agregar un US si no existe miembros en el Sprint')
-        return redirect(reverse('sprints.sprint_backlog.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
-                        request)
+        return redirect(
+            reverse('sprints.sprint_backlog.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+            request)
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
