@@ -112,7 +112,7 @@
                                                 Editar
                                             </button>
                                         </form>
-                                        {% if sprint.status == 'pending' %}
+                                        {% if sprint.status == 'pending' and not exists_execution %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.init_sprint' id_project sprint.id %}">
                                                 <button type="submit" class="btn btn-success btn-sm">

@@ -28,11 +28,13 @@ def index(request, id_project):
     """
     sprints = Sprint.objects.filter(project_id=id_project).order_by('id')
     exists_planning = get_exists_planning(id_project, sprints)
+    exists_execution = get_exists_execution(id_project, sprints)
 
     context = {
         'sprints': sprints,
         'id_project': id_project,
-        'exists_planning': exists_planning
+        'exists_planning': exists_planning,
+        'exists_execution': exists_execution
     }
 
     return render(request, 'sprint/index.html', context)
@@ -701,13 +703,20 @@ def init_sprint(request, id_project, id_sprint):
 
 
 def get_exists_planning(id_project, sprints):
-    exists_planning = False
-
     for sprint in sprints:
         if sprint.status == USprint.STATUS_PENDING:
-            exists_planning = True
+            return True
 
-    return exists_planning
+    return False
+
+
+def get_exists_execution(id_project, sprints):
+    exists_execution = False
+    for sprint in sprints:
+        if sprint.status == USprint.STATUS_IN_EXECUTION:
+            return True
+
+    return False
 
 
 def switch_to_started_sprint(sprint):
