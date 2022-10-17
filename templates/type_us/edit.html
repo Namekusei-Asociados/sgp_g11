@@ -1,9 +1,17 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 {% load has_perm_project %}
 {% block title %}
     | Proyectos
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="type_us"></span>
 {% endblock %}
 
 {% block content %}

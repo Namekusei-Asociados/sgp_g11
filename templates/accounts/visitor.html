@@ -6,6 +6,15 @@
     | Visitante
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="users"></span>
+{% endblock %}
+
+
 {% block content %}
 
     <div class="text-center">

@@ -2,11 +2,22 @@
 {% load has_perm_project %}
 <!-- Sidebar Menu -->
 <nav class="mt-2">
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <ul id="side-bar-options" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+        data-accordion="false">
+
+
+        <li class="nav-item">
+            <a data-section-active="dashboard" href="{% url 'projects.dashboard' id_project %}" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+
+
         {% has_perm_project user id_project 'Read projectmember' as ban %}
         {% if ban %}
             <li class="nav-item">
-                <a href="{% url 'projects.members.index' id_project %}" class="nav-link">
+                <a data-section-active="members" href="{% url 'projects.members.index' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Miembros</p>
                 </a>
@@ -15,7 +26,8 @@
         {% has_perm_project user id_project 'Read role' as ban %}
         {% if ban %}
             <li class="nav-item">
-                <a href="{% url 'projects.index_role' id_project %}" class="nav-link">
+                <a data-section-active="project_roles" href="{% url 'projects.index_role' id_project %}"
+                   class="nav-link">
                     <i class="nav-icon fas fa-user-cog"></i>
                     <p>Roles de proyecto</p>
                 </a>
@@ -25,7 +37,7 @@
         {% if ban %}
 
             <li class="nav-item">
-                <a href="{% url 'type_us.index' id_project %}" class="nav-link">
+                <a data-section-active="type_us" href="{% url 'type_us.index' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-project-diagram"></i>
                     <p>Tipos de US</p>
                 </a>
@@ -34,7 +46,7 @@
         {% has_perm_project user id_project 'Read user_story' as ban %}
         {% if ban %}
             <li class="nav-item">
-                <a href="{% url 'user_story.backlog' id_project %}" class="nav-link">
+                <a data-section-active="backlog" href="{% url 'user_story.backlog' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-table"></i>
                     <p>Backlog</p>
                 </a>
@@ -44,13 +56,14 @@
         {% has_perm_project user id_project 'Read sprint' as ban %}
         {% if ban %}
             <li class="nav-item">
-                <a href="{% url 'sprints.index' id_project %}" class="nav-link">
+                <a data-section-active="sprint" href="{% url 'sprints.index' id_project %}" class="nav-link">
                     <i class="nav-icon fas fa-layer-group"></i>
                     <p>Sprint</p>
                 </a>
             </li>
         {% endif %}
 
+        <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
         <li class="nav-item">
             <a href="{% url 'home' %}" class="nav-link">
                 <i class="nav-icon fas fa-arrow-circle-left"></i>

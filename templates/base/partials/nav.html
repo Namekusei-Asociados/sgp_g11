@@ -4,18 +4,19 @@
 <nav class="mt-2">
     {% if user.role.all.count != 0 %}
 
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul id="side-bar-options" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+            data-accordion="false">
             {% has_perm_system user 'Read user' as ban %}
             {% if ban %}
                 <li class="nav-item">
-                    <a href="{% url 'accounts.index' %}" class="nav-link">
+                    <a data-section-active="users" href="{% url 'accounts.index' %}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Usuarios</p>
                     </a>
                 </li>
             {% endif %}
             <li class="nav-item">
-                <a href="{% url 'projects.index' %} " class="nav-link">
+                <a data-section-active="projects" href="{% url 'projects.index' %} " class="nav-link">
                     <i class="nav-icon fas fa-layer-group"></i>
                     <p>Proyectos</p>
                 </a>
@@ -23,12 +24,21 @@
             {% has_perm_system user 'Read role' as ban %}
             {% if ban %}
                 <li class="nav-item">
-                    <a href="{% url 'gestionar_roles.index' %} " class="nav-link">
+                    <a data-section-active="roles" href="{% url 'gestionar_roles.index' %} " class="nav-link">
                         <i class="nav-icon fas fa-user-cog"></i>
                         <p>Roles de sistema</p>
                     </a>
                 </li>
             {% endif %}
+
+            <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
+            <li class="nav-item">
+                <a href="{% url 'home' %}" class="nav-link">
+                    <i class="nav-icon fas fa-arrow-circle-left"></i>
+                    <p>Volver</p>
+                </a>
+            </li>
+
         </ul>
     {% endif %}
 

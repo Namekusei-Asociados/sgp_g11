@@ -1,10 +1,18 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 {% load has_perm_project %}
 
 {% block title %}
     | Roles
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="project_roles"></span>
 {% endblock %}
 
 {% block content %}
