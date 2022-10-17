@@ -111,7 +111,7 @@
                                         badge-danger
                                     {% elif project.status == 'in execution' %}
                                         badge-info
-                                    {% endif %}">{{    project.status.capitalize}}</span>
+                                    {% endif %}">{{ project.status.capitalize }}</span>
                                 </td>
                                 <td class="project-actions d-flex justify-content-end" style="gap:10px">
                                     {% is_member user project.id as ban %}
