@@ -1,7 +1,7 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
-
+{% load has_perm_project %}
 {% block title %}
     | Proyectos
 {% endblock %}
@@ -23,12 +23,12 @@
         {% include 'base/components/success-message.html' %}
         <!--MESSAGES END-->
 
-        <form id="form" action="{% url 'type_us.store' id_project %}" method="post">
+        <form id="form" action="{% url 'type_us.update' id_project type_us.id %}" method="post">
             {% csrf_token %}
 
             <div class="card card-primary m-2">
                 <div class="card-header">
-                    <h3 class="card-title">Crear Tipo de Historia de Usuario</h3>
+                    <h3 class="card-title">Editar Tipo de Historia de Usuario</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -37,12 +37,12 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="name" class="required">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Reportes">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Reportes" value="{{ type_us.name }}">
                     </div>
 
                     <div class="form-group">
                         <label>Prefijo</label>
-                        <input type="text" class="form-control" name="prefix" id="prefix" placeholder="rep">
+                        <input type="text" class="form-control" name="prefix" id="prefix" placeholder="rep" value="{{ type_us.prefix }}">
                     </div>
 
                     <hr>
@@ -65,46 +65,55 @@
                     </div>
                     <!-- General tools such as edit or delete-->
                     <div class="tools">
-                        <i class="fas fa-trash btn-delete-column" ></i>
+                        <i class="fas fa-trash btn-delete-column"></i>
                     </div>
                 </li>
 
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="ion ion-clipboard mr-1"></i>
-                        Columnas/Estados
-                    </h3>
-                    <button class="btn btn-success float-right" type="button" id="btn-add-column">
-                        <i class="fas fa-plus"></i>
-                        Agregar
-                    </button>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <ul class="todo-list form-group" data-widget="todo-list" id="columns-container">
 
-                        {% for column in columns %}
-                            <li class="column-item">
-                                <!-- drag handle -->
-                                <span class="handle">
+                {% can_edit_type_us type_us.id as ban %}
+
+                {% if ban %}
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ion ion-clipboard mr-1"></i>
+                            Columnas/Estados
+                        </h3>
+                        <button class="btn btn-success float-right" type="button" id="btn-add-column">
+                            <i class="fas fa-plus"></i>
+                            Agregar
+                        </button>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <ul class="todo-list form-group" data-widget="todo-list" id="columns-container">
+
+                            {% for column in flow %}
+                                <li class="column-item">
+                                    <!-- drag handle -->
+                                    <span class="handle">
                                   <i class="fas fa-ellipsis-v"></i>
                                   <i class="fas fa-ellipsis-v"></i>
                                 </span>
-                                <!-- checkbox -->
+                                    <!-- checkbox -->
 
-                                <div class="form-control d-inline ml-2">
-                                    <input type="text" placeholder="{{ column}}" value="{{ column}}"
-                                           class="border-0 bg-transparent" name="flow[]">
-                                </div>
-                                <!-- General tools such as edit or delete-->
-                                <div class="tools">
+                                    <div class="form-control d-inline ml-2">
+                                        <input type="text" placeholder="{{ column }}" value="{{ column }}"
+                                               class="border-0 bg-transparent" name="flow[]">
+                                    </div>
+                                    <!-- General tools such as edit or delete-->
+                                    <div class="tools">
+                                        {% if forloop.counter > 3  %}
+                                            <i class="fas fa-trash btn-delete-column"></i>
+                                        {% endif %}
 
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <!-- /.card-body -->
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                {% endif %}
+
 
 
                 <div class="card-footer">
@@ -136,8 +145,8 @@
                         required: true,
                         minlength: 1,
                     },
-                    "flow[]":{
-                        required:true
+                    "flow[]": {
+                        required: true
                     }
 
                 },
@@ -150,8 +159,8 @@
                         required: "El campo prefijo obligatorio",
                         minlength: "Ingrese un minimo de 1 caracteres",
                     },
-                    "flow[]":{
-                        required:"Este campo es obligatorio",
+                    "flow[]": {
+                        required: "Este campo es obligatorio",
                     }
 
                 },

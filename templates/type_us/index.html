@@ -1,4 +1,4 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 {% load has_perm_project %}
@@ -7,9 +7,19 @@
     | Proyectos
 {% endblock %}
 
+{% block active_section %}
+    <span id="active-section" data-value="type_us"></span>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
 {% block content %}
     {% has_perm_project user id_project 'Create typeus' as can_create_typeus %}
     {% has_perm_project user id_project 'Import typeus' as can_import_typeus %}
+    {% has_perm_project user id_project 'Update typeus' as can_update_typeus %}
+    {% has_perm_project user id_project 'Delete typeus' as can_delete_typeus %}
 
     <!-- Main content -->
     <section class="content">
@@ -95,35 +105,42 @@
                                 </td>
 
 
-                                <td class="project-actions text-right">
+                                <td class="project-actions d-flex" style="gap: 5px">
                                     {#                                    <a class="btn btn-primary btn-sm" href="#">#}
                                     {#                                        <i class="fas fa-folder">#}
                                     {#                                        </i>#}
                                     {#                                        Ver#}
                                     {#                                    </a>#}
-                                    {#                                    <a class="btn btn-info btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-pencil-alt">#}
-                                    {#                                        </i>#}
-                                    {#                                        Editar#}
-                                    {#                                    </a>#}
-                                    {#                                    <a class="btn btn-danger btn-sm" href="#">#}
-                                    {#                                        <i class="fas fa-trash">#}
-                                    {#                                        </i>#}
-                                    {#                                        Delete#}
-                                    {#                                    </a>#}
+                                    {% if can_update_typeus %}
+                                        <a class="btn btn-info btn-sm"
+                                           href="{% url 'type_us.edit' id_project type_us.id %}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Editar
+                                        </a>
+                                    {% endif %}
+
+                                    {% can_delete_type_us type_us.id as ban %}
+
+                                    {% if can_delete_typeus and ban %}
+                                        <form action="{% url 'type_us.delete' id_project type_us.id %}" method="post"
+                                              class="m-0 p-0">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
-                        {% if projects.count == 0 %}
+                        {% if types_us.count == 0 %}
                             <tr class="text-center">
-                                <td colspan="6"><span class="text-danger">Aun no perteneces a ningun proyecto!</span>
+                                <td colspan="6"><span class="text-danger">Aun no posees ningun registro!</span>
                                 </td>
                             </tr>
-                            <tr class="text-center">
-                                <td colspan="6"><span class="text-warning">Contacte con el administrador de su empresa para ser agregado a un proyecto </span>
-                                </td>
-                            </tr>
-
                         {% endif %}
                         </tbody>
                     </table>

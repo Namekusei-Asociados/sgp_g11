@@ -1,4 +1,4 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
@@ -12,6 +12,15 @@
           href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
 
 {% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="project_roles"></span>
+{% endblock %}
+
 {% block content %}
 
     {% include 'base/components/success-message.html' %}
@@ -25,7 +34,7 @@
             <div class="card-header">
                 <h3 class="card-title">Importar Roles</h3>
             </div>
-            <form id="importRole" action="{% url 'projects.import_role' id_project %}" method="post">
+            <form id="importRoleForm" action="{% url 'projects.import_role' id_project %}" method="post">
                 <div class="card-body">
                     {% csrf_token %}
 
@@ -36,7 +45,7 @@
                         <select class="select2" multiple="multiple" data-placeholder="Seleccione una opcion"
                                 name="roles"
                                 data-dropdown-css-class="select2-purple"
-                                style="width: 100%;" id="id_roles" required>
+                                style="width: 100%;" id="id_roles">
                             {% for role in roles %}
                                 <option data-id-project="{{ role.project_id }}"
                                         value="{{ role.id }}">{{ role.role_name }}</option>
@@ -66,12 +75,35 @@
                 var $rolesvar = $('#id_roles');
                 var $rolesoptions = $rolesvar.find('option');
                 $projectvar.on('change', function () {
-                    $rolesvar.html($rolesoptions.filter('[data-id-project="'+this.value+'"]'
+                    $rolesvar.html($rolesoptions.filter('[data-id-project="' + this.value + '"]'
                     ));
                 }).trigger('change');
             });
+            $('#importRoleForm').validate({
+                rules: {
+                    roles: {
+                        required: true
+                    }
+
+                },
+                messages: {
+                    roles: {
+                        required: "Debe seleccionar al menos un rol"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
         });
     </script>
-
 
 {% endblock %}

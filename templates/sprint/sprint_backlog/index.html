@@ -1,4 +1,4 @@
-{% extends 'sprint/base/app.html' %}
+{% extends 'base/app.html' %}
 {% load static %}
 {% load has_perm_project %}
 
@@ -6,10 +6,18 @@
     | Sprint backlog
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint_backlog"></span>
+{% endblock %}
+
 {% block content %}
-    {% has_perm_project user id_project 'Create projectmember' as can_create %}
-    {% has_perm_project user id_project 'Update projectmember' as can_edit %}
-    {% has_perm_project user id_project 'Delete projectmember' as can_delete %}
+    {% has_perm_project user id_project 'Create sprint_backlog' as can_create_sprint_backlog %}
+    {% has_perm_project user id_project 'Delete sprint_backlog' as can_delete_sprint_backlog %}
+    {% has_perm_project user id_project 'Update user_story' as can_update_us %}
     <br>
     <section class="content">
         {% include 'base/components/success-message.html' %}
@@ -21,8 +29,39 @@
                         <div class="col-sm-6">
                             <h1>Sprint Backlog</h1>
                         </div>
-
                     </div>
+                    <!-- Info boxes -->
+                    <div class="row">
+                        <div class="col-16 col-sm-6 col-md-3">
+                            <div class="info-box">
+                                        <span class="info-box-icon bg-info elevation-1">
+                                            <i class="fas fa-users-cog"></i>
+                                        </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Capacidad del sprint</span>
+                                    <span class="info-box-number">{{ sprint.capacity }} horas</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box mb-3">
+                                        <span class="info-box-icon bg-danger elevation-1">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Capacidad del sprint disponible</span>
+                                    <span class="info-box-number">{{ sprint.available_capacity }} horas</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </section>
 
@@ -32,7 +71,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            {% if can_create %}
+                            {% if can_create_sprint_backlog %}
                                 <a class="btn btn-primary btn-sm"
                                    href="{% url 'sprints.sprint_backlog.add' id_project id_sprint %}">
                                     <i class="fas fa-plus">
@@ -48,65 +87,86 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                                <thead>
-                                <tr>
-                                    <th>Título</th>
-                                    <th>Business Value</th>
-                                    <th>Prioridad técnica</th>
-                                    <th>Prioridad final</th>
-                                    <th>Asignado a</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for user_story in sprint_backlog %}
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
                                     <tr>
-                                        <td>{{ user_story.title }} | {{ user_story.us_type.prefix }}</td>
-                                        <td>{{ user_story.business_value }}</td>
-                                        <td>{{ user_story.technical_priority }}</td>
-                                        <td>{{ user_story.final_priority }}</td>
-                                        <td>{{ user_story.assigned_to.user.email }}</td>
-                                        <td class="d-flex" style="gap: 5px">
-                                            <a class="btn btn-primary btn-sm"
-                                               href="{% url 'sprints.sprint_backlog.details' id_project id_sprint user_story.id %}">
-                                                <i class="fas fa-folder">
-                                                </i>
-                                                Ver
-                                            </a>
-                                            {% has_perm_project user id_project 'Update user_story' as ban %}
-                                            {% if ban %}
-                                                <form id="edit_user_story" class="m-0 p-0" method="post"
-                                                      action="{% url 'sprints.sprint_backlog.edit' id_project id_sprint user_story.id %}">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-info btn-sm">
-                                                        <i class="fas fa-pencil-alt">
-                                                        </i>
-                                                        Editar
-                                                    </button>
-                                                </form>
-                                            {% endif %}
-                                            <form id="cancel_user_story" class="m-0 p-0" method="post"
-                                                  action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash">
-                                                    </i>
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
+                                        <th>Título</th>
+                                        <th>Estado Actual</th>
+                                        <th>Estimación</th>
+                                        <th>Prioridad final</th>
+                                        <th>Responsable</th>
+                                        <th></th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {% for user_story in sprint_backlog %}
+                                        <tr>
+                                            <td>{{ user_story.us_type.prefix }}-{{ user_story.title }}</td>
+                                            <td><span class="badge
+                                            {% current_status user_story.id as status %}
+                                            {% if status == 'initial' %}
+                                                badge-warning
+                                            {% elif  status == 'final' %}
+                                                badge-danger
+                                            {% else %}
+                                                badge-light
+                                            {% endif %}">{{ user_story.current_status }}</span></td>
+                                            <td>{{ user_story.estimation_time }}</td>
+                                            <td>{{ user_story.final_priority }}</td>
+                                            <td>{{ user_story.assigned_to.user.email }}</td>
+                                            <td class="d-flex" style="gap: 5px">
+                                                <a class="btn btn-primary btn-sm"
+                                                   href="{% url 'sprints.sprint_backlog.details' id_project id_sprint user_story.id %}">
+                                                    <i class="fas fa-folder">
+                                                    </i>
+                                                    Ver
+                                                </a>
+
+                                                {% if can_update_us %}
+                                                    <form id="edit_user_story" class="m-0 p-0" method="post"
+                                                          action="{% url 'sprints.sprint_backlog.edit' id_project id_sprint user_story.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-info btn-sm">
+                                                            <i class="fas fa-pencil-alt">
+                                                            </i>
+                                                            Editar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+
+                                                {% if can_delete_sprint_backlog %}
+                                                    <form id="cancel_user_story" class="m-0 p-0" method="post"
+                                                          action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash">
+                                                            </i>
+                                                            Desadjuntar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    {% if sprint_backlog.count == 0 %}
+                                        <tr class="text-center">
+                                            <td colspan="6"><span
+                                                    class="text-danger">Aun no posees ningun registro!</span>
+                                            </td>
+                                        </tr>
+
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card-body -->
+                        <!-- /.card -->
                     </div>
-                    <!-- /.card -->
                 </div>
+                <!-- /.row -->
             </div>
-            <!-- /.row -->
         </div>
     </section>
 

@@ -29,8 +29,8 @@ def index(request):
        :return: documento html
     """
     user = request.user
-    users = User.objects.all().order_by('id')
-    users = filter(lambda x: not x.is_staff and user.username != x.username, users)
+    users = User.objects.all().order_by('id').filter()
+
     return render(request, 'accounts/user.html', {'users': users})
 
 
@@ -115,7 +115,7 @@ def validate_user(request):
         return redirect(reverse('accounts.create_user'), request)
 
     User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
-                             password=password, role_sys=role_sys)
+                             password=password)
     user = User.objects.get(username=username)
     role = RoleSystem.objects.get(id=id_role)
     RoleSystem.objects.assing_role_to_user(role, user)

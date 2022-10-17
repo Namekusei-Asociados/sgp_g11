@@ -1,4 +1,4 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
     <link rel="stylesheet"
           href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="backlog"></span>
 {% endblock %}
 
 {% block content %}
@@ -40,7 +48,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                     <a href=" {% url 'user_story.backlog' id_project %} "
                        class="btn btn-secondary mx-3">Cancelar</a>
                 </div>

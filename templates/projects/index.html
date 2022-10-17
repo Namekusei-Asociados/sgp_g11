@@ -8,6 +8,14 @@
     | Proyectos
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="projects"></span>
+{% endblock %}
+
 {% block content %}
 
     <!-- Main content -->
@@ -101,6 +109,8 @@
                                         badge-warning
                                     {% elif project.status == 'canceled' %}
                                         badge-danger
+                                    {% elif project.status == 'in execution' %}
+                                        badge-info
                                     {% endif %}">{{ project.status.capitalize }}</span>
                                 </td>
                                 <td class="project-actions d-flex justify-content-end" style="gap:10px">
@@ -121,6 +131,18 @@
                                             Editar
                                         </a>
                                     {% endif %}
+
+                                    {% has_perm_project user project.id 'Initialize project' as ban %}
+                                    {% if ban and project.status == 'pending' %}
+                                        <form class="m-0 p-0"
+                                              action="{% url 'projects.init_project' project.id %}">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="fa fa-play" aria-hidden="true"></i>
+                                                Iniciar
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
                                     {% has_perm_project user project.id 'Cancel project' as ban %}
                                     {% if ban and project.status != 'canceled' %}
                                         <form class="m-0 p-0"

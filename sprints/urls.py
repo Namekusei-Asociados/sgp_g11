@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -9,9 +10,10 @@ urlpatterns = [
     path('validate_edit_sprint/', views.validate_edit_sprint, name="sprints.validate_edit_sprint"),
     path('cancel_sprint/<int:id_sprint>', views.cancel_sprint, name="sprints.cancel_sprint"),
     path('validate_cancel_sprint/', views.validate_cancel_sprint, name="sprints.validate_cancel_sprint"),
+    path('init_sprint/<int:id_sprint>', views.init_sprint, name="sprints.init_sprint"),
 
     # View sprint
-    path('<int:id_sprint>/', views.sprint, name="sprints.sprint"),
+    path('<int:id_sprint>/dashboard', views.dashboard, name='sprints.dashboard'),
 
     # Members
     path('<int:id_sprint>/members', views.members, name='sprints.members.index'),

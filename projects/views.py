@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -7,7 +9,7 @@ from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UPermissions import UPermissions
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from .forms import ImportRole
-from .models import Project, RoleProject, PermissionsProj
+from .models import Project, RoleProject, PermissionsProj, ProjectMember
 from accounts.models import User
 from django.contrib import messages
 from django.urls import reverse
@@ -29,9 +31,11 @@ def index(request):
     # get all projects related to the current user
     user = request.user
     if RoleSystem.objects.has_permissions(user.id, 'Read all project'):
-        projects = Project.objects.all().order_by('id')
+        admin_projects = user.project_set.all().order_by('updated_at').reverse()
+        projects_all = Project.objects.all().exclude(projectmember__user_id=user.id).order_by('updated_at').reverse()
+        projects = chain(admin_projects, projects_all)
     else:
-        projects = user.project_set.all().order_by('id')
+        projects = user.project_set.all().order_by('updated_at').reverse()
 
     return render(request, 'projects/index.html', {"projects": projects})
 
@@ -155,9 +159,28 @@ def validate_cancel_project(request, id_project):
     return redirect(reverse('projects.index'), request)
 
 
+@permission_proj_required(UPermissionsProject.INIT_PROJECT)
+def init_project(request, id_project):
+    """
+    Inicia un proyecto
+
+    :param request:
+    :param id_project: id del proyecto a ser iniciado
+
+    :return: template con la lista de proyectos
+    """
+    # get project and update
+    project = Project.objects.get(id=id_project)
+    project.status = UProject.STATUS_IN_EXECUTION
+    project.save()
+    messages.success(request, 'El proyecto "' + project.name + '" se ha iniciado')
+    return redirect(reverse('projects.index'), request)
+
+
 def dashboard(request, id_project):
     if request.user.project_set.filter(id=id_project).exists():
-        return render(request, 'projects/base/app.html', {'id_project': id_project})
+        project = Project.objects.get(id=id_project)
+        return render(request, 'projects/dashboard.html', {'id_project': id_project,'project':project})
     else:
         return render(request, 'redirect/forbidden.html')
 
@@ -229,6 +252,12 @@ def update_member(request, id_project, member_id):
     # attach new members to the project
     project = Project.objects.get(id=id_project)
     roles = [RoleProject.objects.get(id=item) for item in roles_id]
+    isScrumMaster = ProjectMember.objects.filter(user_id=member_id, project_id=id_project,
+                                                 roles__role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
+    if isScrumMaster:
+        sm = RoleProject.objects.get(role_name=UProjectDefaultRoles.SCRUM_MASTER, project_id=id_project)
+        roles.append(sm)
+
     RoleProject.objects.update_user_role(id_user=member_id, id_project=id_project, roles=roles)
 
     messages.success(request, 'El miembro se actualizo con exito')
@@ -291,7 +320,7 @@ def create_role(request, id_project):
 
     :return: documento html
     """
-    permission = PermissionsProj.objects.all()
+    permission = PermissionsProj.objects.all().order_by('id')
     return render(request, 'roles/create.html', {"permissions": permission, "id_project": id_project})
 
 
@@ -348,7 +377,7 @@ def edit_role(request, id_project, id):
     """
     # get project
     role = RoleProject.objects.get(id=id)
-    permissions = PermissionsProj.objects.all()
+    permissions = PermissionsProj.objects.all().order_by('id')
     perms_role = role.perms.all()
     return render(request, 'roles/edit.html',
                   {'role': role, 'permissions': permissions, 'perms_role': perms_role, "id_project": id_project,
@@ -402,7 +431,7 @@ def delete_role(request, id_project, id):
     return redirect(reverse('projects.index_role', kwargs={"id_project": id_project}), request)
 
 
-@permission_proj_required('Import role')
+@permission_proj_required(UPermissionsProject.IMPORT_ROLE)
 def import_role(request, id_project):
     """
     Importacion de roles de proyectos

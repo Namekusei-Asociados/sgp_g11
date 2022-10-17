@@ -1,7 +1,10 @@
+import json
+
 from django.db import models
+
 from accounts.models import User
-from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.UProject import UProject
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 
 
 #########################################################
@@ -178,32 +181,23 @@ class RoleProjectManager(models.Manager):
                                             roles__perms__name__in=perms).exists()
 
     @staticmethod
-    def get_scrum_master():
+    def get_deafult_roles(id_project):
         """
         Funcion para obtener un rol scrum master
 
         :return: Rol Scrum Master
         """
-        name = UProjectDefaultRoles.SCRUM_MASTER
-        description = "Este rol es de Scrum Master"
-        permissions_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,24,25]
-        rol = RoleProject.objects.create(role_name=name, description=description, project=None)
-        rol.perms.set(permissions_list)
-        return rol
 
-    @staticmethod
-    def get_developer():
-        """
-        Funcion para obtener un rol scrum develop
+        # get json file and then get permission list
 
-        :return: Rol Develop
-        """
-        name = UProjectDefaultRoles.DEVELOPER
-        description = "Este rol es de Developer"
-        permissions_list = [17, 18, 19, 20, 21, 22, 23]
-        rol = RoleProject.objects.create(role_name=name, description=description, project=None)
-        rol.perms.set(permissions_list)
-        return rol
+        file = open("projects/fixtures/default_roles_project.json", "r")
+        datas = json.loads(file.read())
+        for data in datas:
+            rol = RoleProject.objects.create(role_name=data['fields']['role_name'],
+                                             description=data['fields']['description'], project_id=id_project)
+            rol.perms.set(data['fields']['perms'])
+            rol.save()
+        file.close()
 
 
 class ProjectManager(models.Manager):
@@ -226,14 +220,7 @@ class ProjectManager(models.Manager):
         return project
 
     def create_default_roles(self, project):
-        # scrum master
-        role_scrum_master = RoleProject.objects.get_scrum_master()
-        role_scrum_master.project = project
-        role_scrum_master.save()
-        # developer
-        role_developer = RoleProject.objects.get_developer()
-        role_developer.project = project
-        role_developer.save()
+        RoleProject.objects.get_deafult_roles(id_project=project.id)
 
     def add_member(self, user_id, roles, project):
         member = ProjectMember.objects.create(

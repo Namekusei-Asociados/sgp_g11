@@ -1,4 +1,4 @@
-{% extends 'sprint/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
@@ -13,6 +13,15 @@
           href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint_backlog"></span>
+{% endblock %}
+
+
 {% block content %}
     <br>
     <section class="content">
@@ -20,7 +29,7 @@
 
         <div class="card card-primary m-2">
             <div class="card-header">
-                <h3 class="card-title">Agregar US</h3>
+                <h3 class="card-title">Editar encargado de US</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -42,19 +51,30 @@
                     <div class="form-group">
                         <label for="id_member" class="required">Asignado a </label>
                         <select class="form-control" name="id_member" id="id_member" required>
-                            <option>Seleccione a quien se le asigna el US</option>
+{#                            <option>Seleccione a quien se le asigna el US</option>#}
                             {% for member in members %}
-                                <option value="{{ member.id }}" {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
+                                <option value="{{ member.id }}"
+                                        {% if user_story.assigned_to.user.id == member.user.id %} selected {% endif %}>
                                     {{ member.user.username }}
                                     | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}
                                 </option>
                             {% endfor %}
                         </select>
                     </div>
+
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label for="id_estimation_time">Estimación (en horas)</label>
+                        <input type="number" ondrop="return false;" onpaste="return false;"
+                               onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                               name="estimation_time" class="form-control"
+                               id="id_estimation_time" value="{{ user_story.estimation_time }}"
+                               placeholder="Enter Estimation Time">
+                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
                     <a href=" {% url 'sprints.sprint_backlog.index' id_project id_sprint %} "
                        class="btn btn-secondary mx-3">Cancelar</a>
                 </div>
