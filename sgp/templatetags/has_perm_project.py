@@ -49,3 +49,10 @@ def can_delete_type_us(type_us_id):
     :return: boolean
     """
     return not UserStory.objects.filter(us_type=type_us_id).exists()
+@register.simple_tag
+def current_status(us_id):
+    if UserStory.objects.is_initial_status(us_id):
+        return 'initial' #estado 1
+    elif UserStory.objects.is_final_status(us_id):
+        return 'final' #estado final
+    return 'middle' #estado intermedio
