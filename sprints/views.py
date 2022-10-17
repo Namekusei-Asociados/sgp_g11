@@ -136,16 +136,51 @@ def validate_edit_sprint(request, id_project):
     id_sprint = request.POST['id_sprint']
     name = request.POST['sprint_name']
     description = request.POST['description']
-    duration = request.POST['duration']
+    duration = int(request.POST['duration'])
 
     sprint = Sprint.objects.get(id=id_sprint)
     sprint.sprint_name = name
     sprint.description = description
-    sprint.duration = duration
 
-    sprint.save()
+    new_capacity = get_all_workload(sprint) * duration
+    new_available_capacity = new_capacity - get_accumulated(sprint)
 
-    return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
+    if duration < sprint.duration:
+        if new_available_capacity < 0:
+            messages.error(request,
+                           "No se puede actualizar la duración del sprint, porque la estimacion de los US del sprint consumen toda la capacidad")
+        else:
+            sprint.capacity = new_capacity
+            sprint.available_capacity = new_available_capacity
+            sprint.duration = duration
+            sprint.save()
+
+            messages.success(request, "Se actualizó con éxito")
+    else:
+        sprint.capacity = new_capacity
+        sprint.available_capacity = new_available_capacity
+        sprint.duration = duration
+        sprint.save()
+
+        messages.success(request, "Se actualizó con éxito")
+
+    kwargs = {
+        'id_project': id_project,
+        'id_sprint': id_sprint
+    }
+
+    return redirect(reverse('sprints.edit_sprint', kwargs=kwargs), request)
+
+
+def get_all_workload(sprint):
+    members = SprintMember.objects.filter(sprint_id=sprint.id)
+
+    all_workload = 0
+
+    for member in members:
+        all_workload += member.workload
+
+    return all_workload
 
 
 @permission_proj_required(UPermissionsProject.DELETE_SPRINT)
