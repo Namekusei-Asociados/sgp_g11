@@ -5,25 +5,51 @@ from accounts.models import User
 from gestionar_roles.models import RoleSystem
 from projects.models import Project, PermissionsProj
 from utilities.UPermissionsProj import UPermissionsProject
+from django.core.management import call_command
 
-
-# @pytest.mark.usefixtures("create_user")
 # class ProjectTest(TestCase):
-#
-#     fixtures = ['default_roles_system.json', 'permissions.json', 'permissionsProj.json', 'admin.json']
-#
-#
-#     def test_get_index_page(self):
-#         print('****************')
-#         print(self.create_user)
-#         print('****************')
-#         response = self.client.get(reverse('projects.index'))
-#         assert response.status_code == 500
-#
-# @pytest.fixture(scope="class")
-# def create_user(db) -> RoleSystem:
-#     return User.objects.get(id=1)
 
+
+
+
+
+
+@pytest.fixture
+def create_logged_user(client) -> User:
+    call_command('loaddata', 'permissions')
+    call_command('loaddata', 'permissionsProj')
+    call_command('loaddata', 'default_roles_system')
+    # call_command('loaddata', 'admin')
+
+    data = {
+        'username':  'test',
+    'first_name':  'first_name',
+    'last_name':  'last_name',
+    'email':  'email@gmail.com',
+    'password':  'password',
+    'role_sys':  1,
+    'role_system':  1,
+    }
+    client.post(reverse('accounts.validate_user'),data=data, follow=True)
+
+    user = User.objects.get(username="test")
+    client.force_login(user)
+    return user
+
+
+# @pytest.mark.django_db
+# def test_get_index_page(client , create_logged_user):
+#
+#     # ProjectTest()
+#     print('****************')
+#
+#     print(create_logged_user)
+#
+#     print('****************')
+#
+#     response = client.get(reverse('projects.index'))
+#
+#     assert response.status_code == 200
     # @pytest.fixture
     # def project_with_(db) ->User:
     #     user =
@@ -33,25 +59,28 @@ from utilities.UPermissionsProj import UPermissionsProject
     #     response = client.get(reverse('projects.create'))
     #     assert response.status_code == 200
 
-    # @pytest.mark.django_db
-    # def test_store_project(client, create_permissions):
-    #     # create user
-    #     user = User.objects.create(username='test_user', password='password')
-    #     user.save()
-    #
-    #     data = {
-    #         'name': 'juan',
-    #         'description': 'Huge project',
-    #         'user': user.id
-    #     }
-    #     response = client.post(reverse('projects.store'), data=data, follow=True)
-    #
-    #     # status code success
-    #     assert response.status_code == 200
-    #     project = Project.objects.get(name='juan', description='Huge project')
-    #
-    #     # check if the project was created in the database with the corrects fields
-    #     assert project.name == 'juan' and project.description == 'Huge project'
+@pytest.mark.django_db
+def test_store_project(client, create_logged_user):
+    # create user
+    user = create_logged_user
+
+    data = {
+        'name': 'juan',
+        'description': 'Huge project',
+        'user':user.id
+    }
+    response = client.post(reverse('projects.store'), data=data, follow=True)
+
+    # status code success
+    assert response.status_code == 200
+    print("***********************************")
+    print(response)
+    print(Project.objects.all().count())
+    print("***********************************")
+    project = Project.objects.get(name='juan', description='Huge project')
+
+    # check if the project was created in the database with the corrects fields
+    assert project.name == 'juan' and project.description == 'Huge project'
     #
     # @pytest.mark.django_db
     # def test_get_edit_page(client, create_permissions):
