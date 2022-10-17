@@ -136,6 +136,31 @@ def test_cancel_sprint(create_logged_user):
 
 
 @pytest.mark.django_db
+def test_add_sprint_member(create_logged_user):
+    user = User.objects.create(username='test_user', password='password')
+    user.save()
+    project = Project.objects.create(name='proyecto de juan', description='test_project')
+    assert project.name == 'proyecto de juan', 'Error al crar el proyecto'
+
+    sprint = Sprint.objects.create(
+            sprint_name='Sprint Test',
+            start_at=datetime.strptime('2022/09/30', '%Y/%m/%d'),
+            end_at=datetime.strptime('2022/10/15', '%Y/%m/%d'),
+            duration=pd.bdate_range(start=datetime.strptime('2022/09/30', '%Y/%m/%d'),
+                                   end=datetime.strptime('2022/10/15', '%Y/%m/%d')).size,
+            number=1,
+            project_id=project.id
+    )
+
+    member = SprintMember.objects.create(sprint_id=sprint.id, user_id=user.id, workload=8)
+    member.save()
+
+    miembro = SprintMember.objects.get(id=member.id)
+
+    assert miembro.workload == 8, "El miembro de sprint no se ha agregado correctamente"
+
+
+@pytest.mark.django_db
 def test_assign_user_story(create_logged_user):
     user = User.objects.create(username='test_user', password='password')
     user.save()
@@ -175,3 +200,5 @@ def test_assign_user_story(create_logged_user):
     us = UserStory.objects.get(id=user_story.id)
 
     assert us.assigned_to.user.username == 'test_user', "No se ha podido asignar el encargado a la historia de usuario"
+
+
