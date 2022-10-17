@@ -672,3 +672,7 @@ def get_accumulated(sprint):
         accumulated += user_story.estimation_time
 
     return accumulated
+
+
+def init_sprint(request, id_project, id_sprint):
+    return None

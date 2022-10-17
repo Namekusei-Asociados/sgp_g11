@@ -103,6 +103,15 @@
                                                 Editar
                                             </button>
                                         </form>
+                                        {% if sprint.status == 'Planificacion' %}
+                                            <form class="m-0 p-0"
+                                                  action="{% url 'sprints.init_sprint' id_project sprint.id %}">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                                    Iniciar
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                         <form class="m-0 p-0"
                                               action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
                                             {% csrf_token %}
