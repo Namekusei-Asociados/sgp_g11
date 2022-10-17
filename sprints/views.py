@@ -7,6 +7,8 @@ from projects.decorators import permission_proj_required
 from projects.models import Project
 from user_story.models import UserStory
 from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UProject import UProject
+from utilities.USprint import USprint
 from .models import Sprint, SprintMember
 
 
@@ -23,16 +25,12 @@ def index(request, id_project):
     :return: documento HTML
     """
     sprints = Sprint.objects.filter(project_id=id_project).order_by('id')
-    existsPlanning = False
-
-    for sprint in sprints:
-        if sprint.status == 'Planificacion':
-            existsPlanning = True
+    exists_planning = get_exists_planning(id_project, sprints)
 
     context = {
         'sprints': sprints,
         'id_project': id_project,
-        'existsPlanning': existsPlanning
+        'exists_planning': exists_planning
     }
 
     return render(request, 'sprint/index.html', context)
@@ -219,7 +217,7 @@ def validate_cancel_sprint(request, id_project):
     cancellation_reason = request.POST['cancellation_reason']
 
     sprint = Sprint.objects.get(id=id_sprint)
-    sprint.status = 'Cancelado'
+    sprint.status = USprint.STATUS_CANCELED
     sprint.cancellation_reason = cancellation_reason
     sprint.save()
 
@@ -506,6 +504,8 @@ def store_sprint_backlog(request, id_project, id_sprint):
         'id_sprint': id_sprint
     }
 
+    messages.success(request, f"El User Story {user_story.title} fue agregado crrectamente")
+
     return redirect(reverse('sprints.sprint_backlog.add', kwargs=kwargs), request)
 
 
@@ -675,4 +675,26 @@ def get_accumulated(sprint):
 
 
 def init_sprint(request, id_project, id_sprint):
-    return None
+    project = Project.objects.get(id=id_project)
+    sprint = Sprint.objects.get(id=id_sprint)
+
+    if project.status == UProject.STATUS_IN_EXECUTION:
+        print("")
+    else:
+        messages.error(request, "El sprint no puede iniciar hasta que el proyecto haya iniciado")
+
+    kwargs = {
+        'id_project': id_project
+    }
+
+    return redirect(reverse('sprints.index', kwargs=kwargs), request)
+
+
+def get_exists_planning(id_project, sprints):
+    exists_planning = False
+
+    for sprint in sprints:
+        if sprint.status == 'Planificacion':
+            exists_planning = True
+
+    return exists_planning

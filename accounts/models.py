@@ -44,7 +44,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f'''Username: {self.username}'''
+        return f'''Username: {self.username} | Email: {self.email}'''
 
 
 @receiver(post_save, sender=User)

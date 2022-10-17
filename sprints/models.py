@@ -6,10 +6,11 @@ from accounts.models import User
 Posibles estados de Sprint: Planificación, Ejecución, Finalizado, Cancelado
 """
 SPRINT_STATUSES = (
-    ('planning', 'Planificacion'),
-    ('progress', 'En progreso'),
-    ('finished', 'Finalizado'),
-    ('canceled', 'Cancelado')
+    ('success', 'success'),
+    ('pending', 'pending'),
+    ('finished', 'finished'),
+    ('canceled', 'canceled'),
+    ('in execution', 'in execution')
 )
 
 
@@ -23,7 +24,7 @@ class Sprint(models.Model):
     duration = models.IntegerField(verbose_name='Duración en días')
     start_at = models.DateField(null=True, verbose_name='Fecha de inicio')
     end_at = models.DateField(null=True, verbose_name='Fecha de finalización')
-    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default='Planificacion', verbose_name='Estado')
+    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default='pending', verbose_name='Estado')
     cancellation_reason = models.TextField(max_length=500, null=True)
     members = models.ManyToManyField(User, through='sprints.SprintMember')
     created_at = models.DateTimeField(auto_now_add=True)

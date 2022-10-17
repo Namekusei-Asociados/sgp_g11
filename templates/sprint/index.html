@@ -30,7 +30,7 @@
             <div class="card">
                 <div class="card-header">
                     <a href="{% url 'sprints.create_sprint' id_project %}">
-                        <button class="btn btn-primary btn-sm" {% if existsPlanning %} disabled {% endif %}>
+                        <button class="btn btn-primary btn-sm" {% if exists_planning %} disabled {% endif %}>
                             <i class="fas fa-plus"></i>
                             Crear
                         </button>
@@ -75,14 +75,14 @@
                                 </td>
                                 <td>
                                     <span class="badge
-                                    {% if sprint.status == 'Finalizado' %}
+                                    {% if sprint.status == 'success' %}
                                         badge-success
-                                    {% elif sprint.status == 'Cancelado' %}
-                                        badge-danger
-                                    {% elif sprint.status == 'En progreso' %}
-                                        badge-light
-                                    {% else %}
+                                    {% elif sprint.status == 'pending' %}
                                         badge-warning
+                                    {% elif sprint.status == 'canceled' %}
+                                        badge-danger
+                                    {% elif sprint.status == 'in execution' %}
+                                        badge-info
                                     {% endif %}">{{ sprint.status.capitalize }}</span>
                                 </td>
                                 <td>{{ sprint.duration }} días</td>
@@ -93,7 +93,7 @@
                                         </i>
                                         Ver
                                     </a>
-                                    {% if sprint.status != 'Cancelado' %}
+                                    {% if sprint.status != 'canceled' %}
                                         <form class="m-0 p-0" method="post"
                                               action="{% url 'sprints.edit_sprint' id_project sprint.id %}">
                                             {% csrf_token %}
@@ -103,7 +103,7 @@
                                                 Editar
                                             </button>
                                         </form>
-                                        {% if sprint.status == 'Planificacion' %}
+                                        {% if sprint.status == 'pending' %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.init_sprint' id_project sprint.id %}">
                                                 <button type="submit" class="btn btn-success btn-sm">
