@@ -12,6 +12,8 @@ from sprints.models import Sprint
 
 class TestSprints(TestCase):
 
+    fixtures = ['default_roles_system.json', 'permissions.json', 'permissionsProj.json', 'admin.json']
+
     @pytest.mark.django_db
     def test_create_sprint(self):
         user = User.objects.create(username='test_user', password='password')
@@ -29,7 +31,6 @@ class TestSprints(TestCase):
             business_value=10,
             technical_priority=20,
             estimation_time=30,
-            assigned_to=project_member,
             project_id=project.id,
             us_type_id=us_type.id
         )

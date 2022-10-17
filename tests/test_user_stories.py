@@ -28,7 +28,6 @@ class TestUserStories(TestCase):
             business_value=10,
             technical_priority=20,
             estimation_time=30,
-            assigned_to=project_member,
             project_id=project.id,
             us_type_id=us_type.id
         )

@@ -13,27 +13,30 @@ class TestUser(TestCase):
     """
     Clase para probar el modelo de usuario
     """
+
+    fixtures = ['default_roles_system.json', 'permissions.json', 'permissionsProj.json', 'admin.json']
+
     def test_is_not_user(self):
         user = User()
-        user.role_system = ""
-        self.assertNotEqual(user.is_user(), True, "User es user")
+        user.role_sys = ""
+        self.assertNotEqual(user.role_sys, "user", "User es user")
 
     def test_is_user(self):
         user = User()
         user.role_sys = "user"
         user.save()
-        self.assertEqual(user.is_user(), True, "User no es user")
+        self.assertEqual(user.role_sys, "user", "User no es user")
 
     def test_is_not_admin(self):
         user = User()
         user.role_sys = ""
-        self.assertNotEqual(user.is_admin(), True, "User es admin")
+        self.assertNotEqual(user.role_sys, "admin", "User es admin")
 
     def test_is_admin(self):
         user = User()
         user.role_sys = "admin"
         user.save()
-        self.assertEqual(user.is_admin(), True, "User no es admin")
+        self.assertEqual(user.role_sys, "admin", "User no es admin")
 
     def test_update_system_role(self):
         """
