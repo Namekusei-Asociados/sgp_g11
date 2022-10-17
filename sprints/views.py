@@ -352,7 +352,7 @@ def update_member(request, id_project, id_sprint):
         sprint.available_capacity = get_available_capacity(sprint)
         member.save()
         sprint.save()
-        messages.success(request, "TOCASO")
+        messages.success(request, "Se actualizó correctamente")
 
     return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
@@ -559,12 +559,34 @@ def update_sprint_backlog(request, id_project, id_sprint):
     """
     id_user_story = request.POST['id_user_story']
     id_member = request.POST['id_member']
-    estimation_time = request.POST['estimation_time']
+    estimation_time = int(request.POST['estimation_time'])
+
+    sprint = Sprint.objects.get(id=id_sprint)
 
     user_story = UserStory.objects.get(id=id_user_story)
     user_story.assigned_to_id = id_member
-    user_story.estimation_time = estimation_time
-    user_story.save()
+
+    new_available_capacity = sprint.available_capacity + user_story.estimation_time - estimation_time
+
+    if estimation_time > user_story.estimation_time:
+        if new_available_capacity < 0:
+            messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
+        else:
+            sprint.available_capacity = new_available_capacity
+            sprint.save()
+
+            user_story.estimation_time = estimation_time
+            user_story.save()
+
+            messages.success(request, "Se actualizó correctamente")
+    else:
+        sprint.available_capacity = new_available_capacity
+        sprint.save()
+
+        user_story.estimation_time = estimation_time
+        user_story.save()
+
+        messages.success(request, "Se actualizó correctamente")
 
     kwargs = {
         'id_project': id_project,
