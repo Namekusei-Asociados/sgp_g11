@@ -1,7 +1,6 @@
-from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.contrib.auth.models import BaseUserManager, User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -45,7 +44,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f'''Username: {self.username}'''
+        return f'''Username: {self.username} | Email: {self.email}'''
 
 
 @receiver(post_save, sender=User)

@@ -23,15 +23,25 @@ class UserStoryManager(models.Manager):
     def get_initial_status(self, id_type_us):
         return TypeUS.objects.get_initial_status(id_type_us=id_type_us)
 
-    def get_us_finished(self,id_project):
-        finished = [us.id for us in UserStory.objects.filter(project_id=id_project)if UserStory.objects.is_final_status(us.id)]
+    def get_us_finished(self, id_project):
+        finished = [us.id for us in UserStory.objects.filter(project_id=id_project) if
+                    UserStory.objects.is_final_status(us.id)]
         list_finished_us = UserStory.objects.filter(id__in=finished)
         return list_finished_us
 
-    def get_us_non_finished(self,id_project):
-        active = [us.id for us in UserStory.objects.filter(project_id=id_project) if not UserStory.objects.is_final_status(us.id)]
+    def get_us_non_finished(self, id_project):
+        active = [us.id for us in UserStory.objects.filter(project_id=id_project) if
+                  not UserStory.objects.is_final_status(us.id)]
         list_active_us = UserStory.objects.filter(id__in=active)
         return list_active_us
+
+    def get_us_no_assigned(self, id_project, id_sprint):
+        sprint = Sprint.objects.get(id=id_sprint)
+        user_stories = UserStory.objects.get_us_non_finished(id_project) \
+            .filter(assigned_to=None, estimation_time__lte=sprint.available_capacity) \
+            .order_by('final_priority').reverse()
+        return user_stories
+
 
 # Create your models here.
 class UserStory(models.Model):

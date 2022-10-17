@@ -1,10 +1,10 @@
 import json
+
 from django.db import models
+
 from accounts.models import User
-from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.UProject import UProject
-from pathlib import Path
-import os
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 
 
 #########################################################
@@ -193,11 +193,11 @@ class RoleProjectManager(models.Manager):
         file = open("projects/fixtures/default_roles_project.json", "r")
         datas = json.loads(file.read())
         for data in datas:
-            rol = RoleProject.objects.create(role_name=data['fields']['role_name'], description=data['fields']['description'], project_id=id_project)
+            rol = RoleProject.objects.create(role_name=data['fields']['role_name'],
+                                             description=data['fields']['description'], project_id=id_project)
             rol.perms.set(data['fields']['perms'])
             rol.save()
         file.close()
-
 
 
 class ProjectManager(models.Manager):
