@@ -52,7 +52,7 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{  sprint.sprint_name }}</h3>
+                            <h3>{{ sprint.sprint_name }}</h3>
 
                             <p>Nombre del Sprint</p>
                         </div>
@@ -82,16 +82,42 @@
                     <div class="small-box bg-danger">
                         <div class="inner">
                             <h3>{{ sprint.duration }} dias</h3>
-
                             <p>Duracion</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-
                     </div>
                 </div>
-                <!-- ./col -->
+                {% if sprint.start_at != None %}
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ sprint.start_at }}</h3>
+                                <p>Inicio</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ sprint.end_at }}</h3>
+                                <p>Fin</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                {% endif %}
             </div>
         </div>
     </section>
