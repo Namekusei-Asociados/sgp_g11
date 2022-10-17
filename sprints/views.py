@@ -1,4 +1,6 @@
-from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
+from datetime import date
+
+import pandas as pd
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -75,18 +77,6 @@ def validate_create_sprint(request, id_project):
     messages.success(request, message)
 
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
-
-
-def daterange(start_date, end_date):
-    """
-    Calcula los días hábiles para un sprint
-
-    :param start_date: fecha estimada de inicio del sprint
-    :param end_date: fecha estimada de finalización del sprint
-
-    :return: cantidad de días hábiles entre fecha de inicio y fecha de finalización del sprint
-    """
-    return rrule(DAILY, dtstart=start_date, until=end_date, byweekday=(MO, TU, WE, TH, FR))
 
 
 def numbersSprint(id_project):
@@ -217,9 +207,14 @@ def validate_cancel_sprint(request, id_project):
     cancellation_reason = request.POST['cancellation_reason']
 
     sprint = Sprint.objects.get(id=id_sprint)
-    sprint.status = USprint.STATUS_CANCELED
-    sprint.cancellation_reason = cancellation_reason
-    sprint.save()
+    is_all_finished = UserStory.objects.get_us_non_finished(id_project=id_project).filter(sprint_id=id_sprint).exists()
+    if is_all_finished:
+        sprint.status = USprint.STATUS_CANCELED
+        sprint.cancellation_reason = cancellation_reason
+        sprint.save()
+        messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
+    else:
+        messages.error(request, f'No se puede cancelar un sprint que no tenga sus US en estados finales')
 
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
@@ -239,7 +234,7 @@ def dashboard(request, id_project, id_sprint):
     context = {
         'id_sprint': id_sprint,
         'id_project': id_project,
-        'sprint' : sprint
+        'sprint': sprint
     }
 
     return render(request, 'sprint/dashboard.html', context)
@@ -462,16 +457,20 @@ def add_sprint_backlog(request, id_project, id_sprint):
     :return: Documento HTML donde se puede elegir la historia de usuario a ser
     agregada al sprint y el responsable de la misma
     """
-    user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
     members = get_sprint_member(id_sprint)
-
-    context = {
-        'id_project': id_project,
-        'id_sprint': id_sprint,
-        'user_stories': user_stories,
-        'members': members
-    }
-    return render(request, 'sprint/sprint_backlog/create.html', context)
+    if members.count() > 0:
+        user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
+        context = {
+            'id_project': id_project,
+            'id_sprint': id_sprint,
+            'user_stories': user_stories,
+            'members': members
+        }
+        return render(request, 'sprint/sprint_backlog/create.html', context)
+    else:
+        messages.error(request, 'No se puede agregar un US si no existe miembros en el Sprint')
+        return redirect(reverse('sprints.sprint_backlog.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
+                        request)
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_SPRINT_BACKLOG)
@@ -681,9 +680,16 @@ def init_sprint(request, id_project, id_sprint):
     sprint = Sprint.objects.get(id=id_sprint)
 
     if project.status == UProject.STATUS_IN_EXECUTION:
-        print("")
+        if SprintMember.objects.filter(sprint_id=id_sprint).exists():
+            if UserStory.objects.filter(sprint_id=id_sprint).exists():
+                switch_to_started_sprint(sprint)
+                messages.success(request, 'El sprint inició con éxito')
+            else:
+                messages.error(request, 'El sprint no puede iniciar hasta que tenga al menos un US')
+        else:
+            messages.error(request, 'El sprint no puede iniciar hasta que tenga al menos un miembro')
     else:
-        messages.error(request, "El sprint no puede iniciar hasta que el proyecto haya iniciado")
+        messages.error(request, 'El sprint no puede iniciar hasta que el proyecto haya iniciado')
 
     kwargs = {
         'id_project': id_project
@@ -696,7 +702,18 @@ def get_exists_planning(id_project, sprints):
     exists_planning = False
 
     for sprint in sprints:
-        if sprint.status == 'Planificacion':
+        if sprint.status == USprint.STATUS_PENDING:
             exists_planning = True
 
     return exists_planning
+
+
+def switch_to_started_sprint(sprint):
+    sprint.status = USprint.STATUS_IN_EXECUTION
+    sprint.start_at = date.today()
+    print(sprint.start_at)
+    s = pd.date_range(start=sprint.start_at, periods=sprint.duration, freq='B')
+    df = pd.DataFrame(s, columns=['fecha'])
+    end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
+    sprint.end_at = end_at
+    sprint.save()
