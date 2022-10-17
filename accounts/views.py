@@ -115,7 +115,7 @@ def validate_user(request):
         return redirect(reverse('accounts.create_user'), request)
 
     User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email,
-                             password=password, role_sys=role_sys)
+                             password=password)
     user = User.objects.get(username=username)
     role = RoleSystem.objects.get(id=id_role)
     RoleSystem.objects.assing_role_to_user(role, user)
