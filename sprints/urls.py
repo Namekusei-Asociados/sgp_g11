@@ -13,7 +13,7 @@ urlpatterns = [
     path('init_sprint/<int:id_sprint>', views.init_sprint, name="sprints.init_sprint"),
 
     # View sprint
-    path('<int:id_sprint>/', views.sprint, name="sprints.sprint"),
+    path('<int:id_sprint>/dashboard', views.dashboard, name='sprints.dashboard'),
 
     # Members
     path('<int:id_sprint>/members', views.members, name='sprints.members.index'),

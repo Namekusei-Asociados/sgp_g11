@@ -6,6 +6,14 @@
     | Create User
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="users"></span>
+{% endblock %}
+
 {% block content %}
     <!--MESSAGES-->
     {% include 'base/components/success-message.html' %}

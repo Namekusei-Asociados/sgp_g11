@@ -6,6 +6,14 @@
     | {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="users"></span>
+{% endblock %}
+
 {% block content %}
     <br>
     <section class="content">
@@ -62,43 +70,52 @@
                                 </thead>
                                 <tbody>
                                 {% for u in users %}
-                                    <tr>
-                                        <td> {{ u.username }}</td>
-                                        <td> {{ u.first_name }}</td>
-                                        <td> {{ u.last_name }}</td>
-                                        <td> {{ u.email }}</td>
-                                        {% if u.role.all.count == 0 %}
-                                            <td>Sin Rol</td>
-                                        {% else %}
-                                            {% for rol in u.role.all %}
-                                                <td>{{ rol }}</td>
-                                            {% endfor %}
-                                        {% endif %}
+                                    {% if u != user %}
+                                        <tr>
+                                            <td> {{ u.username }}</td>
+                                            <td> {{ u.first_name }}</td>
+                                            <td> {{ u.last_name }}</td>
+                                            <td> {{ u.email }}</td>
+                                            {% if u.role.all.count == 0 %}
+                                                <td>Sin Rol</td>
+                                            {% else %}
+                                                {% for rol in u.role.all %}
+                                                    <td>{{ rol }}</td>
+                                                {% endfor %}
+                                            {% endif %}
 
-                                        <td class="d-flex" style="gap: 5px">
-                                            {% has_perm_system user 'Update user' as ban %}
-                                            {% if ban %}
-                                                <a class="btn btn-info btn-sm"
-                                                   href="{% url 'accounts.edit_user' u.username %}">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                    Editar
-                                                </a>
-                                            {% endif %}
-                                            {% has_perm_system user 'Delete user' as ban %}
-                                            {% if ban %}
-                                                <form class="m-0 p-0"
-                                                      action="{% url 'accounts.delete' u.username %}">
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash">
+                                            <td class="d-flex" style="gap: 5px">
+                                                {% has_perm_system user 'Update user' as ban %}
+                                                {% if ban %}
+                                                    <a class="btn btn-info btn-sm"
+                                                       href="{% url 'accounts.edit_user' u.username %}">
+                                                        <i class="fas fa-pencil-alt">
                                                         </i>
-                                                        Eliminar
-                                                    </button>
-                                                </form>
-                                            {% endif %}
+                                                        Editar
+                                                    </a>
+                                                {% endif %}
+                                                {% has_perm_system user 'Delete user' as ban %}
+                                                {% if ban %}
+                                                    <form class="m-0 p-0"
+                                                          action="{% url 'accounts.delete' u.username %}">
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash">
+                                                            </i>
+                                                            Eliminar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if users.count == 1 %}
+                                    <tr class="text-center">
+                                        <td colspan="6"><span class="text-danger">Aun no posees ningun registro!</span>
                                         </td>
                                     </tr>
-                                {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>

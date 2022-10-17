@@ -1,10 +1,17 @@
 {% extends 'sprint/base/app.html' %}
-{% load has_perm_project %}
 {% load static %}
 {% load has_perm_project %}
 
 {% block title %}
     | Miembros del Sprint
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="members"></span>
 {% endblock %}
 
 {% block content %}
@@ -111,6 +118,14 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                {% if members.count == 0 %}
+                                    <tr class="text-center">
+                                        <td colspan="6"><span
+                                                class="text-danger">Aun no posees ningun registro!</span>
+                                        </td>
+                                    </tr>
+
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>

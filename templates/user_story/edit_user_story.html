@@ -1,9 +1,17 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
 {% block title %}
     | Create User Story
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="backlog"></span>
 {% endblock %}
 
 {% block content %}

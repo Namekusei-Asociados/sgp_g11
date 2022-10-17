@@ -1,9 +1,17 @@
-{% extends 'sprint/base/app.html' %}
+{% extends 'base/app.html' %}
 {% load static %}
 {% load has_perm_project %}
 
 {% block title %}
     | Sprint backlog
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint_backlog"></span>
 {% endblock %}
 
 {% block content %}
@@ -141,6 +149,14 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                    {% if sprint_backlog.count == 0 %}
+                                        <tr class="text-center">
+                                            <td colspan="6"><span
+                                                    class="text-danger">Aun no posees ningun registro!</span>
+                                            </td>
+                                        </tr>
+
+                                    {% endif %}
                                     </tbody>
                                 </table>
                             </div>
@@ -151,6 +167,7 @@
                 </div>
                 <!-- /.row -->
             </div>
+        </div>
     </section>
 
 {% endblock %}

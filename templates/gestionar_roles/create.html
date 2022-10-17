@@ -6,6 +6,16 @@
     | Roles
 {% endblock %}
 
+
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="roles"></span>
+{% endblock %}
+
+
 {% block content %}
     <!-- Main content -->
     <section class="content">

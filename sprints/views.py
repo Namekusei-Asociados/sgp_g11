@@ -224,23 +224,25 @@ def validate_cancel_sprint(request, id_project):
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
 
 
-@permission_proj_required(UPermissionsProject.READ_SPRINT)
-def sprint(request, id_project, id_sprint):
+# @permission_proj_required(UPermissionsProject.READ_SPRINT)
+def dashboard(request, id_project, id_sprint):
     """
-    Retorna el documento HTML con la vista de un sprint dentro de un proyecto
+    Devuelve el dashboard del sprint
 
+    :param id_project: id del proyecto actual
     :param request
-    :param id_project: id del proyecto actual, al que pertenece el sprint
-    :param id_sprint: id del sprint que se quiere visualizar
 
-    :return: documento HTML con la vista del sprint
+    :return: documento HTML
     """
+    sprint = Sprint.objects.get(id=id_sprint)
+
     context = {
+        'id_sprint': id_sprint,
         'id_project': id_project,
-        'id_sprint': id_sprint
+        'sprint' : sprint
     }
 
-    return render(request, 'sprint/base/app.html', context)
+    return render(request, 'sprint/dashboard.html', context)
 
 
 ##################################################################

@@ -7,6 +7,14 @@
     | Roles de Sistema
 {% endblock %}
 
+{% block active_section %}
+    <span id="active-section" data-value="roles"></span>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
 {% block content %}
     {% has_perm_system user 'Create role' as can_create %}
     {% has_perm_system user 'Update role' as can_update %}
