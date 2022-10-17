@@ -8,6 +8,14 @@
     | Proyectos
 {% endblock %}
 
+{% block sidebar %}
+    {% include 'base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="projects"></span>
+{% endblock %}
+
 {% block content %}
 
     <!-- Main content -->

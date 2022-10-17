@@ -1,10 +1,19 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
 {% block title %}
     | Create Sprint
 {% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint"></span>
+{% endblock %}
+
 
 {% block content %}
     <!--MESSAGES-->

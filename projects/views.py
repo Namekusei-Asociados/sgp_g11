@@ -175,7 +175,8 @@ def init_project(request, id_project):
 
 def dashboard(request, id_project):
     if request.user.project_set.filter(id=id_project).exists():
-        return render(request, 'projects/base/app.html', {'id_project': id_project})
+        project = Project.objects.get(id=id_project)
+        return render(request, 'projects/dashboard.html', {'id_project': id_project,'project':project})
     else:
         return render(request, 'redirect/forbidden.html')
 

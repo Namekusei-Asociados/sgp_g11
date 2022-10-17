@@ -1,4 +1,4 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
@@ -12,6 +12,15 @@
           href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
 
 {% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="project_roles"></span>
+{% endblock %}
+
 {% block content %}
 
     {% include 'base/components/success-message.html' %}

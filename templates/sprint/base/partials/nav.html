@@ -7,19 +7,19 @@
 
         {% if can_read_memmber %}
             <li class="nav-item">
-                <a href="{% url 'sprints.members.index' id_project id_sprint %}" class="nav-link">
+                <a data-section-active="members" href="{% url 'sprints.members.index' id_project id_sprint %}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Miembros</p>
                 </a>
             </li>
         {% endif %}
         <li class="nav-item">
-            <a href="{% url 'sprints.sprint_backlog.index' id_project id_sprint %}" class="nav-link">
+            <a data-section-active="sprint_backlog" href="{% url 'sprints.sprint_backlog.index' id_project id_sprint %}" class="nav-link">
                 <i class="nav-icon fas fa-table"></i>
                 <p>Sprint Backlog</p>
             </a>
         </li>
-
+        <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
         <li class="nav-item">
             <a href="{% url 'sprints.index' id_project %}" class="nav-link">
                 <i class="nav-icon fas fa-arrow-circle-left"></i>

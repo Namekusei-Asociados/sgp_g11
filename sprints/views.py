@@ -206,7 +206,7 @@ def sprint(request, id_project, id_sprint):
         'id_sprint': id_sprint
     }
 
-    return render(request, 'sprint/base/app.html', context)
+    return render(request, 'sprint/dashboard.html', context)
 
 
 ##################################################################
