@@ -85,3 +85,22 @@ def test_cancel_user_story(create_logged_user):
 
     assert us.current_status == 'canceled', "La historia de usuario no se ha cancelado"
     assert us.cancellation_reason == 'por razones de testing', "Error al guardar motivo de cancelacion"
+
+
+@pytest.mark.django_db
+def test_import_user_story(client, create_logged_user):
+    project = Project.objects.create(name='proyecto de juan', description='test_project')
+    assert project.name == 'proyecto de juan', 'Error al crar el proyecto'
+    us_type = TypeUS.objects.create(prefix='test', name='name_test',
+                                    flow=[('Pendiente', 'Pendiente'), ('Haciendo', 'Haciendo'),
+                                          ('Finalizado', 'Finalizado')], project=project)
+    project2 = Project.objects.create(name='proyecto de Lucas', description='test_project')
+    data = {
+        'types': [us_type]
+    }
+    response = client.post(reverse('type_us.import_type_us', kwargs={"id_project": project2.id}), data=data,
+                           follow=True)
+    assert response.status_code == 200
+    #get_data = TypeUS.objects.get(name='name_test', project_id=project2.id)
+
+    #assert get_data.name == us_type.date

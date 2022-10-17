@@ -110,7 +110,7 @@ def destroy(request, id_project, id):
 @permission_proj_required(UPermissionsProject.IMPORT_TYPEUS)
 def import_type_us(request, id_project):
     """
-        Importacion de roles de proyectos
+        Importacion de tipos de US de proyectos
 
         :param request: posee los campos
         :param id_project: id del proyecto actual
