@@ -1,10 +1,19 @@
-{% extends 'projects/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
 {% block title %}
     | Sprints
 {% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint"></span>
+{% endblock %}
+
 
 {% block content %}
 
@@ -43,7 +52,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover text-nowrap projects">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -73,6 +82,7 @@
                                         {% endfor %}
                                     </ul>
                                 </td>
+
                                 <td>
                                     <span class="badge
                                     {% if sprint.status == 'Finalizado' %}
@@ -87,7 +97,7 @@
                                 </td>
                                 <td>{{ sprint.duration }} días</td>
                                 <td class="d-flex" style="gap: 5px">
-                                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.sprint' id_project sprint.id %}">
+                                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.dashboard' id_project sprint.id %}">
                                         <i class="fas fa-folder">
                                         </i>
                                         Ver

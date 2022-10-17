@@ -1,4 +1,4 @@
-{% extends 'sprint/base/app.html' %}
+{% extends 'base/app.html' %}
 
 {% load static %}
 
@@ -12,6 +12,15 @@
     <link rel="stylesheet"
           href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
 {% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint_backlog"></span>
+{% endblock %}
+
 
 {% block content %}
     <br>
