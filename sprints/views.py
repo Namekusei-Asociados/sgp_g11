@@ -2,6 +2,7 @@ from dateutil.rrule import DAILY, rrule, MO, TU, WE, TH, FR
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
+
 from projects.decorators import permission_proj_required
 from projects.models import Project
 from user_story.models import UserStory
@@ -226,10 +227,16 @@ def members(request, id_project, id_sprint):
     """
     members = SprintMember.objects.filter(sprint_id=id_sprint)
 
+    team_capacity = 0
+
+    for member in members:
+        team_capacity += member.workload
+
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint,
-        'members': members
+        'members': members,
+        'team_capacity': team_capacity
     }
 
     return render(request, 'sprint/members/index.html', context)
@@ -275,9 +282,16 @@ def store_member(request, id_project, id_sprint):
     :return: documento HTML para seguir agregando miembros al sprint
     """
     user_id = request.POST['user_id']
-    workload = request.POST['workload']
+    workload = int(request.POST['workload'])
 
     member = SprintMember.objects.create(sprint_id=id_sprint, user_id=user_id, workload=workload)
+
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.capacity += workload * sprint.duration
+
+    sprint.available_capacity = sprint.capacity - get_accumulated(id_sprint)
+
+    sprint.save()
 
     messages.success(request, f'El miembro "{member.user.username}" se agrego al sprint con éxito')
 
@@ -347,8 +361,13 @@ def delete_member(request, id_project, id_sprint, member_id):
 
     sprint = Sprint.objects.get(id=id_sprint)
     member = SprintMember.objects.get(id=member_id)
+    workload = member.workload
 
     sprint.members.remove(member.user)
+
+    sprint.capacity = sprint.capacity - sprint.duration * workload
+    sprint.available_capacity = sprint.capacity - get_accumulated(id_sprint)
+    sprint.save()
 
     kwargs = {
         'id_project': id_project,
@@ -370,11 +389,13 @@ def sprint_backlog(request, id_project, id_sprint):
     :return: Documento HTML con el backlog del sprint
     """
     sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
+    sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint,
-        'sprint_backlog': sprint_backlog
+        'sprint_backlog': sprint_backlog,
+        'sprint': sprint
     }
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
@@ -391,7 +412,7 @@ def add_sprint_backlog(request, id_project, id_sprint):
     :return: Documento HTML donde se puede elegir la historia de usuario a ser
     agregada al sprint y el responsable de la misma
     """
-    user_stories = get_user_stories(id_project)
+    user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
     members = get_sprint_member(id_sprint)
 
     context = {
@@ -426,8 +447,9 @@ def store_sprint_backlog(request, id_project, id_sprint):
     user_story.sprint_id = id_sprint
     user_story.save()
 
-    user_stories = get_user_stories(id_project)
-    members = get_sprint_member(id_sprint)
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.available_capacity -= user_story.estimation_time
+    sprint.save()
 
     kwargs = {
         'id_project': id_project,
@@ -555,9 +577,22 @@ def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
     user_story.sprint = None
     user_story.save()
 
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.available_capacity += user_story.estimation_time
+    sprint.save()
+
     kwargs = {
         'id_project': id_project,
         'id_sprint': id_sprint
     }
 
     return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
+
+
+def get_accumulated(id_sprint):
+    user_stories = UserStory.objects.filter(sprint_id=id_sprint)
+    accumulated = 0
+    for user_story in user_stories:
+        accumulated += user_story.estimation_time
+
+    return accumulated

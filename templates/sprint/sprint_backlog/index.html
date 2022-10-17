@@ -21,8 +21,39 @@
                         <div class="col-sm-6">
                             <h1>Sprint Backlog</h1>
                         </div>
-
                     </div>
+                    <!-- Info boxes -->
+                    <div class="row">
+                        <div class="col-16 col-sm-6 col-md-3">
+                            <div class="info-box">
+                                        <span class="info-box-icon bg-info elevation-1">
+                                            <i class="fas fa-users-cog"></i>
+                                        </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Capacidad del sprint</span>
+                                    <span class="info-box-number">{{ sprint.capacity }} horas</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="info-box mb-3">
+                                        <span class="info-box-icon bg-danger elevation-1">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Capacidad del sprint disponible</span>
+                                    <span class="info-box-number">{{ sprint.available_capacity }} horas</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </section>
 
@@ -54,8 +85,7 @@
                                     <tr>
                                         <th>Título</th>
                                         <th>Estado Actual</th>
-                                        <th>Business Value</th>
-                                        <th>Prioridad técnica</th>
+                                        <th>Estimación</th>
                                         <th>Prioridad final</th>
                                         <th>Responsable</th>
                                         <th></th>
@@ -74,8 +104,7 @@
                                             {% else %}
                                                 badge-light
                                             {% endif %}">{{ user_story.current_status }}</span></td>
-                                            <td>{{ user_story.business_value }}</td>
-                                            <td>{{ user_story.technical_priority }}</td>
+                                            <td>{{ user_story.estimation_time }}</td>
                                             <td>{{ user_story.final_priority }}</td>
                                             <td>{{ user_story.assigned_to.user.email }}</td>
                                             <td class="d-flex" style="gap: 5px">
