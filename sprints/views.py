@@ -289,7 +289,7 @@ def store_member(request, id_project, id_sprint):
     sprint = Sprint.objects.get(id=id_sprint)
     sprint.capacity += workload * sprint.duration
 
-    sprint.available_capacity = sprint.capacity - get_accumulated(id_sprint)
+    sprint.available_capacity = get_available_capacity(sprint)
 
     sprint.save()
 
@@ -335,12 +335,24 @@ def update_member(request, id_project, id_sprint):
     :return: documento HTML con la lista de miembros del sprint, con los datos actualizados
     """
     member_id = request.POST['member_id']
-    workload = request.POST['workload']
+    workload = int(request.POST['workload'])
 
+    sprint = Sprint.objects.get(id=id_sprint)
     member = SprintMember.objects.get(id=member_id)
-    member.workload = workload
 
-    member.save()
+    old_capacity = sprint.capacity
+    new_capacity = old_capacity - member.workload * sprint.duration + workload * sprint.duration
+    new_available_capacity = new_capacity - get_accumulated(sprint)
+
+    if new_available_capacity <= sprint.available_capacity:
+        messages.error(request, "No se puede dar menos horas por el consumo de horas de los US")
+    else:
+        member.workload = workload
+        sprint.capacity = new_capacity
+        sprint.available_capacity = get_available_capacity(sprint)
+        member.save()
+        sprint.save()
+        messages.success(request, "TOCASO")
 
     return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
@@ -361,13 +373,16 @@ def delete_member(request, id_project, id_sprint, member_id):
 
     sprint = Sprint.objects.get(id=id_sprint)
     member = SprintMember.objects.get(id=member_id)
-    workload = member.workload
+    if not UserStory.objects.filter(assigned_to=member).exists():
+        workload = member.workload
 
-    sprint.members.remove(member.user)
+        sprint.members.remove(member.user)
 
-    sprint.capacity = sprint.capacity - sprint.duration * workload
-    sprint.available_capacity = sprint.capacity - get_accumulated(id_sprint)
-    sprint.save()
+        sprint.capacity = sprint.capacity - sprint.duration * workload
+        sprint.available_capacity = get_available_capacity(sprint)
+        sprint.save()
+    else:
+        messages.error(request, f"No se puede eliminar al miembro {member.user.email} porque esta asignado a un US")
 
     kwargs = {
         'id_project': id_project,
@@ -589,8 +604,12 @@ def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
     return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
-def get_accumulated(id_sprint):
-    user_stories = UserStory.objects.filter(sprint_id=id_sprint)
+def get_available_capacity(sprint):
+    return sprint.capacity - get_accumulated(sprint)
+
+
+def get_accumulated(sprint):
+    user_stories = UserStory.objects.filter(sprint_id=sprint.id)
     accumulated = 0
     for user_story in user_stories:
         accumulated += user_story.estimation_time
