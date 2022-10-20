@@ -1,6 +1,7 @@
 {% extends 'base/app.html' %}
 
 {% load static %}
+{% load has_perm_project %}
 
 {% block title %}
     | Sprints
@@ -16,6 +17,12 @@
 
 
 {% block content %}
+
+    {% has_perm_project user id_project 'Create sprint' as can_create_sprint %}
+    {% has_perm_project user id_project 'Cancel sprint' as can_cancel_sprint %}
+    {% has_perm_project user id_project 'Update sprint' as can_update_sprint %}
+    {% has_perm_project user id_project 'Read sprint' as can_read_sprint %}
+
 
     <!-- Main content -->
     <section class="content">
@@ -38,12 +45,14 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <a href="{% url 'sprints.create_sprint' id_project %}">
-                        <button class="btn btn-primary btn-sm" {% if exists_planning %} disabled {% endif %}>
-                            <i class="fas fa-plus"></i>
-                            Crear
-                        </button>
-                    </a>
+                    {% if can_create_sprint %}
+                        <a href="{% url 'sprints.create_sprint' id_project %}">
+                            <button class="btn btn-primary btn-sm" {% if exists_planning %} disabled {% endif %}>
+                                <i class="fas fa-plus"></i>
+                                Crear
+                            </button>
+                        </a>
+                    {% endif %}
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -97,21 +106,26 @@
                                 </td>
                                 <td>{{ sprint.duration }} días</td>
                                 <td class="d-flex" style="gap: 5px">
-                                    <a class="btn btn-primary btn-sm" href="{% url 'sprints.dashboard' id_project sprint.id %}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Ver
-                                    </a>
+                                    {% if can_read_sprint %}
+                                        <a class="btn btn-primary btn-sm"
+                                           href="{% url 'sprints.dashboard' id_project sprint.id %}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Ver
+                                        </a>
+                                    {% endif %}
                                     {% if sprint.status != 'canceled' %}
-                                        <form class="m-0 p-0" method="post"
-                                              action="{% url 'sprints.edit_sprint' id_project sprint.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-info btn-sm">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </button>
-                                        </form>
+                                        {% if can_update_sprint %}
+                                            <form class="m-0 p-0" method="post"
+                                                  action="{% url 'sprints.edit_sprint' id_project sprint.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-pencil-alt">
+                                                    </i>
+                                                    Editar
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                         {% if sprint.status == 'pending' and not exists_execution %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.init_sprint' id_project sprint.id %}">
@@ -121,15 +135,17 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        <form class="m-0 p-0"
-                                              action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash">
-                                                </i>
-                                                Cancelar
-                                            </button>
-                                        </form>
+                                        {% if can_cancel_sprint %}
+                                            <form class="m-0 p-0"
+                                                  action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Cancelar
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                             </tr>
