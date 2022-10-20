@@ -36,6 +36,7 @@ class UPermissionsProject:
     READ_SPRINT = 'Read sprint'
     UPDATE_SPRINT = 'Update sprint'
     DELETE_SPRINT = 'Cancel sprint'
+    INIT_SPRINT = 'Initialize sprint'
 
     # SPRINT MEMBER
     CREATE_SPRINTMEMBER = 'Create sprintmember'

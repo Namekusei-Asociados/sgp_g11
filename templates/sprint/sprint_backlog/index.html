@@ -17,7 +17,7 @@
 {% block content %}
     {% has_perm_project user id_project 'Create sprint_backlog' as can_create_sprint_backlog %}
     {% has_perm_project user id_project 'Delete sprint_backlog' as can_delete_sprint_backlog %}
-    {% has_perm_project user id_project 'Update user_story' as can_update_us %}
+    {% has_perm_project user id_project 'Update sprint_backlog' as can_update_sprint_backlog %}
     <br>
     <section class="content">
         {% include 'base/components/success-message.html' %}
@@ -123,7 +123,7 @@
                                                     Ver
                                                 </a>
 
-                                                {% if can_update_us %}
+                                                {% if can_update_sprint_backlog %}
                                                     <form id="edit_user_story" class="m-0 p-0" method="post"
                                                           action="{% url 'sprints.sprint_backlog.edit' id_project id_sprint user_story.id %}">
                                                         {% csrf_token %}

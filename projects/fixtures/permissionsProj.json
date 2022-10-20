@@ -270,5 +270,13 @@
       "name":"Initialize project",
       "description":"Puede iniciar un proyecto"
     }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 35,
+    "fields": {
+      "name":"Initialize sprint",
+      "description":"Puede iniciar un sprint"
+    }
   }
 ]

@@ -679,6 +679,7 @@ def get_accumulated(sprint):
     return accumulated
 
 
+@permission_proj_required(UPermissionsProject.INIT_SPRINT)
 def init_sprint(request, id_project, id_sprint):
     project = Project.objects.get(id=id_project)
     sprint = Sprint.objects.get(id=id_sprint)
