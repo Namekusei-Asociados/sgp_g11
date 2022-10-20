@@ -22,6 +22,7 @@
     {% has_perm_project user id_project 'Cancel sprint' as can_cancel_sprint %}
     {% has_perm_project user id_project 'Update sprint' as can_update_sprint %}
     {% has_perm_project user id_project 'Read sprint' as can_read_sprint %}
+    {% has_perm_project user id_project 'Initialize sprint' as can_initialize_sprint %}
 
 
     <!-- Main content -->
@@ -126,7 +127,7 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        {% if sprint.status == 'pending' and not exists_execution %}
+                                        {% if sprint.status == 'pending' and not exists_execution and can_initialize_sprint%}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.init_sprint' id_project sprint.id %}">
                                                 <button type="submit" class="btn btn-success btn-sm">
