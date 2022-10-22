@@ -12,6 +12,7 @@ from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.USprint import USprint
 from .models import Sprint, SprintMember
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -462,7 +463,12 @@ def add_sprint_backlog(request, id_project, id_sprint):
     """
     members = get_sprint_member(id_sprint)
     if members.count() > 0:
-        user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
+        sprint = Sprint.objects.get(id=id_sprint)
+        # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
+        user_stories = UserStory.objects.get_us_non_finished(id_project) \
+            .filter(estimation_time__lte=sprint.available_capacity) \
+            .order_by('final_priority').reverse()
+
         context = {
             'id_project': id_project,
             'id_sprint': id_sprint,
@@ -504,14 +510,7 @@ def store_sprint_backlog(request, id_project, id_sprint):
     sprint.available_capacity -= user_story.estimation_time
     sprint.save()
 
-    kwargs = {
-        'id_project': id_project,
-        'id_sprint': id_sprint
-    }
-
-    messages.success(request, f"El User Story {user_story.title} fue agregado crrectamente")
-
-    return redirect(reverse('sprints.sprint_backlog.add', kwargs=kwargs), request)
+    return JsonResponse({'status': 200, 'message': f'El User Story {user_story.title} fue agregado correctamente'})
 
 
 def get_user_stories(id_project):
@@ -637,7 +636,7 @@ def update_sprint_backlog(request, id_project, id_sprint):
 
 
 @permission_proj_required(UPermissionsProject.DELETE_SPRINT_BACKLOG)
-def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
+def delete_sprint_backlog(request, id_project, id_sprint):
     """
     Elimina una historia de usuario del sprint backlog
 
@@ -648,6 +647,7 @@ def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
 
     :return: Documento HTML del backlog del sprint
     """
+    id_user_story = request.POST['user_story_id']
     user_story = UserStory.objects.get(id=id_user_story)
 
     user_story.assigned_to = None
@@ -662,8 +662,13 @@ def delete_sprint_backlog(request, id_project, id_sprint, id_user_story):
         'id_project': id_project,
         'id_sprint': id_sprint
     }
+    # lanzara un error si no es un ajax request lo cual significa que se llamo desde el index
+    try:
+        isAjax = request.POST['is_ajax']
+        return JsonResponse({'status': 200, 'message': f'El User Story {user_story.title} fue desadjuntado correctamente'})
+    except:
+        return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
-    return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
 def get_available_capacity(sprint):
