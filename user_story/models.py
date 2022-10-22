@@ -66,6 +66,7 @@ class UserStory(models.Model):
 
     objects = UserStoryManager()
 
+    # def _get_is_
     def __str__(self):
         return self.title
 
