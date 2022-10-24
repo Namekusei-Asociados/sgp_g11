@@ -60,8 +60,8 @@
                 </div>
                 <div class="card-body backlog" id="accordion">
 
-                    {% for us in user_stories %}
-                        {% if  us.assigned_to_id == nil %}
+                    {% for us in backlog %}
+
 
                             <!--HISTORIA DE USUARIO -->
                             <div class="card card-info card-outline user-story">
@@ -152,7 +152,6 @@
                             </div>
                             <!--END OF HISTORIA DE USUARIO -->
 
-                        {% endif %}
                     {% endfor %}
 
 
@@ -167,8 +166,8 @@
                     </h3>
                 </div>
                 <div class="card-body sprint_backlog" id="accordion">
-                    {% for us in user_stories %}
-                        {% if us.assigned_to_id != nil %}
+                    {% for us in sprint_backlog %}
+
 
                             <!--HISTORIA DE USUARIO -->
                             <div class="card card-info card-outline user-story">
@@ -263,7 +262,7 @@
                             </div>
                             <!--END OF HISTORIA DE USUARIO -->
 
-                        {% endif %}
+
                     {% endfor %}
 
                 </div>
