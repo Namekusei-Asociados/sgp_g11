@@ -32,7 +32,7 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_backlog/edit/<int:id_user_story>', views.edit_sprint_backlog,
          name='sprints.sprint_backlog.edit'),
     path('<int:id_sprint>/sprint_bakclog/update', views.update_sprint_backlog, name='sprints.sprint_backlog.update'),
-    path('<int:id_sprint>/sprint_backlog/destroy/<int:id_user_story>', views.delete_sprint_backlog,
+    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,
          name='sprints.sprint_backlog.delete'),
 
 ]

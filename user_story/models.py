@@ -71,6 +71,7 @@ class UserStory(models.Model):
     # historial
     history = HistoricalRecords()
 
+    # def _get_is_
     def __str__(self):
         return self.title
 

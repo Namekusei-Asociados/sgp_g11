@@ -137,8 +137,9 @@
 
                                                 {% if can_delete_sprint_backlog %}
                                                     <form id="cancel_user_story" class="m-0 p-0" method="post"
-                                                          action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint user_story.id %}">
+                                                          action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint %}">
                                                         {% csrf_token %}
+                                                        <input type="hidden" name="user_story_id" value="{{ user_story.id }}">
                                                         <button type="submit" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash">
                                                             </i>
