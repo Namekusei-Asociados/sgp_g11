@@ -222,3 +222,25 @@ def details_user_story(request, id_project, id_user_story):
     }
 
     return render(request, 'user_story/details_user_story.html', context)
+
+
+def history(request,id_project, id_user_story):
+    """
+    Depsliega ventana de historial propio del US
+
+    :param request:
+    :param id_project: id del proyecto
+    :param id_user_story: id del US a mirar el historial
+
+    :return: Documento HTML
+    """
+    user_story = UserStory.objects.get(id=id_user_story)
+    context = {
+        'id_project': id_project,
+        'user_story': user_story,
+        'historical': user_story.history.all()
+    }
+    return render(request, 'user_story/history.html', context)
+
+def restore(request):
+    pass

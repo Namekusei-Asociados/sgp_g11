@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
@@ -33,6 +34,7 @@ class UserStoryManager(models.Manager):
         active = [us.id for us in UserStory.objects.filter(project_id=id_project) if
                   not UserStory.objects.is_final_status(us.id)]
         list_active_us = UserStory.objects.filter(id__in=active)
+
         return list_active_us
 
     def get_us_no_assigned(self, id_project, id_sprint):
@@ -65,6 +67,9 @@ class UserStory(models.Model):
     deleted_at = models.DateTimeField(null=True)
 
     objects = UserStoryManager()
+
+    # historial
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.title

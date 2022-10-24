@@ -113,7 +113,11 @@
                                                         </button>
                                                     </form>
                                                 {% endif %}
+                                                <a class="btn btn-secondary btn-sm" href="{% url 'user_story.history' id_project user_story.id %}" >
+                                                <i class="fas fa-history">
+                                                </i>
                                             {% endif %}
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
