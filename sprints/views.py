@@ -465,14 +465,18 @@ def add_sprint_backlog(request, id_project, id_sprint):
     if members.count() > 0:
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
-        user_stories = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(estimation_time__lte=sprint.available_capacity) \
+        backlog = UserStory.objects.get_us_non_finished(id_project) \
+            .filter(estimation_time__lte=sprint.available_capacity, sprint__isnull=True ) \
+            .order_by('final_priority').reverse()
+        sprint_backlog = UserStory.objects.get_us_non_finished(id_project) \
+            .filter(estimation_time__lte=sprint.available_capacity, sprint_id=id_sprint ) \
             .order_by('final_priority').reverse()
 
         context = {
             'id_project': id_project,
             'id_sprint': id_sprint,
-            'user_stories': user_stories,
+            'backlog': backlog,
+            'sprint_backlog': sprint_backlog,
             'members': members
         }
         return render(request, 'sprint/sprint_backlog/create.html', context)
