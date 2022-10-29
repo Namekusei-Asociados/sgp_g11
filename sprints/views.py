@@ -466,10 +466,10 @@ def add_sprint_backlog(request, id_project, id_sprint):
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
         backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(estimation_time__lte=sprint.available_capacity, sprint__isnull=True ) \
+            .filter(sprint__isnull=True ) \
             .order_by('final_priority').reverse()
         sprint_backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(estimation_time__lte=sprint.available_capacity, sprint_id=id_sprint ) \
+            .filter(sprint_id=id_sprint ) \
             .order_by('final_priority').reverse()
 
         context = {
@@ -477,7 +477,8 @@ def add_sprint_backlog(request, id_project, id_sprint):
             'id_sprint': id_sprint,
             'backlog': backlog,
             'sprint_backlog': sprint_backlog,
-            'members': members
+            'members': members,
+            'sprint': sprint
         }
         return render(request, 'sprint/sprint_backlog/create.html', context)
     else:
@@ -514,7 +515,12 @@ def store_sprint_backlog(request, id_project, id_sprint):
     sprint.available_capacity -= user_story.estimation_time
     sprint.save()
 
-    return JsonResponse({'status': 200, 'message': f'El User Story {user_story.title} fue agregado correctamente'})
+    context = {
+        'available_capacity': sprint.available_capacity,
+        'status': 200,
+        'message': f'El User Story {user_story.title} fue agregado correctamente'
+    }
+    return JsonResponse(context)
 
 
 def get_user_stories(id_project):
@@ -669,7 +675,12 @@ def delete_sprint_backlog(request, id_project, id_sprint):
     # lanzara un error si no es un ajax request lo cual significa que se llamo desde el index
     try:
         isAjax = request.POST['is_ajax']
-        return JsonResponse({'status': 200, 'message': f'El User Story {user_story.title} fue desadjuntado correctamente'})
+        context = {
+            'available_capacity': sprint.available_capacity,
+            'status': 200,
+            'message': f'El User Story {user_story.title} fue desadjuntado correctamente'
+        }
+        return JsonResponse(context)
     except:
         return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 

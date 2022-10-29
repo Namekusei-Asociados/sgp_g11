@@ -48,7 +48,48 @@
             </div>
         </div>
     </section>
+
+
+    <!--Capacidad-->
+    <!-- Content Header (Page header) -->
+
+    <div class="d-flex justify-content-center">
+        <div class="col-12 col-md-5">
+            <div class="info-box">
+                <span class="info-box-icon bg-info elevation-1">
+                    <i class="fas fa-users-cog"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Capacidad del sprint</span>
+                    <span class="info-box-number">{{ sprint.capacity }} horas</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-md-5">
+            <div class="info-box mb-3 {% if sprint.available_capacity <= 0 %} border border-danger {% endif %}">
+                <span class="info-box-icon bg-danger elevation-1">
+                    <i class="fas fa-users"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Capacidad del sprint disponible</span>
+                    <span class="info-box-number {% if sprint.available_capacity <= 0%} text-danger {% endif %}" id="sprint-capacity">{{ sprint.available_capacity }} horas</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+
+    <!--End Capacidad-->
+
     <!--UI COMPONENT -->
+
+
 
     <section class="content">
         <div class="d-flex justify-content-center h-100 multi-select-list-container" style="gap:8px">
@@ -62,95 +103,94 @@
 
                     {% for us in backlog %}
 
-
-                            <!--HISTORIA DE USUARIO -->
-                            <div class="card card-info card-outline user-story">
-                                <div class="card-header d-flex">
-                                    <h4 class="card-title w-100">
-                                        <a class="d-block w-100 link-muted font-weight-bold" data-toggle="collapse"
-                                           href="#collapseOne{{ forloop.counter }}">
-                                            {{ us.title }}
-                                        </a>
-                                    </h4>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-info mr-1 btn-move-to-left" disabled
-                                                data-us-id="{{ us.id }}">
-                                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-info btn-move-to-right"
-                                                data-us-id="{{ us.id }}">
-                                            <i class="fa fa-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="collapseOne{{ forloop.counter }}" class="collapse" data-parent="#accordion">
-                                    <div class="card-body">
-
-                                        <dl>
-                                            <!--Description -->
-                                            <dt>Descripcion</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.description }}
-                                                </p>
-                                            </dd>
-
-
-                                            <!--Assigned to-->
-                                            <dt>Encargado del US</dt>
-                                            <dd class="form-group">
-                                                <select class="form-control" name="id_member" required>
-                                                    <option value="">Seleccionar</option>
-                                                    {% for member in members %}
-                                                        <option value="{{ member.id }}">
-                                                            {{ member.user.username }}
-                                                            | {{ member.user.first_name }} {{ member.user.last_name }}
-                                                            | {{ member.user.email }}
-                                                        </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </dd>
-
-                                            <!--Business Value -->
-                                            <dt>Business Value</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.business_value }}
-                                                </p>
-                                            </dd>
-
-                                            <!--Estimacion -->
-                                            <dt>Estimación (en horas)</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.estimation_time }} hrs
-                                                </p>
-                                            </dd>
-
-                                            <!--Priority -->
-                                            <dt>Prioridad Técnica</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.technical_priority }}
-                                                </p>
-                                            </dd>
-
-                                            <!--US type -->
-                                            <dt>Tipo de US</dt>
-                                            <dd class="">
-                                                <p>{{ us.us_type.name }}</p>
-                                            </dd>
-                                            <dt>Flujo</dt>
-                                            <dd class="">
-                                                <p>{{ us.us_type.format_flow }}</p>
-                                            </dd>
-
-
-                                        </dl>
-                                    </div>
+                        <!--HISTORIA DE USUARIO -->
+                        <div class="card card-info card-outline user-story">
+                            <div class="card-header d-flex">
+                                <h4 class="card-title w-100">
+                                    <a class="d-block w-100 link-muted font-weight-bold" data-toggle="collapse"
+                                       href="#collapseOne{{ us.id }}">
+                                        {{ us.title }}
+                                    </a>
+                                </h4>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info mr-1 btn-move-to-left" disabled
+                                            data-us-id="{{ us.id }}">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-move-to-right"
+                                            data-us-id="{{ us.id }}">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <!--END OF HISTORIA DE USUARIO -->
+                            <div id="collapseOne{{ us.id }}" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+
+                                    <dl>
+                                        <!--Description -->
+                                        <dt>Descripcion</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.description }}
+                                            </p>
+                                        </dd>
+
+
+                                        <!--Assigned to-->
+                                        <dt>Encargado del US</dt>
+                                        <dd class="form-group">
+                                            <select class="form-control" name="id_member" required>
+                                                <option value="">Seleccionar</option>
+                                                {% for member in members %}
+                                                    <option value="{{ member.id }}">
+                                                        {{ member.user.username }}
+                                                        | {{ member.user.first_name }} {{ member.user.last_name }}
+                                                        | {{ member.user.email }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </dd>
+
+                                        <!--Business Value -->
+                                        <dt>Business Value</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.business_value }}
+                                            </p>
+                                        </dd>
+
+                                        <!--Estimacion -->
+                                        <dt>Estimación (en horas)</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.estimation_time }} hrs
+                                            </p>
+                                        </dd>
+
+                                        <!--Priority -->
+                                        <dt>Prioridad Técnica</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.technical_priority }}
+                                            </p>
+                                        </dd>
+
+                                        <!--US type -->
+                                        <dt>Tipo de US</dt>
+                                        <dd class="">
+                                            <p>{{ us.us_type.name }}</p>
+                                        </dd>
+                                        <dt>Flujo</dt>
+                                        <dd class="">
+                                            <p>{{ us.us_type.format_flow }}</p>
+                                        </dd>
+
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END OF HISTORIA DE USUARIO -->
 
                     {% endfor %}
 
@@ -169,98 +209,98 @@
                     {% for us in sprint_backlog %}
 
 
-                            <!--HISTORIA DE USUARIO -->
-                            <div class="card card-info card-outline user-story">
-                                <div class="card-header d-flex">
-                                    <h4 class="card-title w-100">
-                                        <a class="d-block w-100 link-muted font-weight-bold" data-toggle="collapse"
-                                           href="#collapseOne{{ forloop.counter }}">
-                                            {{ us.title }}
-                                        </a>
-                                    </h4>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-info mr-1 btn-move-to-left"
-                                                data-us-id="{{ us.id }}">
-                                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-info btn-move-to-right" disabled
-                                                data-us-id="{{ us.id }}">
-                                            <i class="fa fa-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="collapseOne{{ forloop.counter }}" class="collapse" data-parent="#accordion">
-                                    <div class="card-body">
-
-                                        <dl>
-                                            <!--Description -->
-                                            <dt>Descripcion</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.description }}
-                                                </p>
-                                            </dd>
-
-
-                                            <!--Assigned to-->
-                                            <dt>Encargado del US</dt>
-                                            <dd class="form-group">
-                                                <select class="form-control" name="id_member" required disabled>
-                                                    <option value="">Seleccionar</option>
-                                                    {% for member in members %}
-                                                        <option value="{{ member.id }}"
-                                                                {% if member.id == us.assigned_to_id %}
-                                                                selected
-                                                                {% endif %}
-                                                        >
-                                                            {{ member.user.username }}
-                                                            | {{ member.user.first_name }} {{ member.user.last_name }}
-                                                            | {{ member.user.email }}
-                                                        </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </dd>
-
-                                            <!--Business Value -->
-                                            <dt>Business Value</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.business_value }}
-                                                </p>
-                                            </dd>
-
-                                            <!--Estimacion -->
-                                            <dt>Estimación (en horas)</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.estimation_time }} hrs
-                                                </p>
-                                            </dd>
-
-                                            <!--Priority -->
-                                            <dt>Prioridad Técnica</dt>
-                                            <dd class="">
-                                                <p>
-                                                    {{ us.technical_priority }}
-                                                </p>
-                                            </dd>
-
-                                            <!--US type -->
-                                            <dt>Tipo de US</dt>
-                                            <dd class="">
-                                                <p>{{ us.us_type.name }}</p>
-                                            </dd>
-                                            <dt>Flujo</dt>
-                                            <dd class="">
-                                                <p>{{ us.us_type.format_flow }}</p>
-                                            </dd>
-
-
-                                        </dl>
-                                    </div>
+                        <!--HISTORIA DE USUARIO -->
+                        <div class="card card-info card-outline user-story">
+                            <div class="card-header d-flex">
+                                <h4 class="card-title w-100">
+                                    <a class="d-block w-100 link-muted font-weight-bold" data-toggle="collapse"
+                                       href="#collapseOne{{ forloop.counter }}">
+                                        {{ us.title }}
+                                    </a>
+                                </h4>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info mr-1 btn-move-to-left"
+                                            data-us-id="{{ us.id }}">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-move-to-right" disabled
+                                            data-us-id="{{ us.id }}">
+                                        <i class="fa fa-arrow-right"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <!--END OF HISTORIA DE USUARIO -->
+                            <div id="collapseOne{{ forloop.counter }}" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+
+                                    <dl>
+                                        <!--Description -->
+                                        <dt>Descripcion</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.description }}
+                                            </p>
+                                        </dd>
+
+
+                                        <!--Assigned to-->
+                                        <dt>Encargado del US</dt>
+                                        <dd class="form-group">
+                                            <select class="form-control" name="id_member" required disabled>
+                                                <option value="">Seleccionar</option>
+                                                {% for member in members %}
+                                                    <option value="{{ member.id }}"
+                                                            {% if member.id == us.assigned_to_id %}
+                                                            selected
+                                                            {% endif %}
+                                                    >
+                                                        {{ member.user.username }}
+                                                        | {{ member.user.first_name }} {{ member.user.last_name }}
+                                                        | {{ member.user.email }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </dd>
+
+                                        <!--Business Value -->
+                                        <dt>Business Value</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.business_value }}
+                                            </p>
+                                        </dd>
+
+                                        <!--Estimacion -->
+                                        <dt>Estimación (en horas)</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.estimation_time }} hrs
+                                            </p>
+                                        </dd>
+
+                                        <!--Priority -->
+                                        <dt>Prioridad Técnica</dt>
+                                        <dd class="">
+                                            <p>
+                                                {{ us.technical_priority }}
+                                            </p>
+                                        </dd>
+
+                                        <!--US type -->
+                                        <dt>Tipo de US</dt>
+                                        <dd class="">
+                                            <p>{{ us.us_type.name }}</p>
+                                        </dd>
+                                        <dt>Flujo</dt>
+                                        <dd class="">
+                                            <p>{{ us.us_type.format_flow }}</p>
+                                        </dd>
+
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END OF HISTORIA DE USUARIO -->
 
 
                     {% endfor %}
@@ -306,6 +346,7 @@
             const spanError = document.createElement('span');
             const backlog = document.querySelector('.backlog');
             const sprint_backlog = document.querySelector('.sprint_backlog');
+            const capacity = document.querySelector('#sprint-capacity');
             let Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -356,13 +397,22 @@
                         //disabled select in sprint backlog
                         selectMember.setAttribute('disabled', true)
 
-                         //disabled button
+                        //disabled button
                         btn.setAttribute('disabled', true)
                         btn.previousElementSibling.removeAttribute('disabled')
 
 
                         //fire alert success
                         toastr.success(data?.message)
+
+                        //change capacity
+                        capacity.innerHTML = `${data?.available_capacity} horas`;
+
+                        if (data?.available_capacity <= 0){
+                            capacity.classList.add('text-danger')
+                            $(capacity.parentNode.parentNode).addClass('border border-danger')
+
+                        }
                     },
                     error: function (jqXhr, textStatus, errorMessage) {
                         console.log(jqXhr)
@@ -398,11 +448,20 @@
 
                         //fire alert success
                         toastr.success(data?.message)
+
+                        //change capacity
+                        capacity.innerHTML = `${data?.available_capacity} horas`;
+
+                        if (data?.available_capacity > 0){
+                            capacity.classList.remove('text-danger')
+                            $(capacity.parentNode.parentNode).removeClass('border border-danger')
+
+                        }
                     },
                     error: function (jqXhr, textStatus, errorMessage) {
                         console.log(jqXhr)
                         //fire alert success
-                        toastr.error( "No se pudo desadjuntar el US del sprint backlog")
+                        toastr.error("No se pudo desadjuntar el US del sprint backlog")
                     }
                 });
 
