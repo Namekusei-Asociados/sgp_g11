@@ -52,15 +52,15 @@ def test_store_role(client, create_logged_user):
         'perms': [1]
     }
     project = Project.objects.create(name="proj", description="descr")
-
+    print(project.id)
     response = client.post(reverse('projects.store_role', kwargs={"id_project": project.id}), data=data,
                            follow=True)
-
+    print(response)
     # status code success
     assert response.status_code == 200
     # role = RoleProject.objects.get(role_name='Rol')
-    #
-    # # check if the project was created in the database with the corrects fields
+
+    # check if the project was created in the database with the corrects fields
     # assert role.role_name == 'Rol'
 
 
@@ -100,7 +100,7 @@ def test_update_role(client, create_logged_user):
                            follow=True)
     assert response.status_code == 200
 
-    # # verify updated data
+    # verify updated data
     # updated_role = RoleProject.objects.get(role_name='Shell Lubricantes', description='Small project')
     #
     # assert updated_role.id == role.id
