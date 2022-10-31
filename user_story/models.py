@@ -4,6 +4,7 @@ from simple_history.models import HistoricalRecords
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
+from utilities.UProject import UProject
 
 
 class UserStoryManager(models.Manager):
@@ -11,17 +12,15 @@ class UserStoryManager(models.Manager):
     def is_final_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
 
-        return user_story.current_status == 'pending' or user_story.current_status == 'canceled'
+        return user_story.current_status == UProject.STATUS_US_FINISHED or user_story.current_status == UProject.STATUS_US_CANCELED
 
     def is_initial_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
-        initial_status = UserStory.objects.get_initial_status()
-
-        return user_story.current_status == initial_status
+        return user_story.current_status == UProject.STATUS_US_PENDING
 
     # Obtenemos el primer estado
     def get_initial_status(self):
-        return 'pending'
+        return UProject.STATUS_US_PENDING
 
     def get_us_finished(self, id_project):
         finished = [us.id for us in UserStory.objects.filter(project_id=id_project) if
@@ -55,7 +54,7 @@ class UserStory(models.Model):
     final_priority = models.IntegerField(null=True)
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
-    current_status = models.CharField(max_length=20,default='pending')
+    current_status = models.CharField(max_length=20, default=UProject.STATUS_US_PENDING)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)

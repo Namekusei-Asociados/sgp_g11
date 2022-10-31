@@ -439,7 +439,7 @@ def sprint_backlog(request, id_project, id_sprint):
     """
     sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
     sprint = Sprint.objects.get(id=id_sprint)
-
+    print(sprint_backlog)
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint,
@@ -465,12 +465,9 @@ def add_sprint_backlog(request, id_project, id_sprint):
     if members.count() > 0:
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
-        backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint__isnull=True ) \
-            .order_by('final_priority').reverse()
-        sprint_backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint_id=id_sprint ) \
-            .order_by('final_priority').reverse()
+        backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint__isnull=True )
+        sprint_backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint_id=id_sprint )
+
 
         context = {
             'id_project': id_project,
@@ -509,6 +506,7 @@ def store_sprint_backlog(request, id_project, id_sprint):
 
     user_story.assigned_to = member
     user_story.sprint_id = id_sprint
+    user_story.current_status=UProject.STATUS_US_IN_EXECUTION
     user_story.save()
 
     sprint = Sprint.objects.get(id=id_sprint)
@@ -662,6 +660,7 @@ def delete_sprint_backlog(request, id_project, id_sprint):
 
     user_story.assigned_to = None
     user_story.sprint = None
+    user_story.current_status = UProject.STATUS_US_PENDING
     user_story.save()
 
     sprint = Sprint.objects.get(id=id_sprint)

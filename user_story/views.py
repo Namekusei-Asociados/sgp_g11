@@ -46,7 +46,7 @@ def validate_create_user_story(request, id_project):
     estimation_time = int(request.POST['estimation_time'])
 
     # obetenemos el primer estado del tipo de US
-    initial_status = UserStory.objects.get_initial_status(id_type_us=us_type)
+    initial_status = UserStory.objects.get_initial_status()
 
     UserStory.objects.create(
         title=title, description=description,
