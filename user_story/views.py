@@ -192,7 +192,7 @@ def backlog(request, id_project):
     :return: documento HTML del backlog de un proyecto
     """
     user_stories_data = UserStory.objects.filter(project_id=id_project)
-    #dividimos entre estados finales y no finales
+    # dividimos entre estados finales y no finales
     final_us = UserStory.objects.get_us_finished(id_project=id_project)
     not_final_us = UserStory.objects.get_us_non_finished(id_project=id_project)
     user_stories = chain(not_final_us, final_us)
@@ -224,7 +224,7 @@ def details_user_story(request, id_project, id_user_story):
     return render(request, 'user_story/details_user_story.html', context)
 
 
-def history(request,id_project, id_user_story):
+def history(request, id_project, id_user_story):
     """
     Depsliega ventana de historial propio del US
 
@@ -251,15 +251,9 @@ def history(request,id_project, id_user_story):
         message = 'La historia de usuario "' + h.title + '" fue actualizada con éxito'
         messages.success(request, message)
 
-        return redirect(
-            reverse('user_story.history', kwargs={'id_project': id_project, 'id_user_story': id_user_story}),
-            request)
     context = {
         'id_project': id_project,
         'user_story': user_story,
         'historical': user_story.history.all()
     }
     return render(request, 'user_story/history.html', context)
-
-def restore(request):
-    pass
