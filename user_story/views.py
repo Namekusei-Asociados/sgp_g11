@@ -232,7 +232,7 @@ def details_user_story(request, id_project, id_user_story):
 def is_visible_buttons(id_project):
     project = Project.objects.get(id=id_project)
 
-    if project.status == UProject.STATUS_CANCELED:
+    if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:
         return False
 
     return True

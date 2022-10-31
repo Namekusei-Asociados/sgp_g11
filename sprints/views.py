@@ -759,14 +759,14 @@ def is_visible_buttons(id_project=None, id_sprint=None):
     if id_project is not None:
         project = Project.objects.get(id=id_project)
 
-        if project.status == UProject.STATUS_CANCELED:
+        if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:
             return False
 
         return True
     else:
         sprint = Sprint.objects.get(id=id_sprint)
 
-        if sprint.status == UProject.STATUS_CANCELED:
+        if sprint.status == UProject.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
             return False
 
         return True

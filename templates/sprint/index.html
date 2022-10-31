@@ -46,9 +46,9 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% if can_create_sprint and is_visible %}
+                    {% if can_create_sprint and is_visible and not exists_planning %}
                         <a href="{% url 'sprints.create_sprint' id_project %}">
-                            <button class="btn btn-primary btn-sm" {% if exists_planning %} disabled {% endif %}>
+                            <button class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i>
                                 Crear
                             </button>
