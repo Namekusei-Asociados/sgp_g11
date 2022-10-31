@@ -6,9 +6,11 @@ from django.urls import reverse
 
 from accounts.models import User
 from projects.decorators import permission_proj_required
+from projects.models import Project
 from type_us.models import TypeUS
 from user_story.models import UserStory
 from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UProject import UProject
 
 
 # Create your views here.
@@ -192,14 +194,17 @@ def backlog(request, id_project):
     :return: documento HTML del backlog de un proyecto
     """
     user_stories_data = UserStory.objects.filter(project_id=id_project)
-    #dividimos entre estados finales y no finales
+    # dividimos entre estados finales y no finales
     final_us = UserStory.objects.get_us_finished(id_project=id_project)
     not_final_us = UserStory.objects.get_us_non_finished(id_project=id_project)
     user_stories = chain(not_final_us, final_us)
+
     context = {
         'id_project': id_project,
-        'user_stories': user_stories
+        'user_stories': user_stories,
+        'is_visible': is_visible_buttons(id_project)
     }
+
     return render(request, 'user_story/backlog.html', context)
 
 
@@ -222,3 +227,12 @@ def details_user_story(request, id_project, id_user_story):
     }
 
     return render(request, 'user_story/details_user_story.html', context)
+
+
+def is_visible_buttons(id_project):
+    project = Project.objects.get(id=id_project)
+
+    if project.status == UProject.STATUS_CANCELED:
+        return False
+
+    return True

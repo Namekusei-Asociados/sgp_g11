@@ -46,7 +46,7 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% if can_create_sprint %}
+                    {% if can_create_sprint and is_visible %}
                         <a href="{% url 'sprints.create_sprint' id_project %}">
                             <button class="btn btn-primary btn-sm" {% if exists_planning %} disabled {% endif %}>
                                 <i class="fas fa-plus"></i>
@@ -116,7 +116,7 @@
                                         </a>
                                     {% endif %}
                                     {% if sprint.status != 'canceled' %}
-                                        {% if can_update_sprint %}
+                                        {% if can_update_sprint and is_visible %}
                                             <form class="m-0 p-0" method="post"
                                                   action="{% url 'sprints.edit_sprint' id_project sprint.id %}">
                                                 {% csrf_token %}
@@ -127,7 +127,7 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        {% if sprint.status == 'pending' and not exists_execution and can_initialize_sprint%}
+                                        {% if sprint.status == 'pending' and not exists_execution and can_initialize_sprint and is_visible %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.init_sprint' id_project sprint.id %}">
                                                 <button type="submit" class="btn btn-success btn-sm">
@@ -136,7 +136,7 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        {% if can_cancel_sprint %}
+                                        {% if can_cancel_sprint and is_visible %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
                                                 {% csrf_token %}

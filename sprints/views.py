@@ -2,6 +2,7 @@ from datetime import date
 
 import pandas as pd
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
@@ -12,7 +13,6 @@ from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.USprint import USprint
 from .models import Sprint, SprintMember
-from django.http import JsonResponse
 
 
 # Create your views here.
@@ -35,8 +35,11 @@ def index(request, id_project):
         'sprints': sprints,
         'id_project': id_project,
         'exists_planning': exists_planning,
-        'exists_execution': exists_execution
+        'exists_execution': exists_execution,
+        'is_visible': is_visible_buttons(id_project=id_project)
     }
+
+    print(f'exists_execution = {exists_execution} | is_visible = {is_visible_buttons(id_project=id_project)}')
 
     return render(request, 'sprint/index.html', context)
 
@@ -270,7 +273,8 @@ def members(request, id_project, id_sprint):
         'id_project': id_project,
         'id_sprint': id_sprint,
         'members': members,
-        'team_capacity': team_capacity
+        'team_capacity': team_capacity,
+        'is_visible': is_visible_buttons(id_sprint=id_sprint)
     }
 
     return render(request, 'sprint/members/index.html', context)
@@ -444,7 +448,8 @@ def sprint_backlog(request, id_project, id_sprint):
         'id_project': id_project,
         'id_sprint': id_sprint,
         'sprint_backlog': sprint_backlog,
-        'sprint': sprint
+        'sprint': sprint,
+        'is_visible': is_visible_buttons(id_sprint=id_sprint)
     }
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
@@ -466,10 +471,10 @@ def add_sprint_backlog(request, id_project, id_sprint):
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
         backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint__isnull=True ) \
+            .filter(sprint__isnull=True) \
             .order_by('final_priority').reverse()
         sprint_backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint_id=id_sprint ) \
+            .filter(sprint_id=id_sprint) \
             .order_by('final_priority').reverse()
 
         context = {
@@ -685,7 +690,6 @@ def delete_sprint_backlog(request, id_project, id_sprint):
         return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
-
 def get_available_capacity(sprint):
     return sprint.capacity - get_accumulated(sprint)
 
@@ -749,3 +753,20 @@ def switch_to_started_sprint(sprint):
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
     sprint.end_at = end_at
     sprint.save()
+
+
+def is_visible_buttons(id_project=None, id_sprint=None):
+    if id_project is not None:
+        project = Project.objects.get(id=id_project)
+
+        if project.status == UProject.STATUS_CANCELED:
+            return False
+
+        return True
+    else:
+        sprint = Sprint.objects.get(id=id_sprint)
+
+        if sprint.status == UProject.STATUS_CANCELED:
+            return False
+
+        return True

@@ -1,13 +1,14 @@
 import json
+
+from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from projects.decorators import permission_proj_required
 from projects.models import Project
-from django.contrib import messages
-from django.urls import reverse
+from sgp.templatetags import has_perm_project as PermFun
 from type_us.forms import ImportTypeUs
 from type_us.models import TypeUS
-from utilities.UPermissionsProj import UPermissionsProject
-from sgp.templatetags import has_perm_project as PermFun
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 
@@ -25,7 +26,9 @@ def index(request, id_project):
     # get all projects related to the current user
     project = Project.objects.get(id=id_project)
     types_us = project.typeus_set.all().order_by('id')
-    return render(request, 'type_us/index.html', {"types_us": types_us, "id_project": id_project})
+
+    context = dict(types_us=types_us, id_project=id_project, is_visible=is_visible_buttons(id_project))
+    return render(request, 'type_us/index.html', context)
 
 
 @permission_proj_required(UPermissionsProject.CREATE_TYPEUS)
@@ -70,6 +73,7 @@ def store(request, id_project):
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" fue creado exitosamente')
     return redirect(reverse('type_us.create', kwargs={'id_project': id_project}), request)
 
+
 @permission_proj_required(UPermissionsProject.UPDATE_TYPEUS)
 def update(request, id_project, id):
     """
@@ -82,13 +86,14 @@ def update(request, id_project, id):
     prefix = request.POST['prefix']
     flow = request.POST.getlist('flow[]')
 
-
     # update type us
     type_us = TypeUS.objects.update_type_us(name=name, prefix=prefix, flow=flow, type_us_id=id)
 
     # redirect back with success message
     messages.success(request, 'El tipo de historia de usuario "' + type_us.name + '" se actualizo exitosamente')
     return redirect(reverse('type_us.index', kwargs={'id_project': id_project}), request)
+
+
 @permission_proj_required(UPermissionsProject.DELETE_TYPEUS)
 def destroy(request, id_project, id):
     """
@@ -142,3 +147,12 @@ def import_type_us(request, id_project):
     context = {"form": form, "id_project": id_project, "typesUs": types_list}
 
     return render(request, "type_us/import_type_us.html", context)
+
+
+def is_visible_buttons(id_project):
+    project = Project.objects.get(id=id_project)
+
+    if project.status == UProject.STATUS_CANCELED:
+        return False
+
+    return True
