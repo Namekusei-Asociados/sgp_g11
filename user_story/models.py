@@ -10,32 +10,31 @@ class UserStoryManager(models.Manager):
     # verificamos si es el estado final del US
     def is_final_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
-        final_status = TypeUS.objects.get_final_status(id_type_us=user_story.us_type_id)
 
-        return user_story.current_status == final_status or user_story.current_status == 'canceled'
+        return user_story.current_status == 'pending' or user_story.current_status == 'canceled'
 
     def is_initial_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
-        initial_status = TypeUS.objects.get_initial_status(id_type_us=user_story.us_type_id)
+        initial_status = UserStory.objects.get_initial_status()
 
         return user_story.current_status == initial_status
 
     # Obtenemos el primer estado
-    def get_initial_status(self, id_type_us):
-        return TypeUS.objects.get_initial_status(id_type_us=id_type_us)
+    def get_initial_status(self):
+        return 'pending'
 
     def get_us_finished(self, id_project):
         finished = [us.id for us in UserStory.objects.filter(project_id=id_project) if
                     UserStory.objects.is_final_status(us.id)]
         list_finished_us = UserStory.objects.filter(id__in=finished)
-        return list_finished_us
+        return list_finished_us.order_by('final_priority').reverse()
 
     def get_us_non_finished(self, id_project):
         active = [us.id for us in UserStory.objects.filter(project_id=id_project) if
                   not UserStory.objects.is_final_status(us.id)]
         list_active_us = UserStory.objects.filter(id__in=active)
 
-        return list_active_us
+        return list_active_us.order_by('final_priority').reverse()
 
     def get_us_no_assigned(self, id_project, id_sprint):
         sprint = Sprint.objects.get(id=id_sprint)
@@ -56,7 +55,7 @@ class UserStory(models.Model):
     final_priority = models.IntegerField(null=True)
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
-    current_status = models.CharField(max_length=20)
+    current_status = models.CharField(max_length=20,default='pending')
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
