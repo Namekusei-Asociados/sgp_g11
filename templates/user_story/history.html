@@ -66,6 +66,8 @@
                                 </thead>
                                 <tbody>
                                 {% for history in historical %}
+
+                                    {% if forloop.counter !=  1 %}
                                     <tr>
                                     <td>
                                         #
@@ -171,6 +173,8 @@
                                             </button>
                                         </form>
                                     </td>
+
+                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                             </table>
