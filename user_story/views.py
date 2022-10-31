@@ -236,3 +236,45 @@ def is_visible_buttons(id_project):
         return False
 
     return True
+
+
+def history(request, id_project, id_user_story):
+    """
+    Depsliega ventana de historial propio del US
+
+    :param request:
+    :param id_project: id del proyecto
+    :param id_user_story: id del US a mirar el historial
+
+    :return: Documento HTML
+    """
+    user_story = UserStory.objects.get(id=id_user_story)
+    # new_record=user_story.history.first()
+    # old_record = user_story.history.all()
+    # for record in old_record:
+    #     ant=record.previous()
+    #     historical = new_record.diff_against(record)
+    #     for change in historical.changes:
+    #         print("{} changed from {} to {}".format(change.field, change.old, change.new))
+    if request.method == 'POST':
+        id_history = request.POST.get('id_history')
+        print(f'id_history: {id_history}')
+        h = user_story.history.get(history_id=id_history)
+
+        h.instance.save()
+        message = 'La historia de usuario "' + h.title + '" fue actualizada con éxito'
+        messages.success(request, message)
+
+        return redirect(
+            reverse('user_story.history', kwargs={'id_project': id_project, 'id_user_story': id_user_story}),
+            request)
+    context = {
+        'id_project': id_project,
+        'user_story': user_story,
+        'historical': user_story.history.all()
+    }
+    return render(request, 'user_story/history.html', context)
+
+
+def restore(request):
+    pass

@@ -68,9 +68,11 @@ INSTALLED_APPS = [
     # Account
     'accounts',
 
-
     # App of the User Story
-    'user_story'
+    'user_story',
+
+    # Historial de US
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'sgp.urls'
@@ -196,7 +199,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
     }
 }
-
 
 # The SCOPE from Google APIs
 # If the scope is not specified, it defaults to profile
