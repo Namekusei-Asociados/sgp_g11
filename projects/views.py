@@ -7,6 +7,7 @@ from django.urls import reverse
 from accounts.models import User
 from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem
+from user_story.models import UserStory
 from utilities.UPermissions import UPermissions
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
@@ -133,7 +134,12 @@ def cancel(request, id_project):
     :return: documento html que solicita el motivo de la cancelación del proyecto
     """
     project = Project.objects.get(id=id_project)
-    return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
+    if UserStory.objects.get_us_non_finished(id_project=id_project).count() > 0:
+        messages.error(request,
+                       'El proyecto "' + project.name + '" no puede ser cancelado porque posee US no finalizados')
+        return redirect(reverse('projects.index'), request)
+    else:
+        return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
 
 
 @permission_proj_required(UPermissionsProject.CANCEL_PROJECT)

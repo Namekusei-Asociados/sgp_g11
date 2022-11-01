@@ -28,7 +28,6 @@
 
     <!-- Main content -->
     <section class="content">
-        {% include 'base/components/success-message.html' %}
         <div class="container-fluid">
             <section class="content-header">
                 <div class="container-fluid">
@@ -66,6 +65,8 @@
                                 </thead>
                                 <tbody>
                                 {% for history in historical %}
+
+                                    {% if forloop.counter !=  1 %}
                                     <tr>
                                     <td>
                                         #
@@ -171,6 +172,8 @@
                                             </button>
                                         </form>
                                     </td>
+
+                                    {% endif %}
                                 {% endfor %}
                                 </tbody>
                             </table>

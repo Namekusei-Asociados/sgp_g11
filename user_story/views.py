@@ -48,7 +48,7 @@ def validate_create_user_story(request, id_project):
     estimation_time = int(request.POST['estimation_time'])
 
     # obetenemos el primer estado del tipo de US
-    initial_status = UserStory.objects.get_initial_status(id_type_us=us_type)
+    initial_status = UserStory.objects.get_initial_status()
 
     UserStory.objects.create(
         title=title, description=description,
@@ -265,16 +265,9 @@ def history(request, id_project, id_user_story):
         message = 'La historia de usuario "' + h.title + '" fue actualizada con éxito'
         messages.success(request, message)
 
-        return redirect(
-            reverse('user_story.history', kwargs={'id_project': id_project, 'id_user_story': id_user_story}),
-            request)
     context = {
         'id_project': id_project,
         'user_story': user_story,
         'historical': user_story.history.all()
     }
     return render(request, 'user_story/history.html', context)
-
-
-def restore(request):
-    pass
