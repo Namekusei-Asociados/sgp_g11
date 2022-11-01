@@ -52,15 +52,17 @@
                                            placeholder="Ingresar la descriptión del sprint"
                                            value="{{ sprint.description }}">
                                 </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label for="id_duration">Duración (en días hábiles)</label>
-                                    <input type="number" ondrop="return false;" onpaste="return false;"
-                                           onkeypress="return event.charCode>=48 && event.charCode<=57" required
-                                           name="duration" class="form-control"
-                                           id="id_duration" value="{{ sprint.duration }}"
-                                           placeholder="Ingresar la duración del sprint en día hábiles">
-                                </div>
+                                {% if is_pending %}
+                                    <!-- /.form-group -->
+                                    <div class="form-group">
+                                        <label for="id_duration">Duración (en días hábiles)</label>
+                                        <input type="number" ondrop="return false;" onpaste="return false;"
+                                               onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                                               name="duration" class="form-control"
+                                               id="id_duration" value="{{ sprint.duration }}"
+                                               placeholder="Ingresar la duración del sprint en día hábiles">
+                                    </div>
+                                {% endif %}
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>

@@ -5,6 +5,7 @@ from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
 from utilities.UProject import UProject
+from utilities.UUserStory import UUserStory
 
 
 class UserStoryManager(models.Manager):
@@ -54,6 +55,7 @@ class UserStory(models.Model):
     final_priority = models.IntegerField(null=True)
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
+    status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
     current_status = models.CharField(max_length=20, default=UProject.STATUS_US_PENDING)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
