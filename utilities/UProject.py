@@ -13,6 +13,10 @@ class UProject:
     CUSTOM_FIELD_TYPE_TEXT = 'Texto'
     CUSTOM_FIELD_TYPE_NUMBER = 'Numero'
 
+    STATUS_US_PENDING = 'pending'
+    STATUS_US_IN_EXECUTION = 'in execution'
+    STATUS_US_FINISHED = 'finished'
+    STATUS_US_CANCELED = 'canceled'
     CUSTOM_FIELDS_LIST = [
         CUSTOM_FIELD_TYPE_DATE,
         CUSTOM_FIELD_TYPE_TEXT,
