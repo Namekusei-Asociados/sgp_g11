@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block content %}
-
+    {% can_edit_type_us type_us.id as ban %}
     <!-- Main content -->
     <section class="content">
 
@@ -37,14 +37,19 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="name" class="required">Nombre</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Reportes" value="{{ type_us.name }}">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Reportes"
+                               value="{{ type_us.name }}">
                     </div>
 
                     <div class="form-group">
                         <label>Prefijo</label>
-                        <input type="text" class="form-control" name="prefix" id="prefix" placeholder="rep" value="{{ type_us.prefix }}">
+                        <input type="text" class="form-control" name="prefix" id="prefix" placeholder="rep"
+                               value="{{ type_us.prefix }}">
                     </div>
-
+                    {% if not ban %}
+                        <label>Flujo</label>
+                        <p>{{ type_us.format_flow }}</p>
+                    {% endif %}
                     <hr>
                 </div>
                 <!-- /.card-body -->
@@ -68,9 +73,6 @@
                         <i class="fas fa-trash btn-delete-column"></i>
                     </div>
                 </li>
-
-
-                {% can_edit_type_us type_us.id as ban %}
 
                 {% if ban %}
                     <div class="card-header">
@@ -102,7 +104,7 @@
                                     </div>
                                     <!-- General tools such as edit or delete-->
                                     <div class="tools">
-                                        {% if forloop.counter > 3  %}
+                                        {% if forloop.counter > 3 %}
                                             <i class="fas fa-trash btn-delete-column"></i>
                                         {% endif %}
 
@@ -111,7 +113,6 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <!-- /.card-body -->
                 {% endif %}
 
 
