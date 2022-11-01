@@ -757,6 +757,15 @@ def switch_to_started_sprint(sprint):
 
 
 def is_visible_buttons(id_project=None, id_sprint=None):
+    """
+        Hace invisible o visible los botones dependiendo de sí el proyecto o sprint estan en estados finales
+
+        :param request:
+        :param id_project: id del proyecto al que pertenece el sprint
+        :param id_sprint: id del sprint al que pertenece la historia de usuario
+
+        :return: Bool, con si información de si puede o no ser visible
+    """
     if id_project is not None:
         project = Project.objects.get(id=id_project)
 
