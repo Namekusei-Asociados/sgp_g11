@@ -12,6 +12,7 @@ from type_us.models import TypeUS
 from user_story.models import UserStory, UserStoryAttachment
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
+from utilities.UUserStory import UUserStory
 
 
 # Create your views here.
@@ -74,6 +75,16 @@ def validate_create_user_story(request, id_project):
 
 
 def download_us_attachment(request, id_project, id_user_story, id_attachment):
+    """
+    funcion encargada de descargar archivos adjuntos
+
+    :param request: request
+    :param id_project: id del proyecto actual
+    :param id_user_story: id de US
+    :param id_attachment: id del archivo
+
+    :return: documento HTML
+    """
     #funcion para descargar un adjunto al US
     attachment = UserStoryAttachment.objects.get(id=id_attachment)
     return FileResponse(open(attachment.file.path, 'rb'), content_type='application/force-download')
@@ -192,7 +203,7 @@ def validate_cancel_user_story(request, id_project):
 
     us = UserStory.objects.get(id=id_us)
     us.cancellation_reason = cancellation_reason
-    us.current_status = UProject.STATUS_US_CANCELED
+    us.current_status = UUserStory.STATUS_CANCELED
 
     us.save()
 
@@ -277,7 +288,6 @@ def history(request, id_project, id_user_story):
         id_history = request.POST.get('id_history')
         print(f'id_history: {id_history}')
         h = user_story.history.get(history_id=id_history)
-
         h.instance.save()
         message = 'La historia de usuario "' + h.title + '" fue actualizada con éxito'
         messages.success(request, message)
