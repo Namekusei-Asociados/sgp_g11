@@ -46,7 +46,7 @@ class UserStoryManager(models.Manager):
 
 class UserStoryAttachmentManager(models.Manager):
     @staticmethod
-    def get_attachments_by_user_story(id_us):
+    def get_attachments(id_us):
         return UserStoryAttachment.objects.filter(user_story_id=id_us).order_by('-created_at')
 
 
@@ -83,7 +83,7 @@ class UserStory(models.Model):
 
 
 def us_directory_path(instance, filename):
-    return f"static/us_attached_files/{instance.user_story.id}/{filename}"
+    return f"static/us_attached_files/project{instance.user_story.project_id}/{instance.user_story.id}/{filename}"
 
 
 class UserStoryAttachment(models.Model):
@@ -109,9 +109,3 @@ class UserStoryAttachment(models.Model):
             0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB',
         }
         return f"{round(size, 2)} {units[amount_of_divisions]}"
-
-    def __str__(self):
-        return self.user_story.code
-
-    class Meta:
-        ordering = ['id']

@@ -240,7 +240,7 @@ def details_user_story(request, id_project, id_user_story):
     context = {
         'id_project': id_project,
         'user_story': user_story,
-        'attachments': UserStoryAttachment.objects.get_attachments_by_user_story(id_us=user_story.id)
+        'attachments': UserStoryAttachment.objects.get_attachments(id_us=user_story.id)
     }
 
     return render(request, 'user_story/details_user_story.html', context)
