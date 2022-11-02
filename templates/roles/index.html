@@ -46,14 +46,14 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    {% if can_create_role %}
+                    {% if can_create_role and is_visible %}
                         <a class="btn btn-primary btn-sm" href="{% url 'projects.create_role' id_project %}">
                             <i class="fas fa-plus">
                             </i>
                             Crear
                         </a>
                     {% endif %}
-                    {% if can_import_role %}
+                    {% if can_import_role and is_visible %}
                         <a href="{% url 'projects.import_role' id_project %}" class="btn btn-info btn-sm">
                             <i class="nav-icon fas fa-download"></i>
                             Importar
@@ -107,7 +107,7 @@
                                     {#                                        View#}
                                     {#                                    </a>#}
 
-                                    {% if can_update_role %}
+                                    {% if can_update_role and is_visible %}
                                         <a class="btn btn-info btn-sm"
                                            href="{% url 'projects.edit_role' id_project role.id %}">
                                             <i class="fas fa-pencil-alt">
@@ -115,7 +115,7 @@
                                             Editar
                                         </a>
                                     {% endif %}
-                                    {% if can_delete_role and role.role_name != 'Scrum Master' %}
+                                    {% if can_delete_role and role.role_name != 'Scrum Master' and is_visible %}
                                         <a class="btn btn-danger btn-sm"
                                            href="{% url 'projects.delete_role' id_project role.id %}">
                                             <i class="fas fa-trash">

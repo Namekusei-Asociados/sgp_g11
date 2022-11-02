@@ -40,7 +40,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            {% if can_create %}
+                            {% if can_create and is_visible %}
                                 <a class="btn btn-primary btn-sm" href="{% url 'projects.members.create' id_project %}">
                                     <i class="fas fa-plus">
                                     </i>
@@ -75,7 +75,7 @@
 
                                         <td class="d-flex" style="gap: 5px">
 
-                                            {% if can_edit %}
+                                            {% if can_edit and is_visible %}
                                                 <a class="btn btn-info btn-sm"
                                                    href="{% url 'projects.members.edit' id_project member.user.id %}">
                                                     <i class="fas fa-pencil-alt">
@@ -84,7 +84,7 @@
                                                 </a>
                                             {% endif %}
 
-                                            {% if can_delete %}
+                                            {% if can_delete and is_visible %}
                                                 <form action="{% url 'projects.members.delete' id_project member.user.id %}"
                                                       method="post">
                                                     {% csrf_token %}
