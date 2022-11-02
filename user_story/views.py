@@ -9,6 +9,7 @@ from projects.decorators import permission_proj_required
 from type_us.models import TypeUS
 from user_story.models import UserStory
 from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UProject import UProject
 
 
 # Create your views here.
@@ -174,7 +175,7 @@ def validate_cancel_user_story(request, id_project):
 
     us = UserStory.objects.get(id=id_us)
     us.cancellation_reason = cancellation_reason
-    us.current_status = 'canceled'
+    us.current_status = UProject.STATUS_US_CANCELED
 
     us.save()
 
