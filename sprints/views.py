@@ -109,7 +109,8 @@ def edit_sprint(request, id_project, id_sprint):
 
     context = {
         'id_project': id_project,
-        'sprint': sprint
+        'sprint': sprint,
+        'is_pending': USprint.STATUS_PENDING == sprint.status
     }
 
     return render(request, 'sprint/edit_sprint.html', context)
@@ -137,24 +138,24 @@ def validate_edit_sprint(request, id_project):
     new_capacity = get_all_workload(sprint) * duration
     new_available_capacity = new_capacity - get_accumulated(sprint)
 
-    if duration < sprint.duration:
-        if new_available_capacity < 0:
-            messages.error(request,
-                           "No se puede actualizar la duración del sprint, porque la estimacion de los US del sprint consumen toda la capacidad")
-        else:
-            sprint.capacity = new_capacity
-            sprint.available_capacity = new_available_capacity
-            sprint.duration = duration
-            sprint.save()
+    # if duration < sprint.duration:
+    #     if new_available_capacity < 0:
+    #         messages.error(request,
+    #                        "No se puede actualizar la duración del sprint, porque la estimacion de los US del sprint consumen toda la capacidad")
+    #     else:
+    #         sprint.capacity = new_capacity
+    #         sprint.available_capacity = new_available_capacity
+    #         sprint.duration = duration
+    #         sprint.save()
+    #
+    #         messages.success(request, "Se actualizó con éxito")
+    # else:
+    sprint.capacity = new_capacity
+    sprint.available_capacity = new_available_capacity
+    sprint.duration = duration
+    sprint.save()
 
-            messages.success(request, "Se actualizó con éxito")
-    else:
-        sprint.capacity = new_capacity
-        sprint.available_capacity = new_available_capacity
-        sprint.duration = duration
-        sprint.save()
-
-        messages.success(request, "Se actualizó con éxito")
+    messages.success(request, "Se actualizó con éxito")
 
     kwargs = {
         'id_project': id_project,
@@ -267,12 +268,15 @@ def members(request, id_project, id_sprint):
     for member in members:
         team_capacity += member.workload
 
+    sprint = Sprint.objects.get(id=id_sprint)
+
     context = {
         'id_project': id_project,
         'id_sprint': id_sprint,
         'members': members,
         'team_capacity': team_capacity,
-        'is_visible': is_visible_buttons(id_sprint=id_sprint)
+        'is_visible': is_visible_buttons(id_sprint=id_sprint),
+        'is_pending': USprint.STATUS_PENDING == sprint.status
     }
 
     return render(request, 'sprint/members/index.html', context)
@@ -447,7 +451,8 @@ def sprint_backlog(request, id_project, id_sprint):
         'id_sprint': id_sprint,
         'sprint_backlog': sprint_backlog,
         'sprint': sprint,
-        'is_visible': is_visible_buttons(id_sprint=id_sprint)
+        'is_visible': is_visible_buttons(id_sprint=id_sprint),
+        'is_pending': USprint.STATUS_PENDING == sprint.status
     }
     return render(request, 'sprint/sprint_backlog/index.html', context)
 
@@ -752,6 +757,15 @@ def switch_to_started_sprint(sprint):
 
 
 def is_visible_buttons(id_project=None, id_sprint=None):
+    """
+        Hace invisible o visible los botones dependiendo de sí el proyecto o sprint estan en estados finales
+
+        :param request:
+        :param id_project: id del proyecto al que pertenece el sprint
+        :param id_sprint: id del sprint al que pertenece la historia de usuario
+
+        :return: Bool, con si información de si puede o no ser visible
+    """
     if id_project is not None:
         project = Project.objects.get(id=id_project)
 
