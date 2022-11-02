@@ -11,3 +11,4 @@ staticfiles/
 migrations/
 *.rst
 !index.rst
+static/us_attached_files

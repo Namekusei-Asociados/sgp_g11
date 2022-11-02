@@ -44,6 +44,12 @@ class UserStoryManager(models.Manager):
         return user_stories
 
 
+class UserStoryAttachmentManager(models.Manager):
+    @staticmethod
+    def get_attachments_by_user_story(id_us):
+        return UserStoryAttachment.objects.filter(user_story_id=id_us).order_by('-created_at')
+
+
 # Create your models here.
 class UserStory(models.Model):
     code = models.CharField(max_length=100)
@@ -75,5 +81,37 @@ class UserStory(models.Model):
     def __str__(self):
         return self.title
 
+
+def us_directory_path(instance, filename):
+    return f"static/us_attached_files/{instance.user_story.id}/{filename}"
+
+
+class UserStoryAttachment(models.Model):
+    user_story = models.ForeignKey(UserStory, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=us_directory_path, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = UserStoryAttachmentManager()
+
+    @property
+    def filename(self):
+        return self.file.name.split('/')[-1]
+
+    @property
+    def size(self):
+        # Return a string with the size and the unit
+        amount_of_divisions = 0
+        size = self.file.size
+        while size > 1024:
+            size = size / 1024
+            amount_of_divisions += 1
+        units = {
+            0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB',
+        }
+        return f"{round(size, 2)} {units[amount_of_divisions]}"
+
+    def __str__(self):
+        return self.user_story.code
+
     class Meta:
-        ordering = ['code']
+        ordering = ['id']

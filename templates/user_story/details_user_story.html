@@ -65,16 +65,31 @@
                                                    id="id_estimation_time"
                                                    value="{{ user_story.estimation_time }}" disabled>
                                         </div>
-                                        {% if user_story.assigned_to.user != None %}
+                                        <div class="">
+                                            <label>Archivos adjuntos</label>
+                                            <ul class="list-group list-group-flush">
+                                                {% for file in attachments %}
+                                                    <li class="list-group-item text-black-50">
+                                                        {{ file.filename }}
+                                                        <span class="badge text-black-50">{{ file.size }}</span>
+                                                        <a href="{% url 'user_story.download_us_attachment' id_project user_story.id file.id %}"
+                                                           class="btn float-right" title="Download">
+                                                            <i class="fa fa-cloud-download-alt"></i>
+                                                        </a>
+                                                    </li>
+                                                {% empty %}
+                                                    <li class="list-group-item">Vacio</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% if user_story.cancellation_reason != None %}
                                             <!-- /.form-group -->
                                             <div class="form-group">
-                                                <label for="id_assigned_to">Asignado a</label>
+                                                <label for="id_cancellation_reason">Motivo de la cancelación</label>
                                                 <input type="text" ondrop="return false;" onpaste="return false;"
-                                                       onkeypress="return event.charCode>=48 && event.charCode<=57"
-                                                       required
-                                                       name="assigned_to" class="form-control"
-                                                       id="id_assigned_to"
-                                                       value="{{ user_story.assigned_to.user.username }} | {{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }} | {{ user_story.assigned_to.user.email }}"
+                                                       name="cancellation_reason" class="form-control"
+                                                       id="id_cancellation_reason"
+                                                       value="{{ user_story.cancellation_reason }}"
                                                        disabled>
                                             </div>
                                         {% endif %}
@@ -106,17 +121,21 @@
                                                    value="{{ user_story.us_type.name }} | {{ user_story.us_type.prefix }}"
                                                    disabled>
                                         </div>
-                                        {% if user_story.cancellation_reason != None %}
+
+                                        {% if user_story.assigned_to.user != None %}
                                             <!-- /.form-group -->
                                             <div class="form-group">
-                                                <label for="id_cancellation_reason">Motivo de la cancelación</label>
+                                                <label for="id_assigned_to">Asignado a</label>
                                                 <input type="text" ondrop="return false;" onpaste="return false;"
-                                                       name="cancellation_reason" class="form-control"
-                                                       id="id_cancellation_reason"
-                                                       value="{{ user_story.cancellation_reason }}"
+                                                       onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                       required
+                                                       name="assigned_to" class="form-control"
+                                                       id="id_assigned_to"
+                                                       value="{{ user_story.assigned_to.user.username }} | {{ user_story.assigned_to.user.first_name }} {{ user_story.assigned_to.user.last_name }} | {{ user_story.assigned_to.user.email }}"
                                                        disabled>
                                             </div>
                                         {% endif %}
+
                                     </div>
                                     <!-- /.col -->
                                 </div>

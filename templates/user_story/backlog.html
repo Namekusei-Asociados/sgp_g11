@@ -59,6 +59,7 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
+                                    <th>Cod</th>
                                     <th>Título</th>
                                     <th>Estado Actual</th>
                                     <th>Business Value</th>
@@ -70,7 +71,9 @@
                                 <tbody>
                                 {% for user_story in user_stories %}
                                     <tr>
-                                        <td>{{ user_story.us_type.prefix }}-{{ user_story.title }}</td>
+
+                                        <td>{{ user_story.code }}</td>
+                                        <td>{{ user_story.title }}</td>
                                         <td><span class="badge
                                             {% current_status user_story.id as status %}
                                             {% if status == 'initial' %}
