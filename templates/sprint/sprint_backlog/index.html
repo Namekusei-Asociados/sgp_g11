@@ -71,7 +71,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            {% if can_create_sprint_backlog %}
+                            {% if can_create_sprint_backlog and is_visible and is_pending %}
                                 <a class="btn btn-primary btn-sm"
                                    href="{% url 'sprints.sprint_backlog.add' id_project id_sprint %}">
                                     <i class="fas fa-plus">
@@ -93,7 +93,7 @@
                                     <tr>
                                         <th>Título</th>
                                         <th>Estado Actual</th>
-                                        <th>Estimación</th>
+                                        <th>Estimación (horas)</th>
                                         <th>Prioridad final</th>
                                         <th>Responsable</th>
                                         <th></th>
@@ -110,9 +110,9 @@
                                             {% elif  status == 'final' %}
                                                 badge-danger
                                             {% else %}
-                                                badge-light
+                                                badge-info
                                             {% endif %}">{{ user_story.current_status }}</span></td>
-                                            <td>{{ user_story.estimation_time }}</td>
+                                            <td>{{ user_story.estimation_time }} hrs</td>
                                             <td>{{ user_story.final_priority }}</td>
                                             <td>{{ user_story.assigned_to.user.email }}</td>
                                             <td class="d-flex" style="gap: 5px">
@@ -123,7 +123,7 @@
                                                     Ver
                                                 </a>
 
-                                                {% if can_update_sprint_backlog %}
+                                                {% if can_update_sprint_backlog and is_visible and is_pending %}
                                                     <form id="edit_user_story" class="m-0 p-0" method="post"
                                                           action="{% url 'sprints.sprint_backlog.edit' id_project id_sprint user_story.id %}">
                                                         {% csrf_token %}
@@ -135,7 +135,7 @@
                                                     </form>
                                                 {% endif %}
 
-                                                {% if can_delete_sprint_backlog %}
+                                                {% if can_delete_sprint_backlog and is_visible and is_pending %}
                                                     <form id="cancel_user_story" class="m-0 p-0" method="post"
                                                           action="{% url 'sprints.sprint_backlog.delete' id_project id_sprint %}">
                                                         {% csrf_token %}

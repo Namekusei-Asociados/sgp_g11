@@ -1,0 +1,186 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Importar Tipos de US
+{% endblock %}
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="backlog"></span>
+{% endblock %}
+
+{% block content %}
+
+    {% include 'base/components/success-message.html' %}
+    <!--MESSAGES END-->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="d-flex mb-2 justify-content-between">
+                        <div class="col-sm-6">
+                            <h1>Historial de cambios de: "{{ user_story.title }}"</h1>
+                        </div>
+
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                        US
+                                    </th>
+                                    <th>Fecha</th>
+                                    <th>Cambios</th>
+                                    <th>Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for history in historical %}
+
+                                    {% if forloop.counter !=  1 %}
+                                    <tr>
+                                    <td>
+                                        #
+                                    </td>
+                                    <td>
+
+                                        <!--HISTORIA DE USUARIO -->
+                                        <div class="card card-outline user-story">
+                                            <div class="card-header row">
+                                                <h4 class="card-title col-10">
+
+                                                    {{ history.title }}
+
+                                                </h4>
+                                                <div class="card-tools col-2">
+                                                    <button type="button" class="btn btn-tool"
+                                                            data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <dl>
+                                                    <!--Description -->
+                                                    <dt>Descripción</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.description }}
+                                                        </p>
+                                                    </dd>
+
+                                                    <!--Business Value -->
+                                                    <dt>Business Value</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.business_value }}
+                                                        </p>
+                                                    </dd>
+
+                                                    <!--Estimacion -->
+                                                    <dt>Estimación (en horas)</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.estimation_time }} hrs
+                                                        </p>
+                                                    </dd>
+                                                    <dt>Prioridad Final</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.final_priority }}
+                                                        </p>
+                                                    </dd>
+                                                    <!--Priority -->
+                                                    <dt>Prioridad Técnica</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.technical_priority }}
+                                                        </p>
+                                                    </dd>
+                                                    <dt>Tipo de US</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {{ history.us_type.name }}
+                                                        </p>
+                                                    </dd>
+                                                    <dt>Asignado a</dt>
+                                                    <dd class="">
+                                                        <p>
+                                                            {% if history.assigned_to.user.first_name == None %}
+                                                                Ninguno
+                                                                {% else %}
+                                                                {{ history.assigned_to.user.first_name }} {{ history.assigned_to.user.last_name }}
+                                                            {% endif %}
+                                                        </p>
+                                                    </dd>
+                                                </dl>
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        {{ history.history_date }}
+                                    </td>
+                                    <td>
+                                        {% if history.history_type == '+' %}
+                                            Creación
+                                        {% elif history.history_type == '~' %}
+                                            Actualización
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form id="restore_us" class="m-0 p-0" method="post"
+                                              action="{% url 'user_story.history' id_project user_story.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="id_history" name='id_history'
+                                                   value="{{ history.history_id }}">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-history">
+                                                </i>
+                                                Restaurar
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
