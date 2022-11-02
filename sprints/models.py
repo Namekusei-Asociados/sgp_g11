@@ -41,5 +41,4 @@ class SprintMember(models.Model):
     workload = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)

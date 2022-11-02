@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from projects.decorators import permission_proj_required
 from projects.models import Project
+from type_us.models import TypeUS
 from user_story.models import UserStory
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
@@ -466,10 +467,10 @@ def add_sprint_backlog(request, id_project, id_sprint):
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
         backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint__isnull=True ) \
+            .filter(sprint__isnull=True) \
             .order_by('final_priority').reverse()
         sprint_backlog = UserStory.objects.get_us_non_finished(id_project) \
-            .filter(sprint_id=id_sprint ) \
+            .filter(sprint_id=id_sprint) \
             .order_by('final_priority').reverse()
 
         context = {
@@ -685,7 +686,6 @@ def delete_sprint_backlog(request, id_project, id_sprint):
         return redirect(reverse('sprints.sprint_backlog.index', kwargs=kwargs), request)
 
 
-
 def get_available_capacity(sprint):
     return sprint.capacity - get_accumulated(sprint)
 
@@ -709,6 +709,13 @@ def init_sprint(request, id_project, id_sprint):
             if UserStory.objects.filter(sprint_id=id_sprint).exists():
                 switch_to_started_sprint(sprint)
                 messages.success(request, 'El sprint inició con éxito')
+
+                # Add first state of the kanban to each us attached to this sprint
+                user_stories = sprint.userstory_set.all()
+                for user_story in user_stories:
+                    type_us = user_story.us_type.array_flow
+                    user_story.kanban_status = type_us[0]
+                    user_story.save()
             else:
                 messages.error(request, 'El sprint no puede iniciar hasta que tenga al menos un US')
         else:
@@ -749,3 +756,25 @@ def switch_to_started_sprint(sprint):
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
     sprint.end_at = end_at
     sprint.save()
+
+
+def kanban_index(request, id_project, id_sprint):
+    # users stories attached to the current sprint
+    users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project)
+    # get all type us id to be able to filter
+    types_us_ids = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project).values_list('us_type_id',
+                                                                                                    flat=True).distinct()
+    # getting all type us in order to display in the kanban
+    types_us = TypeUS.objects.filter(id__in=types_us_ids)
+
+    print('****************************')
+    print(types_us)
+    print('****************************')
+    context = {
+        'sprint': Sprint.objects.get(id=id_sprint),
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'users_stories': users_stories,
+        'types_us': types_us
+    }
+    return render(request, 'sprint/kanban.html', context)

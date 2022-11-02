@@ -1,0 +1,283 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Kanban
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" %}">
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint_backlog"></span>
+{% endblock %}
+
+{% block content_class %}
+
+{% endblock %}
+{% block content %}
+    {% include 'base/components/success-message.html' %}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Kanban</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Proyecto | Sprint | Kanban</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+        </div>
+    </section>
+
+    <div class="content-wrapper kanban">
+    {% for type in types_us %}
+        <section class="content pb-3">
+
+                <div class="container-fluid h-100">
+
+                    {% for column in type.array_flow %}
+
+                        <div class="card card-row card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    {{ column }}
+                                </h3>
+                            </div>
+                            <div class="card-body">
+
+                                {% for users_story in users_stories %}
+                                    {% if users_story.us_type_id == type.id %}
+
+                                        <div class="card card-info card-outline">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Create Labels</h5>
+                                        <div class="card-tools">
+                                            <a href="#" class="btn btn-tool btn-link">#3</a>
+                                            <a href="#" class="btn btn-tool">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox1"
+                                                   disabled>
+                                            <label for="customCheckbox1" class="custom-control-label">Bug</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox2"
+                                                   disabled>
+                                            <label for="customCheckbox2" class="custom-control-label">Feature</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox3"
+                                                   disabled>
+                                            <label for="customCheckbox3"
+                                                   class="custom-control-label">Enhancement</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox4"
+                                                   disabled>
+                                            <label for="customCheckbox4"
+                                                   class="custom-control-label">Documentation</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox5"
+                                                   disabled>
+                                            <label for="customCheckbox5" class="custom-control-label">Examples</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    {% endif %}
+                                {% endfor %}
+
+
+
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+        </section>
+    {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/js/adminlte.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/filterizr/jquery.filterizr.min.js" %}"></script>
+
+    <script defer>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            /**
+             * validations for widget
+             **/
+
+            const btnLeft = document.querySelectorAll('.btn-move-to-left');
+            const btnRight = document.querySelectorAll('.btn-move-to-right');
+            const spanError = document.createElement('span');
+            const backlog = document.querySelector('.backlog');
+            const sprint_backlog = document.querySelector('.sprint_backlog');
+            const capacity = document.querySelector('#sprint-capacity');
+            let Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+
+            spanError.classList.add('text-danger', 'invalid-feedback')
+
+            btnLeft.forEach(e => {
+                e.addEventListener('click', getBackToBacklog);
+            });
+            btnRight.forEach(e => {
+                e.addEventListener('click', moveToSprintBacklog);
+            });
+
+
+            function moveToSprintBacklog() {
+                //assigned to shouldn't be null
+                const selectMember = this.closest('div.user-story').querySelector('select[name="id_member"]')
+                const btn = this;
+                if (!selectMember.value) {
+                    //add error
+                    const error = spanError.cloneNode()
+                    error.innerHTML = "Debe seleccionar un miembro"
+                    selectMember.closest('.form-group').append(error)
+                    selectMember.classList.add('is-invalid')
+                    return;
+                }
+
+                //remove error
+                selectMember.classList.remove('is-invalid')
+                selectMember.nextElementSibling?.remove()
+
+                //add us to the sprint backlog
+                $.ajax("{% url 'sprints.sprint_backlog.store' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        id_user_story: this.getAttribute('data-us-id'),
+                        id_member: selectMember.value,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to the sprint backlog
+                        const us = btn.closest('div.user-story')
+                        sprint_backlog.appendChild(us)
+
+                        //disabled select in sprint backlog
+                        selectMember.setAttribute('disabled', true)
+
+                        //disabled button
+                        btn.setAttribute('disabled', true)
+                        btn.previousElementSibling.removeAttribute('disabled')
+
+
+                        //fire alert success
+                        toastr.success(data?.message)
+
+                        //change capacity
+                        capacity.innerHTML = `${data?.available_capacity} horas`;
+
+                        if (data?.available_capacity <= 0) {
+                            capacity.classList.add('text-danger')
+                            $(capacity.parentNode.parentNode).addClass('border border-danger')
+
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("No se pudo adjuntar el US al sprint backlog")
+                    }
+                });
+            }
+
+            function getBackToBacklog() {
+                const selectMember = this.closest('div.user-story').querySelector('select[name="id_member"]')
+                const btn = this;
+
+                //remove us to the sprint backlog
+                $.ajax("{% url 'sprints.sprint_backlog.delete' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        user_story_id: btn.getAttribute('data-us-id'),
+                        is_ajax: true,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to the sprint backlog
+                        const us = btn.closest('div.user-story')
+                        backlog.appendChild(us)
+
+                        //disabled button
+                        btn.setAttribute('disabled', true)
+                        btn.nextElementSibling.removeAttribute('disabled')
+
+                        //enable select
+                        selectMember.removeAttribute('disabled')
+
+                        //fire alert success
+                        toastr.success(data?.message)
+
+                        //change capacity
+                        capacity.innerHTML = `${data?.available_capacity} horas`;
+
+                        if (data?.available_capacity > 0) {
+                            capacity.classList.remove('text-danger')
+                            $(capacity.parentNode.parentNode).removeClass('border border-danger')
+
+                        }
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("No se pudo desadjuntar el US del sprint backlog")
+                    }
+                });
+
+            }
+        });
+
+
+    </script>
+{% endblock %}

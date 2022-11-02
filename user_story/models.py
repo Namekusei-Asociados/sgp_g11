@@ -55,6 +55,7 @@ class UserStory(models.Model):
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
     current_status = models.CharField(max_length=20)
+    kanban_status = models.CharField(max_length=20,null=True)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
