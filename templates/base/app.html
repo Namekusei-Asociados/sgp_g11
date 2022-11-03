@@ -115,7 +115,7 @@
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="{% block content_class %} content-wrapper {% endblock %}">
         {% block content %}
 
         {% endblock %}

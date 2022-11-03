@@ -62,6 +62,7 @@ class UserStory(models.Model):
     previous_work = models.IntegerField(default=0)
     status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
     current_status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
+    kanban_status = models.CharField(max_length=20, null=True)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
