@@ -1,3 +1,4 @@
+{% load static %}
 {% for users_story in users_stories %}
     {% if users_story.us_type_id == type.id and users_story.kanban_status == column %}
         <div class="card card-primary user-story" data-user-story-id="{{ users_story.id }}">
@@ -31,9 +32,11 @@
                 </p>
 
                 <b>Encargado</b>
-                <p class="text-black-50">
-                    {{ users_story.assigned_to.user.username }}
-                </p>
+                <div class="border rounded d-block text-black-50 justify-content-start py-1" style="gap:10px">
+                    <img alt="Avatar" class="rounded-pill" width="40px" height="40px"
+                         src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
+                        {{ users_story.assigned_to.user.username }}
+                </div>
 
             </div>
             <!-- /.card-body -->
