@@ -1,0 +1,43 @@
+{% for users_story in users_stories %}
+    {% if users_story.us_type_id == type.id and users_story.kanban_status == column %}
+        <div class="card card-primary user-story" data-user-story-id="{{ users_story.id }}">
+            <div class="card-header">
+                <h3 class="card-title">{{ users_story.title }}</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool"
+                            data-card-widget="collapse"><i
+                            class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn text-white btn-move-to-left" data-action="previous">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn text-white btn-move-to-right" data-action="next">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <b>Descripcion</b>
+                <p class="text-black-50">
+                    {{ users_story.description }}
+                </p>
+
+                <b>Prioridad Final</b>
+                <p class="text-black-50">
+                    {{ users_story.final_priority }}
+                </p>
+
+                <b>Encargado</b>
+                <p class="text-black-50">
+                    {{ users_story.assigned_to.user.username }}
+                </p>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+    {% endif %}
+{% endfor %}

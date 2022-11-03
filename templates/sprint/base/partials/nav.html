@@ -34,6 +34,15 @@
                 </a>
             </li>
         {% endif %}
+
+        <li class="nav-item">
+            <a data-section-active="kanban"
+               href="{% url 'sprints.kanban.index' id_project id_sprint %}" class="nav-link">
+                <i class="nav-icon fas fa-columns"></i>
+                <p>Kanban</p>
+            </a>
+        </li>
+
         <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
         <li class="nav-item">
             <a href="{% url 'sprints.index' id_project %}" class="nav-link">

@@ -767,15 +767,14 @@ def switch_to_started_sprint(sprint):
 def kanban_index(request, id_project, id_sprint):
     # users stories attached to the current sprint
     users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project)
+
     # get all type us id to be able to filter
     types_us_ids = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project).values_list('us_type_id',
                                                                                                     flat=True).distinct()
+
     # getting all type us in order to display in the kanban
     types_us = TypeUS.objects.filter(id__in=types_us_ids)
 
-    print('****************************')
-    print(types_us)
-    print('****************************')
     context = {
         'sprint': Sprint.objects.get(id=id_sprint),
         'id_project': id_project,
@@ -784,3 +783,78 @@ def kanban_index(request, id_project, id_sprint):
         'types_us': types_us
     }
     return render(request, 'sprint/kanban.html', context)
+
+
+def kanban_user_story_change_status(request, id_project, id_sprint):
+    change_to_status = request.POST['change_to_status']
+    user_story_id = request.POST['user_story_id']
+
+    # get user story and move to the next status in the kanban
+    user_story = UserStory.objects.get(id=user_story_id)
+    flow = user_story.us_type.array_flow
+
+    column_position = 1
+    number_of_columns = len(flow)
+    # return 200 if the status change was successful
+    status_response = 200
+    message = "Success"
+    for status in flow:
+        # current column in the kanban
+        if status == user_story.kanban_status:
+            # ask if we want to move to the next step or just get back
+            if change_to_status == 'next':
+                # verify if we can move to the next column
+                if column_position+1 <= number_of_columns:
+                    user_story.kanban_status = flow[column_position]
+                    user_story.save()
+                    break
+                else:
+                    status_response = 500
+                    message = "Se encuentra en el ultimo estado"
+                    break
+
+            if change_to_status == 'previous':
+                # verify if we can move to the next column
+                if column_position - 1 > 0:
+                    user_story.kanban_status = flow[column_position - 2]
+                    user_story.save()
+                    break
+                else:
+                    status_response = 500
+                    message = "Se encuentra en el primer estado"
+                    break
+
+        column_position += 1
+
+    context = {
+        'status': status_response,
+        'current_column':user_story.kanban_status,
+        'message': message
+    }
+    return JsonResponse(context)
+
+
+def is_visible_buttons(id_project=None, id_sprint=None):
+    """
+        Hace invisible o visible los botones dependiendo de sí el proyecto o sprint estan en estados finales
+
+        :param request:
+        :param id_project: id del proyecto al que pertenece el sprint
+        :param id_sprint: id del sprint al que pertenece la historia de usuario
+
+        :return: Bool, con si información de si puede o no ser visible
+    """
+    if id_project is not None:
+        project = Project.objects.get(id=id_project)
+
+        if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:
+            return False
+
+        return True
+    else:
+        sprint = Sprint.objects.get(id=id_sprint)
+
+        if sprint.status == UProject.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
+            return False
+
+        return True

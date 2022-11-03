@@ -35,6 +35,7 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,name='sprints.sprint_backlog.delete'),
 
     # Kanban
-    path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index')
+    path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index'),
+    path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,name='sprints.kanban.user_story.change_status_kanban')
 
 ]
