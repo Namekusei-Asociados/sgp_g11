@@ -769,12 +769,19 @@ def switch_to_started_sprint(sprint):
 
 
 def kanban_index(request, id_project, id_sprint):
+    """
+    Muestra un documento html con los tableros kanban asociados al usuario
+    :param request:
+    :param id_project:
+    :param id_sprint:
+    :return:
+    """
     # users stories attached to the current sprint
-    users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project)
+    user = request.user
+    users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project, assigned_to__user_id=user.id)
 
     # get all type us id to be able to filter
-    types_us_ids = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project).values_list('us_type_id',
-                                                                                                    flat=True).distinct()
+    types_us_ids = users_stories.values_list('us_type_id', flat=True).distinct()
 
     # getting all type us in order to display in the kanban
     types_us = TypeUS.objects.filter(id__in=types_us_ids)
@@ -790,6 +797,14 @@ def kanban_index(request, id_project, id_sprint):
 
 
 def kanban_user_story_change_status(request, id_project, id_sprint):
+    """
+    Cambia el estado kanban del user story al siguiente/previo estado kanban
+    :param request:
+    :param id_project:
+    :param id_sprint:
+
+    :return: json
+    """
     change_to_status = request.POST['change_to_status']
     user_story_id = request.POST['user_story_id']
 
