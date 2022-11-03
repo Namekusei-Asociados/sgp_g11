@@ -765,6 +765,7 @@ def switch_to_started_sprint(sprint):
     user_stories=sprint.userstory_set.all()
     for user_story in user_stories:
         user_story.current_status = UUserStory.STATUS_IN_EXECUTION
+        user_story.save()
     sprint.save()
 
 
