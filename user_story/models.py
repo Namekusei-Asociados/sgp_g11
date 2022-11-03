@@ -139,7 +139,7 @@ class UserStory(models.Model):
     objects = UserStoryManager()
 
     # historial
-    history = HistoricalRecords(user_model=User, m2m_fields=[tasks])
+    history = HistoricalRecords()
 
     # def _get_is_
     def __str__(self):
