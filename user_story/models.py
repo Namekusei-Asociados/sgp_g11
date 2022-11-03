@@ -1,6 +1,7 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
 
+from accounts.models import User
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
@@ -49,6 +50,64 @@ class UserStoryAttachmentManager(models.Manager):
         return UserStoryAttachment.objects.filter(user_story_id=id_us).order_by('-created_at')
 
 
+class UserStoryTaskManager(models.Manager):
+    def create_us_task(self, id_user_story, task, work_hours):
+        """
+        Funcion para crear Us
+
+        :param id_user_story: id del us
+        :param task: tarea
+        :param work_hours: horas trabajadas en ese US
+
+        :return: Task creado
+        """
+        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours)
+        user_story = UserStory.objects.get(id=id_user_story)
+        user_story.work_hours += work_hours
+        user_story.task.add(us_task)
+        return us_task
+
+    def delete_us_task(self, id_user_story, id_task):
+        """
+        Eliminar tarea de US
+
+        :param id_user_story: id user story
+        :param id_task: id de la tarea
+
+        :return: Booleano True: correcto, False: fallo en la eliminacion
+        """
+        user_story = UserStory.objects.get(id=id_user_story)
+        task = UserStoryTask.objects.get(id=id_task)
+
+        if user_story.tasks.filter(
+                id=task.id).exists() and user_story.current_status != "finished" and user_story.current_status != "canceled":
+            # Actualizamos las horas trabajadas
+            user_story.horas_trabajadas -= task.horasTrabajadas
+            user_story.task.remove(task)
+            return True
+        else:
+            return None
+
+    def list_tasks(self, id_user_story):
+        user_story = UserStory.objects.get(id=id_user_story)
+        tasks = user_story.tasks.all()
+        return tasks
+
+
+class UserStoryTask(models.Model):
+    task = models.TextField(max_length=100)
+    work_hours = models.IntegerField()
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = UserStoryTaskManager()
+
+    def __str__(self):
+        return self.task
+
+
 # Create your models here.
 class UserStory(models.Model):
     code = models.CharField(max_length=100)
@@ -62,19 +121,24 @@ class UserStory(models.Model):
     previous_work = models.IntegerField(default=0)
     status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
     current_status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
-    us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
-    assigned_to = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
     cancellation_reason = models.TextField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    # tipo de Us asociado
+    us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
+    # proyecto asociado
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    # sprint asociado
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
+    # Usuario asignado a la US
+    assigned_to = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
+    # Tareas de la US
+    tasks = models.ManyToManyField(UserStoryTask)
 
     objects = UserStoryManager()
 
     # historial
-    history = HistoricalRecords()
+    history = HistoricalRecords(user_model=User, m2m_fields=[tasks])
 
     # def _get_is_
     def __str__(self):
@@ -86,10 +150,12 @@ def us_directory_path(instance, filename):
 
 
 class UserStoryAttachment(models.Model):
-    user_story = models.ForeignKey(UserStory, on_delete=models.CASCADE)
     file = models.FileField(upload_to=us_directory_path, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # US relacionado
+    user_story = models.ForeignKey(UserStory, on_delete=models.CASCADE)
+    # Manager de la clase
     objects = UserStoryAttachmentManager()
 
     @property
