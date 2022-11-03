@@ -1,0 +1,137 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Kanban
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" %}">
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="kanban"></span>
+{% endblock %}
+
+{% block content_class %}
+
+{% endblock %}
+{% block content %}
+    {% include 'base/components/success-message.html' %}
+
+    <div class="content-wrapper kanban">
+        <div class="row m-2">
+            <div class="col-sm-6">
+                <h1>Kanban</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Proyecto | Sprint | Kanban</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <!--KANBAN-->
+        {% include 'base/components/kanban/kanban_table.html' %}
+
+
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/js/adminlte.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/filterizr/jquery.filterizr.min.js" %}"></script>
+
+    <script defer>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            /**
+             * validations for widget
+             **/
+
+            const btnLeft = document.querySelectorAll('.btn-move-to-left');
+            const btnRight = document.querySelectorAll('.btn-move-to-right');
+            const spanError = document.createElement('span');
+            const backlog = document.querySelector('.backlog');
+            const sprint_backlog = document.querySelector('.sprint_backlog');
+            const capacity = document.querySelector('#sprint-capacity');
+            let Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+
+            spanError.classList.add('text-danger', 'invalid-feedback')
+
+            btnLeft.forEach(e => {
+                e.addEventListener('click', moveUserStory);
+            });
+            btnRight.forEach(e => {
+                e.addEventListener('click', moveUserStory);
+            });
+
+
+            function moveUserStory() {
+                //assigned to shouldn't be null
+                const userStory = this.closest('div.user-story')
+                const columnStatuses = this.closest('.status-column-container')
+                const action = $(this).data('action')
+
+                const btn = this;
+                //add us to the sprint backlog
+                $.ajax("{% url 'sprints.kanban.user_story.change_status_kanban' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        change_to_status: action,
+                        user_story_id: $(userStory).data('user-story-id'),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to another status
+                        if (data?.status === 200) {
+                            const column = columnStatuses.querySelector(`[data-flow-name="${data?.current_column}"].status-column`)
+                            column.appendChild(userStory)
+                        }
+                        if (data?.status === 500) {
+                            toastr.warning(data?.message)
+                        }
+
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("Error")
+                    }
+                })
+            }
+        })
+        ;
+
+
+    </script>
+{% endblock %}

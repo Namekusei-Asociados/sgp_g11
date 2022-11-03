@@ -32,7 +32,10 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_backlog/edit/<int:id_user_story>', views.edit_sprint_backlog,
          name='sprints.sprint_backlog.edit'),
     path('<int:id_sprint>/sprint_bakclog/update', views.update_sprint_backlog, name='sprints.sprint_backlog.update'),
-    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,
-         name='sprints.sprint_backlog.delete'),
+    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,name='sprints.sprint_backlog.delete'),
+
+    # Kanban
+    path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index'),
+    path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,name='sprints.kanban.user_story.change_status_kanban')
 
 ]
