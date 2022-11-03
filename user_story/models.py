@@ -4,7 +4,6 @@ from simple_history.models import HistoricalRecords
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
-from utilities.UProject import UProject
 from utilities.UUserStory import UUserStory
 
 
@@ -13,15 +12,15 @@ class UserStoryManager(models.Manager):
     def is_final_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
 
-        return user_story.current_status == UProject.STATUS_US_FINISHED or user_story.current_status == UProject.STATUS_US_CANCELED
+        return user_story.current_status == UUserStory.STATUS_FINISHED or user_story.current_status == UUserStory.STATUS_CANCELED
 
     def is_initial_status(self, id_us):
         user_story = UserStory.objects.get(id=id_us)
-        return user_story.current_status == UProject.STATUS_US_PENDING
+        return user_story.current_status == UUserStory.STATUS_PENDING
 
     # Obtenemos el primer estado
     def get_initial_status(self):
-        return UProject.STATUS_US_PENDING
+        return UUserStory.STATUS_PENDING
 
     def get_us_finished(self, id_project):
         finished = [us.id for us in UserStory.objects.filter(project_id=id_project) if
@@ -44,6 +43,12 @@ class UserStoryManager(models.Manager):
         return user_stories
 
 
+class UserStoryAttachmentManager(models.Manager):
+    @staticmethod
+    def get_attachments(id_us):
+        return UserStoryAttachment.objects.filter(user_story_id=id_us).order_by('-created_at')
+
+
 # Create your models here.
 class UserStory(models.Model):
     code = models.CharField(max_length=100)
@@ -56,8 +61,8 @@ class UserStory(models.Model):
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
     status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
-    current_status = models.CharField(max_length=20, default=UProject.STATUS_US_PENDING)
-    kanban_status = models.CharField(max_length=20,null=True)
+    current_status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
+    kanban_status = models.CharField(max_length=20, null=True)
     us_type = models.ForeignKey(TypeUS, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
@@ -76,5 +81,31 @@ class UserStory(models.Model):
     def __str__(self):
         return self.title
 
-    class Meta:
-        ordering = ['code']
+
+def us_directory_path(instance, filename):
+    return f"static/us_attached_files/project{instance.user_story.project_id}/{instance.user_story.id}/{filename}"
+
+
+class UserStoryAttachment(models.Model):
+    user_story = models.ForeignKey(UserStory, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=us_directory_path, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = UserStoryAttachmentManager()
+
+    @property
+    def filename(self):
+        return self.file.name.split('/')[-1]
+
+    @property
+    def size(self):
+        # Return a string with the size and the unit
+        amount_of_divisions = 0
+        size = self.file.size
+        while size > 1024:
+            size = size / 1024
+            amount_of_divisions += 1
+        units = {
+            0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB',
+        }
+        return f"{round(size, 2)} {units[amount_of_divisions]}"

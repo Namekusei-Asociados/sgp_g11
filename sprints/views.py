@@ -13,6 +13,7 @@ from user_story.models import UserStory
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.USprint import USprint
+from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
 from django.http import JsonResponse
 
@@ -668,7 +669,7 @@ def delete_sprint_backlog(request, id_project, id_sprint):
 
     user_story.assigned_to = None
     user_story.sprint = None
-    user_story.current_status = UProject.STATUS_US_PENDING
+    user_story.current_status = UUserStory.STATUS_PENDING
     user_story.save()
 
     sprint = Sprint.objects.get(id=id_sprint)
@@ -761,6 +762,9 @@ def switch_to_started_sprint(sprint):
     df = pd.DataFrame(s, columns=['fecha'])
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
     sprint.end_at = end_at
+    user_stories=sprint.userstory_set.all()
+    for user_story in user_stories:
+        user_story.current_status = UUserStory.STATUS_IN_EXECUTION
     sprint.save()
 
 
