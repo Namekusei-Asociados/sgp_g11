@@ -64,6 +64,7 @@ class UserStoryTaskManager(models.Manager):
         user_story = UserStory.objects.get(id=id_user_story)
         us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours, sprint_id=user_story.sprint_id)
         user_story.work_hours += int(work_hours)
+        user_story.save()
         return us_task
 
     # def delete_us_task(self, id_user_story, id_task):
