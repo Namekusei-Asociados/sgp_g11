@@ -1,21 +1,20 @@
 from itertools import chain
 
-from django.forms import model_to_dict
-from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
+from accounts.models import User
+from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem
-from utilities.UPermissionsProj import UPermissionsProject
+from user_story.models import UserStory
 from utilities.UPermissions import UPermissions
+from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UProject import UProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from .decorators import permission_proj_required
 from .forms import ImportRole
 from .models import Project, RoleProject, PermissionsProj, ProjectMember
-from accounts.models import User
-from django.contrib import messages
-from django.urls import reverse
-from .decorators import permission_proj_required
-from gestionar_roles.decorators import permission_sys_required
-from utilities.UProject import UProject
 
 
 # Create your views here.
@@ -135,7 +134,12 @@ def cancel(request, id_project):
     :return: documento html que solicita el motivo de la cancelación del proyecto
     """
     project = Project.objects.get(id=id_project)
-    return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
+    if UserStory.objects.get_us_non_finished(id_project=id_project).count() > 0:
+        messages.error(request,
+                       'El proyecto "' + project.name + '" no puede ser cancelado porque posee US no finalizados')
+        return redirect(reverse('projects.index'), request)
+    else:
+        return render(request, 'projects/cancel.html', {'project': project, 'id_project': id_project})
 
 
 @permission_proj_required(UPermissionsProject.CANCEL_PROJECT)
@@ -180,7 +184,7 @@ def init_project(request, id_project):
 def dashboard(request, id_project):
     if request.user.project_set.filter(id=id_project).exists():
         project = Project.objects.get(id=id_project)
-        return render(request, 'projects/dashboard.html', {'id_project': id_project,'project':project})
+        return render(request, 'projects/dashboard.html', {'id_project': id_project, 'project': project})
     else:
         return render(request, 'redirect/forbidden.html')
 
@@ -197,7 +201,14 @@ def members(request, id_project):
     """
     members = Project.objects.get_project_members(id_project).order_by('id')
     print(members)
-    return render(request, 'projects/members/index.html', {"members": members, 'id_project': id_project})
+
+    context = {
+        "members": members,
+        'id_project': id_project,
+        'is_visible': is_visible_buttons(id_project)
+    }
+
+    return render(request, 'projects/members/index.html', context)
 
 
 @permission_proj_required(UPermissionsProject.CREATE_PROJECTMEMBER)
@@ -219,7 +230,15 @@ def create_member(request, id_project):
 
     users = list(set(all_users) - set(current_members))
     print(users)
-    return render(request, 'projects/members/create.html', {"roles": roles, 'id_project': id_project, 'users': users})
+
+    context = {
+        "roles": roles,
+        'id_project': id_project,
+        'users': users,
+        'is_visible': is_visible_buttons(id_project)
+    }
+
+    return render(request, 'projects/members/create.html', context)
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
@@ -361,7 +380,9 @@ def index_role(request, id_project):
     # get all Roles
     roles = RoleProject.objects.get_project_roles(id_project)
 
-    return render(request, 'roles/index.html', {"roles": roles, "id_project": id_project})
+    context = dict(roles=roles, id_project=id_project, is_visible=is_visible_buttons(id_project))
+
+    return render(request, 'roles/index.html', context)
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_ROLE)
@@ -468,3 +489,12 @@ def import_role(request, id_project):
     context = {"form": form, "id_project": id_project, "roles": roles}
 
     return render(request, "roles/import_role.html", context)
+
+
+def is_visible_buttons(id_project):
+    project = Project.objects.get(id=id_project)
+
+    if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:
+        return False
+
+    return True

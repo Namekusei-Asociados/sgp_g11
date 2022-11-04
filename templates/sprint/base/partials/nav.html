@@ -2,30 +2,47 @@
 {% load has_perm_project %}
 <!-- Sidebar Menu -->
 <nav class="mt-2">
-    <ul id="side-bar-options" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        {% has_perm_project user id_project 'Read sprintmember' as can_read_memmber %}
+    <ul id="side-bar-options" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+        data-accordion="false">
+
+        {% has_perm_project user id_project 'Read sprintmember' as can_read_member %}
+        {% has_perm_project user id_project 'Read sprint_backlog' as can_read_sprint_backlog %}
 
         <li class="nav-item">
-                <a data-section-active="dashboard" href="{% url 'sprints.dashboard' id_project id_sprint %}" class="nav-link">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>Dashboard</p>
-                </a>
+            <a data-section-active="dashboard" href="{% url 'sprints.dashboard' id_project id_sprint %}"
+               class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>Dashboard</p>
+            </a>
         </li>
 
-        {% if can_read_memmber %}
+        {% if can_read_member %}
             <li class="nav-item">
-                <a data-section-active="members" href="{% url 'sprints.members.index' id_project id_sprint %}" class="nav-link">
+                <a data-section-active="members" href="{% url 'sprints.members.index' id_project id_sprint %}"
+                   class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Miembros</p>
                 </a>
             </li>
         {% endif %}
+        {% if can_read_sprint_backlog %}
+            <li class="nav-item">
+                <a data-section-active="sprint_backlog"
+                   href="{% url 'sprints.sprint_backlog.index' id_project id_sprint %}" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>Sprint Backlog</p>
+                </a>
+            </li>
+        {% endif %}
+
         <li class="nav-item">
-            <a data-section-active="sprint_backlog" href="{% url 'sprints.sprint_backlog.index' id_project id_sprint %}" class="nav-link">
-                <i class="nav-icon fas fa-table"></i>
-                <p>Sprint Backlog</p>
+            <a data-section-active="kanban"
+               href="{% url 'sprints.kanban.index' id_project id_sprint %}" class="nav-link">
+                <i class="nav-icon fas fa-columns"></i>
+                <p>Kanban</p>
             </a>
         </li>
+
         <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
         <li class="nav-item">
             <a href="{% url 'sprints.index' id_project %}" class="nav-link">

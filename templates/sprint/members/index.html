@@ -59,7 +59,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            {% if can_create %}
+                            {% if can_create and is_visible and is_pending %}
                                 <a class="btn btn-primary btn-sm"
                                    href="{% url 'sprints.members.add' id_project id_sprint %}">
                                     <i class="fas fa-plus">
@@ -94,27 +94,37 @@
 
                                         <td class="d-flex" style="gap: 5px">
 
-                                            {% if can_edit %}
-                                                <a class="btn btn-info btn-sm"
-                                                   href="{% url 'sprints.members.edit' id_project id_sprint member.id %}">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                    Editar
-                                                </a>
-                                            {% endif %}
-
-                                            {% if can_delete %}
-                                                <form action="{% url 'sprints.members.delete' id_project id_sprint member.id %}"
-                                                      method="post">
-                                                    {% csrf_token %}
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash">
+                                            {% if is_pending %}
+                                                {% if can_edit and is_visible %}
+                                                    <a class="btn btn-info btn-sm"
+                                                       href="{% url 'sprints.members.edit' id_project id_sprint member.id %}">
+                                                        <i class="fas fa-pencil-alt">
                                                         </i>
-                                                        Eliminar
-                                                    </button>
-                                                </form>
-                                            {% endif %}
+                                                        Editar
+                                                    </a>
+                                                {% endif %}
 
+                                                {% if can_delete and is_visible %}
+                                                    <form action="{% url 'sprints.members.delete' id_project id_sprint member.id %}"
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash">
+                                                            </i>
+                                                            Eliminar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if can_edit and is_visible %}
+                                                    <a class="btn btn-primary btn-sm"
+                                                       href="{% url 'sprints.members.change' id_project id_sprint member.id %}">
+                                                        <i class="fas fa-sync">
+                                                        </i>
+                                                        Cambiar
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

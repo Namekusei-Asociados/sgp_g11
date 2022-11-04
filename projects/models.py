@@ -288,6 +288,9 @@ class Project(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    class Meta:
+        ordering = ['updated_at']
+
 
 class RoleProject(models.Model):
     """

@@ -1,0 +1,66 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "password": "!YulyKkmt8C5BMx5FbEvtDH1Io459za9ub7UgPqgM",
+      "last_login": "2022-11-03T21:32:34.191Z",
+      "is_superuser": false,
+      "first_name": "Cristhian",
+      "last_name": "Ortellado",
+      "email": "breideworld@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-10-17T15:29:00.763Z",
+      "created_at": "2022-10-17T15:29:00.801Z",
+      "updated_at": "2022-10-17T15:29:00.801Z",
+      "deleted_at": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "socialaccount.socialaccount",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "provider": "google",
+      "uid": "115936979671202773596",
+      "last_login": "2022-11-03T21:32:34.170Z",
+      "date_joined": "2022-10-17T15:29:00.815Z",
+      "extra_data": "{\"id\": \"115936979671202773596\", \"email\": \"breideworld@gmail.com\", \"verified_email\": true, \"name\": \"Cristhian Ortellado\", \"given_name\": \"Cristhian\", \"family_name\": \"Ortellado\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu3boa6Fu0cCuH3zBcJL2ZswaO4U0mnsJCSYeknC=s96-c\", \"locale\": \"es\"}"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "!tIq6mqIMk5zW7XKTtWZViYwpyuvgF9JEzv28df4W",
+      "last_login": "2022-11-03T05:09:59.856Z",
+      "is_superuser": false,
+      "first_name": "Cristhian Daniel",
+      "last_name": "Ortellado Fernández",
+      "email": "breideworld@fpuna.edu.py",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-11-03T05:09:59.771Z",
+      "created_at": "2022-11-03T05:09:59.817Z",
+      "updated_at": "2022-11-03T05:11:06.486Z",
+      "deleted_at": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "socialaccount.socialaccount",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "provider": "google",
+      "uid": "103580374616327140629",
+      "last_login": "2022-11-03T05:09:59.831Z",
+      "date_joined": "2022-11-03T05:09:59.831Z",
+      "extra_data": "{\"id\": \"103580374616327140629\", \"email\": \"breideworld@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Cristhian Daniel Ortellado Fern\\u00e1ndez\", \"given_name\": \"Cristhian Daniel\", \"family_name\": \"Ortellado Fern\\u00e1ndez\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu1A4u9q2_W5Vj9rjVfzGzErODr9bOWVSgdoloda=s96-c\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
+    }
+  }
+]

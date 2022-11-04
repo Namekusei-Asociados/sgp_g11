@@ -1,0 +1,78 @@
+<div class="col-12 col-md-12 h-100">
+    <div class="card card-primary card-tabs h-100">
+
+        <!--TABS LINKS-->
+        {% include 'base/components/kanban/tab-links.html' %}
+        <!--END TABS LINKS-->
+
+        <!--TABS CONTENT-->
+        <div class="card-body">
+            <div class="tab-content h-100" id="custom-tabs-one-tabContent">
+                {% for type in types_us %}
+                    <div class="h-100 tab-pane fade {% if forloop.counter == 1 %} active show {% endif %}"
+                         id="custom-tabs-{{ type.id }}" role="tabpanel"
+                         aria-labelledby="custom-tabs-{{ type.id }}-tab">
+                        <section class="content pb-3 h-100">
+                            <div class="container-fluid h-100 status-column-container">
+                                {% for column in type.array_flow %}
+                                    <!--Column status-->
+                                    <div class="card card-row card-secondary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                {{ column }}
+                                            </h3>
+                                        </div>
+
+                                        <div class="card-body status-column" data-flow-name="{{ column }}">
+                                            <!--USERS STORIES CARD-->
+                                            {% include 'base/components/kanban/user_story_card.html' %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </section>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+<!--Modal-->
+<div class="modal fade" id="modal-default" data-csrf="{{ csrf_token }}" data-url="{% url 'sprints.kanban.user_story.task_store' id_project id_sprint %}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Agregar tarea completada</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" id="task-form">
+                <div class="modal-body">
+
+                    <input type="hidden" name="user_story_id">
+
+                    <b>Descripcion de la tarea</b>
+                    <div class="form-group">
+                        <input name="description" type="text" class="form-control" placeholder="End to End testing..."
+                               minlength="5">
+                    </div>
+
+                    <b>Horas utilizadas</b>
+                    <div class="form-group">
+                        <input name="total_hours" type="number" class="form-control" min="1">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-add-task">Agregar Tarea</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

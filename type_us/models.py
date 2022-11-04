@@ -59,3 +59,18 @@ class TypeUS(models.Model):
     flow = models.JSONField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     objects = TypeUSManager()
+    def _get_format_flow(self):
+        "Return formated flow field"
+        fields = json.loads(self.flow)
+        statuses = '| '
+        for field in fields:
+            statuses += str(field) + " | "
+        # return '%s | %s | %s' % (json.loads(self.flow)[0], json.loads(self.flow)[1], json.loads(self.flow)[2])
+        return statuses
+
+    def _get_array_flow(self):
+        "Return flow array"
+        return json.loads(self.flow)
+
+    format_flow = property(_get_format_flow)
+    array_flow = property(_get_array_flow)

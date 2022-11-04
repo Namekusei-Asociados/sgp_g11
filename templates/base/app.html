@@ -31,6 +31,11 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/summernote/summernote-bs4.min.css" %}">
 
+    <!-- alert-->
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css" %}">
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/toastr/toastr.min.css" %}">
+
+
     {% block styles %}
 
     {% endblock %}
@@ -110,7 +115,7 @@
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="{% block content_class %} content-wrapper {% endblock %}">
         {% block content %}
 
         {% endblock %}
@@ -154,6 +159,12 @@
 <script src="{% static "lib/adminlte-3.2.0/plugins/summernote/summernote-bs4.min.js" %}"></script>
 <!-- overlayScrollbars -->
 <script src="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+
+<!-- SweetAlert2 -->
+<script src="{% static "lib/adminlte-3.2.0/plugins/sweetalert2/sweetalert2.min.js" %}"></script>
+<!-- Toastr -->
+<script src="{% static "lib/adminlte-3.2.0/plugins/toastr/toastr.min.js" %}"></script>
+
 <!-- AdminLTE App -->
 <script src="{% static "lib/adminlte-3.2.0/js/adminlte.js" %}"></script>
 <!-- AdminLTE for demo purposes -->

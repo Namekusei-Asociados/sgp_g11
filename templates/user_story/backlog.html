@@ -16,6 +16,11 @@
 {% endblock %}
 
 {% block content %}
+
+    {% has_perm_project user id_project 'Create user_story' as can_create_us %}
+    {% has_perm_project user id_project 'Update user_story' as can_update_us %}
+    {% has_perm_project user id_project 'Cancel user_story' as can_cancel_us %}
+
     <br>
     <section class="content">
         {% include 'base/components/success-message.html' %}
@@ -35,8 +40,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            {% has_perm_project user id_project 'Create user_story' as ban %}
-                            {% if ban %}
+                            {% if can_create_us and is_visible %}
                                 <a class="btn btn-primary btn-sm"
                                    href="{% url 'user_story.create_user_story' id_project %}">
                                     <i class="fas fa-plus">
@@ -55,6 +59,7 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
+                                    <th>Cod</th>
                                     <th>Título</th>
                                     <th>Estado Actual</th>
                                     <th>Business Value</th>
@@ -66,7 +71,9 @@
                                 <tbody>
                                 {% for user_story in user_stories %}
                                     <tr>
-                                        <td>{{ user_story.us_type.prefix }}-{{ user_story.title }}</td>
+
+                                        <td>{{ user_story.code }}</td>
+                                        <td>{{ user_story.title }}</td>
                                         <td><span class="badge
                                             {% current_status user_story.id as status %}
                                             {% if status == 'initial' %}
@@ -74,7 +81,7 @@
                                             {% elif  status == 'final' %}
                                                 badge-danger
                                             {% else %}
-                                                badge-light
+                                                badge-info
                                             {% endif %}">{{ user_story.current_status }}</span></td>
                                         <td>{{ user_story.business_value }}</td>
                                         <td>{{ user_story.technical_priority }}</td>
@@ -87,8 +94,7 @@
                                                 Ver
                                             </a>
                                             {% if user_story.current_status != 'canceled' %}
-                                                {% has_perm_project user id_project 'Update user_story' as ban %}
-                                                {% if ban %}
+                                                {% if can_update_us and is_visible %}
                                                     <form id="edit_user_story" class="m-0 p-0" method="post"
                                                           action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
                                                         {% csrf_token %}
@@ -99,16 +105,23 @@
                                                         </button>
                                                     </form>
                                                 {% endif %}
-                                                <form id="cancel_user_story" class="m-0 p-0" method="post"
-                                                      action="{% url 'user_story.cancel_user_story' id_project user_story.id %}">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash">
-                                                        </i>
-                                                        Cancelar
-                                                    </button>
-                                                </form>
+                                                {% if can_cancel_us and is_visible %}
+                                                    <form id="cancel_user_story" class="m-0 p-0" method="post"
+                                                          action="{% url 'user_story.cancel_user_story' id_project user_story.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash">
+                                                            </i>
+                                                            Cancelar
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                <a class="btn btn-secondary btn-sm" href="{% url 'user_story.history' id_project user_story.id %}" >
+                                                <i class="fas fa-history">
+                                                </i>
+                                                Historial
                                             {% endif %}
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}

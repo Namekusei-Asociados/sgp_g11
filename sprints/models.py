@@ -1,6 +1,7 @@
 from django.db import models
 
 from accounts.models import User
+from utilities.USprint import USprint
 
 """
 Posibles estados de Sprint: Planificación, Ejecución, Finalizado, Cancelado
@@ -24,7 +25,7 @@ class Sprint(models.Model):
     duration = models.IntegerField(verbose_name='Duración en días')
     start_at = models.DateField(null=True, verbose_name='Fecha de inicio')
     end_at = models.DateField(null=True, verbose_name='Fecha de finalización')
-    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default='pending', verbose_name='Estado')
+    status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default=USprint.STATUS_PENDING, verbose_name='Estado')
     cancellation_reason = models.TextField(max_length=500, null=True)
     members = models.ManyToManyField(User, through='sprints.SprintMember')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,6 +41,5 @@ class SprintMember(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     workload = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)

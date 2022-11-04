@@ -28,11 +28,11 @@
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><small>Crear Historia de Usuario</small></h3>
+                            <h3 class="card-title">Crear Historia de Usuario</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form id="create_user_story_form" method="post"
+                        <form id="create_user_story_form" enctype="multipart/form-data" method="post"
                               action="{% url 'user_story.validate_create_user_story' id_project %}">
                             {% csrf_token %}
                             <!-- TEST -->
@@ -64,6 +64,11 @@
                                                    name="estimation_time" class="form-control"
                                                    id="id_estimation_time"
                                                    placeholder="Enter Estimation Time">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_attachments">Archivos Adjuntos</label>
+                                            <input type="file" name="attachments" multiple class="form-control"
+                                                   id="id_attachments">
                                         </div>
                                     </div>
                                     <!-- /.col -->
@@ -100,6 +105,7 @@
                                     <!-- /.col -->
                                 </div>
                                 <!-- /.row -->
+
                             </div>
                             <!-- /.card -->
                             <!-- /.card-body -->
@@ -115,17 +121,27 @@
                                        class="btn btn-secondary mx-3">Cancelar</a>
                                 </div>
                             {% endif %}
-                        </form>
                     </div>
+                    </form>
+                    <form id="create_user_story_form" method="post"
+                          action="{% url 'user_story.validate_create_user_story' id_project %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
         </div>
     </section>
     <!-- /.content -->
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/dropzone/min/dropzone.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+
     <script>
         const id_business_value = document.querySelector('#id_business_value')
         const id_technical_priority = document.querySelector('#id_technical_priority')
@@ -134,11 +150,39 @@
 
         id_technical_priority.addEventListener('input', validate)
 
-        function validate (evt) {
+        function validate(evt) {
             const value = evt.target.value
             if (value < 1 || value > 10) {
                 evt.target.value = 1
             }
+        }
+    </script>
+    <script>
+        // DropzoneJS Demo Code Start
+        Dropzone.autoDiscover = false
+
+        // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+        var previewNode = document.querySelector("#template")
+        previewNode.id = ""
+        var previewTemplate = previewNode.parentNode.innerHTML
+        previewNode.parentNode.removeChild(previewNode)
+
+        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            url: "/target-url", // Set the url
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewTemplate: previewTemplate,
+            autoQueue: false, // Make sure the files aren't queued until manually added
+            previewsContainer: "#previews", // Define the container to display the previews
+            clickable: ".file-input-button" // Define the element that should be used as click trigger to select files.
+        })
+        // Setup the buttons for all transfers
+        // The "add files" button doesn't need to be setup because the config
+        // `clickable` has already been specified.
+
+        document.querySelector("#actions .cancel").onclick = function () {
+            myDropzone.removeAllFiles(true)
         }
 
     </script>

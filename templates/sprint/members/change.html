@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    | Miembros del Proyecto
+    | Miembros del Sprint
 {% endblock %}
 
 {% block styles %}
@@ -14,12 +14,13 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'projects/base/partials/nav.html' %}
+    {% include 'sprint/base/partials/nav.html' %}
 {% endblock %}
 
 {% block active_section %}
     <span id="active-section" data-value="members"></span>
 {% endblock %}
+
 {% block content %}
     <br>
     <section class="content">
@@ -27,45 +28,55 @@
 
         <div class="card card-primary m-2">
             <div class="card-header">
-                <h3 class="card-title">Agregar Miembro</h3>
+                <h3 class="card-title">Cambiar Miembro</h3>
             </div>
             <!-- /.card-header -->
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Miembro a ser cambiado</label>
+                    <input type="text" ondrop="return false;" onpaste="return false;"
+                           onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                           class="form-control" disabled min="0" max="12"
+                           value="{{ member.user.username }} | {{ member.user.first_name }} {{ member.user.last_name }} | {{ member.user.email }}">
+                </div>
+            </div>
+
             <!-- form start -->
-            <form id="createProjectForm" action="{% url 'projects.members.store' id_project %}" method="post">
+            <form id="createProjectForm" action="{% url 'sprints.members.validate.change' id_project id_sprint %}"
+                  method="post">
                 {% csrf_token %}
 
+                <input type="hidden" value="{{ member.id }}" name="member_to_remove" id="member_to_remove_id">
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="name" class="required">Username</label>
+                        <label for="name" class="required">Nuevo miembro</label>
                         <select class="form-control" name="user_id" required>
-                            <option value="">Seleccione un Miembro</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% for u in users_sprint %}
+                                <option value="{{ u.id }}">
+                                    {{ u.username }} | {{ u.first_name }} {{ u.last_name }} | {{ u.email }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
 
+                    <!-- /.form-group -->
                     <div class="form-group">
-                        <label>Roles</label>
-
-                        <select class="select2" multiple="multiple" data-placeholder="Select a State" name="roles[]"
-                                data-dropdown-css-class="select2-purple"
-                                style="width: 100%;">
-                            {% for role in roles %}
-                                <option value="{{ role.id }}">{{ role.role_name }}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_workload">Capacidad de trabajo (en horas/dia)</label>
+                        <input type="number" ondrop="return false;" onpaste="return false;"
+                               onkeypress="return event.charCode>=48 && event.charCode<=57" required
+                               name="workload" class="form-control" id="id_workload" disabled
+                               min="0" max="12" value="{{ member.workload }}">
                     </div>
 
                 </div>
                 <!-- /.card-body -->
-
-                {% if is_visible %}
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Agregar</button>
-                    </div>
-                {% endif %}
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Cambiar</button>
+                    <a href=" {% url 'sprints.members.index' id_project id_sprint %} "
+                       class="btn btn-secondary mx-3">Cancelar</a>
+                </div>
             </form>
         </div>
 

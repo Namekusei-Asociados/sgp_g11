@@ -22,6 +22,9 @@ urlpatterns = [
     path('<int:id_sprint>/members/update', views.update_member, name='sprints.members.update'),
     path('<int:id_sprint>/members/store', views.store_member, name='sprints.members.store'),
     path('<int:id_sprint>/members/destroy/<int:member_id>', views.delete_member, name='sprints.members.delete'),
+    path('<int:id_sprint>/members/change/<int:member_id>', views.change_member, name='sprints.members.change'),
+    path('<int:id_sprint>/members/validate_change', views.validate_change_member,
+         name='sprints.members.validate.change'),
 
     # Sprint backlog
     path('<int:id_sprint>/sprint_bakclog', views.sprint_backlog, name='sprints.sprint_backlog.index'),
@@ -32,7 +35,11 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_backlog/edit/<int:id_user_story>', views.edit_sprint_backlog,
          name='sprints.sprint_backlog.edit'),
     path('<int:id_sprint>/sprint_bakclog/update', views.update_sprint_backlog, name='sprints.sprint_backlog.update'),
-    path('<int:id_sprint>/sprint_backlog/destroy/<int:id_user_story>', views.delete_sprint_backlog,
-         name='sprints.sprint_backlog.delete'),
+    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,name='sprints.sprint_backlog.delete'),
+
+    # Kanban
+    path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index'),
+    path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,name='sprints.kanban.user_story.change_status_kanban'),
+    path('<int:id_sprint>/user_story/task/store', views.kanban_task_store,name='sprints.kanban.user_story.task_store')
 
 ]

@@ -1,14 +1,18 @@
 from itertools import chain
 
 from django.contrib import messages
+from django.http import FileResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from accounts.models import User
 from projects.decorators import permission_proj_required
+from projects.models import Project
 from type_us.models import TypeUS
-from user_story.models import UserStory
+from user_story.models import UserStory, UserStoryAttachment
 from utilities.UPermissionsProj import UPermissionsProject
+from utilities.UProject import UProject
+from utilities.UUserStory import UUserStory
 
 
 # Create your views here.
@@ -44,21 +48,46 @@ def validate_create_user_story(request, id_project):
     final_priority = 0.6 * business_value + 0.4 * technical_priority
     us_type = request.POST['us_type']
     estimation_time = int(request.POST['estimation_time'])
+    code = TypeUS.objects.get(id=us_type).prefix + "-" + str(
+        UserStory.objects.filter(project_id=id_project).count() + 1)
 
+    # archivos adjuntos
+    attachments = request.FILES.getlist('attachments')
     # obetenemos el primer estado del tipo de US
-    initial_status = UserStory.objects.get_initial_status(id_type_us=us_type)
+    initial_status = UserStory.objects.get_initial_status()
+    print(attachments)
 
-    UserStory.objects.create(
+    us = UserStory.objects.create(
+        code=code,
         title=title, description=description,
         business_value=business_value, technical_priority=technical_priority,
         estimation_time=estimation_time, final_priority=final_priority,
         project_id=id_project, us_type_id=us_type, current_status=initial_status,
     )
 
+    for file in attachments:
+        UserStoryAttachment.objects.create(user_story_id=us.id, file=file)
+
     message = 'La historia de usuario "' + title + '" fue creada con éxito'
     messages.success(request, message)
 
     return redirect(reverse('user_story.create_user_story', kwargs={'id_project': id_project}), request)
+
+
+def download_us_attachment(request, id_project, id_user_story, id_attachment):
+    """
+    funcion encargada de descargar archivos adjuntos
+
+    :param request: request
+    :param id_project: id del proyecto actual
+    :param id_user_story: id de US
+    :param id_attachment: id del archivo
+
+    :return: documento HTML
+    """
+    #funcion para descargar un adjunto al US
+    attachment = UserStoryAttachment.objects.get(id=id_attachment)
+    return FileResponse(open(attachment.file.path, 'rb'), content_type='application/force-download')
 
 
 @permission_proj_required(UPermissionsProject.UPDATE_US)
@@ -174,7 +203,7 @@ def validate_cancel_user_story(request, id_project):
 
     us = UserStory.objects.get(id=id_us)
     us.cancellation_reason = cancellation_reason
-    us.current_status = 'canceled'
+    us.current_status = UUserStory.STATUS_CANCELED
 
     us.save()
 
@@ -192,14 +221,17 @@ def backlog(request, id_project):
     :return: documento HTML del backlog de un proyecto
     """
     user_stories_data = UserStory.objects.filter(project_id=id_project)
-    #dividimos entre estados finales y no finales
+    # dividimos entre estados finales y no finales
     final_us = UserStory.objects.get_us_finished(id_project=id_project)
     not_final_us = UserStory.objects.get_us_non_finished(id_project=id_project)
     user_stories = chain(not_final_us, final_us)
+
     context = {
         'id_project': id_project,
-        'user_stories': user_stories
+        'user_stories': user_stories,
+        'is_visible': is_visible_buttons(id_project)
     }
+
     return render(request, 'user_story/backlog.html', context)
 
 
@@ -218,7 +250,51 @@ def details_user_story(request, id_project, id_user_story):
 
     context = {
         'id_project': id_project,
-        'user_story': user_story
+        'user_story': user_story,
+        'attachments': UserStoryAttachment.objects.get_attachments(id_us=user_story.id)
     }
 
     return render(request, 'user_story/details_user_story.html', context)
+
+
+def is_visible_buttons(id_project):
+    project = Project.objects.get(id=id_project)
+
+    if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:
+        return False
+
+    return True
+
+
+def history(request, id_project, id_user_story):
+    """
+    Depsliega ventana de historial propio del US
+
+    :param request:
+    :param id_project: id del proyecto
+    :param id_user_story: id del US a mirar el historial
+
+    :return: Documento HTML
+    """
+    user_story = UserStory.objects.get(id=id_user_story)
+    # new_record=user_story.history.first()
+    # old_record = user_story.history.all()
+    # for record in old_record:
+    #     ant=record.previous()
+    #     historical = new_record.diff_against(record)
+    #     for change in historical.changes:
+    #         print("{} changed from {} to {}".format(change.field, change.old, change.new))
+    if request.method == 'POST':
+        id_history = request.POST.get('id_history')
+        print(f'id_history: {id_history}')
+        h = user_story.history.get(history_id=id_history)
+        h.instance.save()
+        message = 'La historia de usuario "' + h.title + '" fue actualizada con éxito'
+        messages.success(request, message)
+
+    context = {
+        'id_project': id_project,
+        'user_story': user_story,
+        'historical': user_story.history.all()
+    }
+    return render(request, 'user_story/history.html', context)
