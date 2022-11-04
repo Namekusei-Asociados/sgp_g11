@@ -62,9 +62,9 @@ class TypeUS(models.Model):
     def _get_format_flow(self):
         "Return formated flow field"
         fields = json.loads(self.flow)
-        statuses = ''
+        statuses = '| '
         for field in fields:
-            statuses +="   " + str(field)
+            statuses += str(field) + " | "
         # return '%s | %s | %s' % (json.loads(self.flow)[0], json.loads(self.flow)[1], json.loads(self.flow)[2])
         return statuses
 
