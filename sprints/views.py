@@ -433,6 +433,16 @@ def delete_member(request, id_project, id_sprint, member_id):
 
 
 def change_member(request, id_project, id_sprint, member_id):
+    """
+    Cambia un miembro de sprint
+
+    :param request:
+    :param id_project: id del proyecto actual
+    :param id_sprint: id del sprint
+    :param member_id: id del miembro a cambiar
+
+    :return: página HTML
+    """
     sprint = Sprint.objects.get(id=id_sprint)
     project = Project.objects.get(id=id_project)
 
@@ -452,6 +462,15 @@ def change_member(request, id_project, id_sprint, member_id):
 
 
 def validate_change_member(request, id_project, id_sprint):
+    """
+    Cambia un miembro de sprint
+
+    :param request:
+    :param id_project: id del proyecto actual
+    :param id_sprint: id del sprint
+
+    :return: página HTML
+    """
     user_id = request.POST['user_id']
     member_remove_id = request.POST['member_to_remove']
 
@@ -735,6 +754,13 @@ def delete_sprint_backlog(request, id_project, id_sprint):
 
 
 def get_available_capacity(sprint):
+    """
+    Obtiene la capacidad en horas disponibles de un sprint
+
+    :param sprint: sprint de que se quiere su capacidad
+
+    :return: horas disponibles del sprint
+    """
     return sprint.capacity - get_accumulated(sprint)
 
 
@@ -749,6 +775,15 @@ def get_accumulated(sprint):
 
 @permission_proj_required(UPermissionsProject.INIT_SPRINT)
 def init_sprint(request, id_project, id_sprint):
+    """
+    Inicia un sprint
+
+    :param request:
+    :param id_project: id del proyecto donde se encuentra el sprint
+    :param id_sprint: id del sprint a ser iniciado
+
+    :return: página index del sprint
+    """
     project = Project.objects.get(id=id_project)
     sprint = Sprint.objects.get(id=id_sprint)
 
@@ -813,9 +848,11 @@ def switch_to_started_sprint(sprint):
 def kanban_index(request, id_project, id_sprint):
     """
     Muestra un documento html con los tableros kanban asociados al usuario
+
     :param request:
     :param id_project:
     :param id_sprint:
+
     :return:
     """
     # users stories attached to the current sprint
@@ -841,6 +878,7 @@ def kanban_index(request, id_project, id_sprint):
 def kanban_user_story_change_status(request, id_project, id_sprint):
     """
     Cambia el estado kanban del user story al siguiente/previo estado kanban
+
     :param request:
     :param id_project:
     :param id_sprint:
@@ -898,6 +936,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
 def kanban_task_store(request, id_project, id_sprint):
     """
     Guarda una tarea y la adjunta al user story
+
     :param request:
     :param id_project:
     :param id_sprint:
