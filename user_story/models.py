@@ -61,51 +61,37 @@ class UserStoryTaskManager(models.Manager):
 
         :return: Task creado
         """
-        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours)
         user_story = UserStory.objects.get(id=id_user_story)
-        user_story.work_hours += work_hours
-        user_story.task.add(us_task)
+        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours, sprint_id=user_story.sprint_id)
+        user_story.work_hours += int(work_hours)
+        user_story.save()
         return us_task
 
-    def delete_us_task(self, id_user_story, id_task):
-        """
-        Eliminar tarea de US
-
-        :param id_user_story: id user story
-        :param id_task: id de la tarea
-
-        :return: Booleano True: correcto, False: fallo en la eliminacion
-        """
-        user_story = UserStory.objects.get(id=id_user_story)
-        task = UserStoryTask.objects.get(id=id_task)
-
-        if user_story.tasks.filter(
-                id=task.id).exists() and user_story.current_status != "finished" and user_story.current_status != "canceled":
-            # Actualizamos las horas trabajadas
-            user_story.horas_trabajadas -= task.horasTrabajadas
-            user_story.task.remove(task)
-            return True
-        else:
-            return None
-
-    def list_tasks(self, id_user_story):
-        user_story = UserStory.objects.get(id=id_user_story)
-        tasks = user_story.tasks.all()
-        return tasks
-
-
-class UserStoryTask(models.Model):
-    task = models.TextField(max_length=100)
-    work_hours = models.IntegerField()
-    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    objects = UserStoryTaskManager()
-
-    def __str__(self):
-        return self.task
+    # def delete_us_task(self, id_user_story, id_task):
+    #     """
+    #     Eliminar tarea de US
+    #
+    #     :param id_user_story: id user story
+    #     :param id_task: id de la tarea
+    #
+    #     :return: Booleano True: correcto, False: fallo en la eliminacion
+    #     """
+    #     user_story = UserStory.objects.get(id=id_user_story)
+    #     task = UserStoryTask.objects.get(id=id_task)
+    #
+    #     if user_story.tasks.filter(
+    #             id=task.id).exists() and user_story.current_status != "finished" and user_story.current_status != "canceled":
+    #         # Actualizamos las horas trabajadas
+    #         user_story.horas_trabajadas -= task.horasTrabajadas
+    #         user_story.task.remove(task)
+    #         return True
+    #     else:
+    #         return None
+    #
+    # def list_tasks(self, id_user_story):
+    #     user_story = UserStory.objects.get(id=id_user_story)
+    #     tasks = user_story.tasks.all()
+    #     return tasks
 
 
 # Create your models here.
@@ -119,6 +105,7 @@ class UserStory(models.Model):
     final_priority = models.IntegerField(null=True)
     old_estimation_time = models.IntegerField(default=0)
     previous_work = models.IntegerField(default=0)
+    work_hours = models.IntegerField(default=0)
     status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
     current_status = models.CharField(max_length=20, default=UUserStory.STATUS_PENDING)
     kanban_status = models.CharField(max_length=20, null=True)
@@ -133,8 +120,6 @@ class UserStory(models.Model):
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
     # Usuario asignado a la US
     assigned_to = models.ForeignKey(SprintMember, on_delete=models.CASCADE, null=True)
-    # Tareas de la US
-    tasks = models.ManyToManyField(UserStoryTask)
 
     objects = UserStoryManager()
 
@@ -175,3 +160,18 @@ class UserStoryAttachment(models.Model):
             0: 'B', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB',
         }
         return f"{round(size, 2)} {units[amount_of_divisions]}"
+
+
+class UserStoryTask(models.Model):
+    task = models.TextField(max_length=100)
+    work_hours = models.IntegerField()
+    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user_story = models.ForeignKey(UserStory, on_delete=models.CASCADE, null=True)
+
+    objects = UserStoryTaskManager()
+
+    def __str__(self):
+        return self.task
