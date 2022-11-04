@@ -34,6 +34,7 @@
   },
   {
     "model": "accounts.user",
+    "pk": 2,
     "fields": {
       "password": "!tIq6mqIMk5zW7XKTtWZViYwpyuvgF9JEzv28df4W",
       "last_login": "2022-11-03T05:09:59.856Z",
