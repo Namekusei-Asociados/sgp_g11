@@ -187,7 +187,6 @@ SECRET_KEY = 'ASDFAGASFSAS'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'guardian.backends.ObjectPermissionBackend',
 ]
 
 # Set Google as the OAuth provider in the SOCIALACCOUNT_PROVIDERS settings.

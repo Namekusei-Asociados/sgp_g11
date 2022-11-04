@@ -1,0 +1,13 @@
+<div class="card-header p-0 pt-1">
+    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+        {% for type in types_us %}
+            <li class="nav-item">
+                <a class="nav-link {% if forloop.counter == 1 %} active {% endif %}"
+                   id="custom-tabs-{{ type.id }}-tab" data-toggle="pill"
+                   href="#custom-tabs-{{ type.id }}" role="tab"
+                   aria-controls="custom-tabs-{{ type.id }}"
+                   aria-selected="true">{{ type.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

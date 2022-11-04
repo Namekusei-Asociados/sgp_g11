@@ -61,6 +61,16 @@ class TypeUS(models.Model):
     objects = TypeUSManager()
     def _get_format_flow(self):
         "Return formated flow field"
-        return '%s | %s | %s' % (json.loads(self.flow)[0], json.loads(self.flow)[1], json.loads(self.flow)[2])
+        fields = json.loads(self.flow)
+        statuses = '| '
+        for field in fields:
+            statuses += str(field) + " | "
+        # return '%s | %s | %s' % (json.loads(self.flow)[0], json.loads(self.flow)[1], json.loads(self.flow)[2])
+        return statuses
+
+    def _get_array_flow(self):
+        "Return flow array"
+        return json.loads(self.flow)
 
     format_flow = property(_get_format_flow)
+    array_flow = property(_get_array_flow)
