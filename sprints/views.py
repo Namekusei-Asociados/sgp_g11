@@ -384,15 +384,12 @@ def update_member(request, id_project, id_sprint):
     new_capacity = old_capacity - member.workload * sprint.duration + workload * sprint.duration
     new_available_capacity = new_capacity - get_accumulated(sprint)
 
-    if new_available_capacity <= sprint.available_capacity:
-        messages.error(request, "No se puede dar menos horas por el consumo de horas de los US")
-    else:
-        member.workload = workload
-        sprint.capacity = new_capacity
-        sprint.available_capacity = get_available_capacity(sprint)
-        member.save()
-        sprint.save()
-        messages.success(request, "Se actualizó correctamente")
+    member.workload = workload
+    sprint.capacity = new_capacity
+    sprint.available_capacity = get_available_capacity(sprint)
+    member.save()
+    sprint.save()
+    messages.success(request, "Se actualizó correctamente")
 
     return redirect(reverse('sprints.members.index', kwargs={'id_project': id_project, 'id_sprint': id_sprint}),
                     request)
