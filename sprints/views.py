@@ -9,7 +9,7 @@ from django.urls import reverse
 from projects.decorators import permission_proj_required
 from projects.models import Project
 from type_us.models import TypeUS
-from user_story.models import UserStory
+from user_story.models import UserStory, UserStoryTask
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.USprint import USprint
@@ -762,7 +762,7 @@ def switch_to_started_sprint(sprint):
     df = pd.DataFrame(s, columns=['fecha'])
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
     sprint.end_at = end_at
-    user_stories=sprint.userstory_set.all()
+    user_stories = sprint.userstory_set.all()
     for user_story in user_stories:
         user_story.current_status = UUserStory.STATUS_IN_EXECUTION
         user_story.save()
@@ -779,7 +779,7 @@ def kanban_index(request, id_project, id_sprint):
     """
     # users stories attached to the current sprint
     user = request.user
-    users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project, assigned_to__user_id=user.id)
+    users_stories = UserStory.objects.filter(sprint_id=id_sprint, project_id=id_project)
 
     # get all type us id to be able to filter
     types_us_ids = users_stories.values_list('us_type_id', flat=True).distinct()
@@ -824,7 +824,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
             # ask if we want to move to the next step or just get back
             if change_to_status == 'next':
                 # verify if we can move to the next column
-                if column_position+1 <= number_of_columns:
+                if column_position + 1 <= number_of_columns:
                     user_story.kanban_status = flow[column_position]
                     user_story.save()
                     break
@@ -848,8 +848,32 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
 
     context = {
         'status': status_response,
-        'current_column':user_story.kanban_status,
+        'current_column': user_story.kanban_status,
         'message': message
+    }
+    return JsonResponse(context)
+
+
+def kanban_task_store(request, id_project, id_sprint):
+    """
+    Guarda una tarea y la adjunta al user story
+    :param request:
+    :param id_project:
+    :param id_sprint:
+
+    :return: json
+    """
+    description = request.POST['description']
+    total_hours = request.POST['total_hours']
+    user_story_id = request.POST['id_user_story']
+
+    # get user story and attach task
+    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours,id_user_story=user_story_id)
+
+    context = {
+        'task_id': task.id,
+        'status': 200,
+        'message': "Exito al guardar la tarea"
     }
     return JsonResponse(context)
 

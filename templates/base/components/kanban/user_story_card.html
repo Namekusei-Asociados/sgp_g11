@@ -10,33 +10,83 @@
                             data-card-widget="collapse"><i
                             class="fas fa-minus"></i>
                     </button>
-                    <button type="button" class="btn text-white btn-move-to-left" data-action="previous">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn text-white btn-move-to-right" data-action="next">
-                        <i class="fa fa-arrow-right"></i>
-                    </button>
+
+                    {% if  users_story.assigned_to.user.id == user.id %}
+                        <button type="button" class="btn text-white btn-move-to-left" data-action="previous">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn text-white btn-move-to-right" data-action="next">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    {% endif %}
+
                 </div>
                 <!-- /.card-tools -->
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <b>Descripcion</b>
-                <p class="text-black-50">
-                    {{ users_story.description }}
-                </p>
-
-                <b>Prioridad Final</b>
-                <p class="text-black-50">
-                    {{ users_story.final_priority }}
-                </p>
-
-                <b>Encargado</b>
-                <div class="border rounded d-block text-black-50 justify-content-start py-1" style="gap:10px">
-                    <img alt="Avatar" class="rounded-pill" width="40px" height="40px"
-                         src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
-                        {{ users_story.assigned_to.user.username }}
+                <div class="mb-3">
+                    <b>Descripcion</b>
+                    <p class="text-black-50">
+                        {{ users_story.description }}
+                    </p>
                 </div>
+
+                <div class="my-3">
+                    <b>Prioridad Final</b>
+                    <p class="text-black-50">
+                        {{ users_story.final_priority }}
+                    </p>
+                </div>
+                <div class="my-3">
+                    <b>Encargado</b>
+                    <div class="border rounded d-block text-black-50 justify-content-start py-2" style="gap:10px">
+                        <img alt="Avatar" class="rounded-pill" width="40px" height="40px"
+                             src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
+                        {{ users_story.assigned_to.user.username }}
+                    </div>
+                </div>
+                <!--FILES-->
+                {% if users_story.userstoryattachment_set.all.count > 0 %}
+                    <div class="my-3">
+                        <b>Archivos adjuntos</b>
+                        <ul class="list-group list-group-flush">
+                            {% for file in  users_story.userstoryattachment_set.all %}
+                                <li class="list-group-item text-black-50 border rounded py-2">
+                                    {{ file.filename }}
+                                    <span class="badge text-black-50">{{ file.size }}</span>
+                                    <a href="{% url 'user_story.download_us_attachment' id_project users_story.id file.id %}"
+                                       class="btn float-right text-primary" title="Download">
+                                        <i class="fa fa-cloud-download-alt"></i>
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-danger">Sin archivos adjuntos</li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <span class="border-bottom w-100"></span>
+                <!--Task-->
+                <div class="my-3 task-section">
+                    <div class="d-flex justify-content-between">
+                        <b>Seguimiento de tareas</b>
+                        <button type="button" class="bg-transparent border-0 text-primary" data-toggle="modal" data-target="#modal-default" data-user-story-id="{{ users_story.id }}">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <ul class="list-group list-unstyled task-container">
+                        {% for task in users_story.userstorytask_set.all %}
+                            <li class="text-black-50">- {{ task.task }} | {{ task.work_hours }} horas</li>
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+                <!--Task-->
 
             </div>
             <!-- /.card-body -->
