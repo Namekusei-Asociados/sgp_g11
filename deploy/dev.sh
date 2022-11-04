@@ -1,14 +1,14 @@
 #!/bin/bash
-echo "Ingresar variables de entorno..."
+#echo "Ingresar variables de entorno..."
 
-echo "INSTALANDO BACKEND"
-echo "Creando entorno virtual..."
-virtualenv -p python3 venv
-echo ""
-echo "Ingresando al entorno virtual..."
-source venv/bin/activate
-echo ""
-echo "Intalando dependecias..."
+#echo "INSTALANDO BACKEND"
+#echo "Creando entorno virtual..."
+#virtualenv -p python3 venv
+#echo ""
+#echo "Ingresando al entorno virtual..."
+#source venv/bin/activate
+#echo ""
+#echo "Intalando dependecias..."
 #pip install -r requirements.txt
 echo ""
 echo "Desea prepoblar la DB con datos de prueba? (y/n)"
