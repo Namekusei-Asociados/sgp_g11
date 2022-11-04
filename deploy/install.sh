@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Iniciando"
 #echo "Clonando repositorio git"
 #rm -Rf sgp_g11
@@ -13,3 +14,6 @@ else
     echo "Ingresando a Desarrollo"
     sh dev.sh
 fi
+cd ..
+python3 manage.py loaddata user.json
+cd ..
