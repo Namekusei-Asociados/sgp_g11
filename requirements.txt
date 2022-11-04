@@ -57,3 +57,4 @@ tomli==2.0.1
 urllib3==1.26.12
 whitenoise==6.2.0
 sphinx-rtd-theme==1.0.0
+django-simple-history==3.1.1
