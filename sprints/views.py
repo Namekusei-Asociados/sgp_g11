@@ -432,6 +432,50 @@ def delete_member(request, id_project, id_sprint, member_id):
     return redirect(reverse('sprints.members.index', kwargs=kwargs), request)
 
 
+def change_member(request, id_project, id_sprint, member_id):
+    sprint = Sprint.objects.get(id=id_sprint)
+    project = Project.objects.get(id=id_project)
+
+    current_members = sprint.members.all()
+    all_users_this_project = project.members.all()
+
+    users_sprint = list(set(all_users_this_project) - set(current_members))
+
+    context = {
+        'id_project': id_project,
+        'id_sprint': id_sprint,
+        'users_sprint': users_sprint,
+        'member': SprintMember.objects.get(id=member_id)
+    }
+
+    return render(request, 'sprint/members/change.html', context)
+
+
+def validate_change_member(request, id_project, id_sprint):
+    user_id = request.POST['user_id']
+    member_remove_id = request.POST['member_to_remove']
+
+    remove_member = SprintMember.objects.get(id=member_remove_id)
+
+    new_member = SprintMember.objects.create(sprint_id=id_sprint, user_id=user_id, workload=remove_member.workload)
+
+    user_stories = UserStory.objects.filter(assigned_to__user=remove_member.user)
+
+    for user_story in user_stories:
+        user_story.assigned_to = new_member
+        user_story.save()
+
+    sprint = Sprint.objects.get(id=id_sprint)
+    sprint.members.remove(remove_member.user)
+
+    kwargs = {
+        'id_project': id_project,
+        'id_sprint': id_sprint
+    }
+
+    return redirect(reverse('sprints.members.index', kwargs=kwargs), request)
+
+
 @permission_proj_required(UPermissionsProject.READ_SPRINT_BACKLOG)
 def sprint_backlog(request, id_project, id_sprint):
     """

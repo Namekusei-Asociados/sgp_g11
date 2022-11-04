@@ -118,7 +118,7 @@
                                             {% else %}
                                                 {% if can_edit and is_visible %}
                                                     <a class="btn btn-primary btn-sm"
-                                                       href="">
+                                                       href="{% url 'sprints.members.change' id_project id_sprint member.id %}">
                                                         <i class="fas fa-sync">
                                                         </i>
                                                         Cambiar
