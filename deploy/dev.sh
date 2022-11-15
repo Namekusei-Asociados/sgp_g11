@@ -23,6 +23,7 @@
 echo "Creando entorno virtual..."
 virtualenv -p python3 venv
 echo ""
+chmod +x ./venv/bin/activate
 echo "Entrando al venv..."
 . ./venv/bin/activate
 echo ""
@@ -37,6 +38,9 @@ then
     echo "Poblando DB con datos de prueba..."
     cd deploy
     sh restore_db.sh
+    python3 manage.py loaddata user.json
+    python3 manage.py makemigrations
+    python3 manage.py migrate
 else
     echo "Poblando DB con el estado inicial..."
     cd deploy
