@@ -26,8 +26,6 @@ echo ""
 echo "Entrando al venv..."
 source venv/bin/activate
 echo ""
-echo "Migraciones..."
-python manage.py migrate
 echo "Intalando dependecias..."
 pip install -r requirements.txt
 echo ""
