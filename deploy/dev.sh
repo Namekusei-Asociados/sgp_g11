@@ -24,7 +24,7 @@ echo "Creando entorno virtual..."
 virtualenv -p python3 venv
 echo ""
 echo "Entrando al venv..."
-source venv/bin/activate
+. ./venv/bin/activate
 echo ""
 echo "Intalando dependecias..."
 pip install -r requirements.txt
