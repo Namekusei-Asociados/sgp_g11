@@ -34,6 +34,9 @@ if [ $prepoblar = "y" ]
 then
     echo "Poblando DB con datos de prueba..."
     sh deploy/restore_db.sh
+   python3 manage.py loaddata user.json
+   python3 manage.py makemigrations
+   python3 manage.py migrate
 else
     echo "Poblando DB con el estado inicial..."
     cd deploy
