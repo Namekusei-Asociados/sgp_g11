@@ -1,6 +1,8 @@
 #!/bin/bash
-
-# RELLENAMOS LAS VARIABLES DE ENTORNO
+#echo "Iniciando"
+#echo "Clone de git"
+cd ..
+cd sgp_g11
 # .env
 {
     echo ''
@@ -16,31 +18,19 @@
     echo 'DATABASE_PORT=5432'
     echo 'DEBUG=True'
 } > .env
-
-
-#echo "Ingresar variables de entorno..."
-#echo "INSTALANDO BACKEND"
-echo "Creando entorno virtual..."
-virtualenv -p python3 venv
-echo ""
+ls
 chmod +x ./venv/bin/activate
 echo "Entrando al venv..."
 . ./venv/bin/activate
-echo ""
-echo "Intalando dependecias..."
+#echo "Instalando dependecias..."
 pip install -r requirements.txt
 echo ""
 echo "Desea prepoblar la DB con datos de prueba? (y/n)"
 read prepoblar
 if [ $prepoblar = "y" ]
 then
-    echo 'aaaa'
     echo "Poblando DB con datos de prueba..."
-    cd deploy
-    sh restore_db.sh
-    python3 manage.py loaddata user.json
-    python3 manage.py makemigrations
-    python3 manage.py migrate
+    sh deploy/restore_db.sh
 else
     echo "Poblando DB con el estado inicial..."
     cd deploy
