@@ -18,6 +18,9 @@ cd sgp_g11
     echo 'DATABASE_PORT=5432'
     echo 'DEBUG=True'
 } > .env
+echo "Creando entorno virtual..."
+virtualenv -p python3 venv
+echo ""
 ls
 chmod +x ./venv/bin/activate
 echo "Entrando al venv..."
