@@ -37,6 +37,7 @@ then
     python3 manage.py loaddata users_notario.json
     python3 manage.py makemigrations
     python3 manage.py migrate
+    python3 manage.py runserver
 else
     echo "Poblando DB con el estado inicial..."
     cd deploy
