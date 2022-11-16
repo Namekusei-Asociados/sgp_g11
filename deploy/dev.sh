@@ -22,9 +22,9 @@ echo "Creando entorno virtual..."
 virtualenv -p python3 venv
 echo ""
 ls
-chmod +x ./venv/bin/activate
+chmod +x ./venv/local/bin/activate
 echo "Entrando al venv..."
-. ./venv/bin/activate
+. ./venv/local/bin/activate
 #echo "Instalando dependecias..."
 pip install -r requirements.txt
 echo ""
