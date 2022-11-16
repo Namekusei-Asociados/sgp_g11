@@ -34,7 +34,7 @@
   },
   {
     "model": "accounts.user",
-    "pk": 3,
+    "pk": 2,
     "fields": {
       "password": "!tIq6mqIMk5zW7XKTtWZViYwpyuvgF9JEzv28df4W",
       "last_login": "2022-11-03T05:09:59.856Z",
@@ -55,9 +55,9 @@
   },
   {
     "model": "socialaccount.socialaccount",
-    "pk": 3,
+    "pk": 2,
     "fields": {
-      "user": 3,
+      "user": 2,
       "provider": "google",
       "uid": "103580374616327140629333",
       "last_login": "2022-11-03T05:09:59.831Z",
