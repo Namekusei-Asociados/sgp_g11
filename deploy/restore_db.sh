@@ -11,7 +11,7 @@ psql \
     -U postgres \
     password=admin \
     -h $DBHOST \
-    -f /home/$USER/Documentos/IS2/sgp_g11/deploy/create_db.sql \
+    -f ./deploy/create_db.sql \
     --echo-all \
     --set AUTOCOMMIT=off \
     --set ON_ERROR_STOP=on \
@@ -20,7 +20,7 @@ psql \
     --set PGOPTIONS='--client-min-messages=warning' \
 
 
-PGPASSWORD="admin" /usr/bin/pg_restore --host "localhost" --port "5432" --username "postgres" --dbname "sgp_db" --verbose "/home/$USER/Documentos/IS2/sgp_g11/copy_con_2_users"
+PGPASSWORD="admin" /usr/bin/pg_restore --host "localhost" --port "5432" --username "postgres" --dbname "sgp_db" --verbose "./copy_con_2_users"
 
 #cd ..
 
