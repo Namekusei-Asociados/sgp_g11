@@ -79,6 +79,7 @@
             const backlog = document.querySelector('.backlog');
             const sprint_backlog = document.querySelector('.sprint_backlog');
             const capacity = document.querySelector('#sprint-capacity');
+            const btnFinish = document.querySelectorAll('.btn-finish-us');
             let Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -87,7 +88,10 @@
             });
 
             spanError.classList.add('text-danger', 'invalid-feedback')
-
+            console.log('fini',btnFinish)
+            btnFinish.forEach(e => {
+                e.addEventListener('click', finishUS);
+            });
             btnLeft.forEach(e => {
                 e.addEventListener('click', moveUserStory);
             });
@@ -116,9 +120,45 @@
                         if (data?.status === 200) {
                             const column = columnStatuses.querySelector(`[data-flow-name="${data?.current_column}"].status-column`)
                             column.appendChild(userStory)
+
+                            if (data.last_status == true)
+                                userStory.querySelector('.btn-finish-us').classList.remove('d-none')
+                            else
+                                userStory.querySelector('.btn-finish-us').classList.add('d-none')
                         }
                         if (data?.status === 500) {
                             toastr.warning(data?.message)
+                        }
+
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("Error")
+                    }
+                })
+            }
+
+            function finishUS(){
+                 //assigned to shouldn't be null
+                const userStory = this.closest('div.user-story')
+
+                const btn = this;
+                //add us to the sprint backlog
+                $.ajax("{% url 'sprints.kanban.user_story.task_finished' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        user_story_id: $(userStory).data('user-story-id'),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to another status
+                        if (data?.status === 200) {
+                            userStory.querySelector('.us-options').classList.add('d-none')
+                            toastr.success(data?.message)
+                        }
+                        if (data?.status === 500) {
+                            toastr.warning('Error al finalizar la tarea')
                         }
 
                     },
