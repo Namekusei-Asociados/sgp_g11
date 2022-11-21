@@ -6,12 +6,14 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from gestionar_roles.models import RoleSystem
 from projects.decorators import permission_proj_required
-from projects.models import Project
+from projects.models import Project, RoleProject
 from type_us.models import TypeUS
 from user_story.models import UserStory, UserStoryTask
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
@@ -865,12 +867,17 @@ def kanban_index(request, id_project, id_sprint):
     # getting all type us in order to display in the kanban
     types_us = TypeUS.objects.filter(id__in=types_us_ids)
 
+    # scrum master
+    scrum_master = RoleProject.objects.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).first()
+    is_scrum_master = RoleSystem.objects.has_role(user_id=user.id, id_role=scrum_master.id)
+
     context = {
         'sprint': Sprint.objects.get(id=id_sprint),
         'id_project': id_project,
         'id_sprint': id_sprint,
         'users_stories': users_stories,
-        'types_us': types_us
+        'types_us': types_us,
+        'is_scrum_master': is_scrum_master
     }
     return render(request, 'sprint/kanban.html', context)
 
@@ -897,11 +904,16 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     # return 200 if the status change was successful
     status_response = 200
     message = "Success"
+    # verify if we are in the last status
+    last_status = False
     for status in flow:
         # current column in the kanban
         if status == user_story.kanban_status:
             # ask if we want to move to the next step or just get back
             if change_to_status == 'next':
+                # verify if the next status is the last status
+                if column_position + 1 == number_of_columns:
+                    last_status = True
                 # verify if we can move to the next column
                 if column_position + 1 <= number_of_columns:
                     user_story.kanban_status = flow[column_position]
@@ -928,6 +940,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     context = {
         'status': status_response,
         'current_column': user_story.kanban_status,
+        'last_status':last_status,
         'message': message
     }
     return JsonResponse(context)
@@ -954,6 +967,29 @@ def kanban_task_store(request, id_project, id_sprint):
         'task_id': task.id,
         'status': 200,
         'message': "Exito al guardar la tarea"
+    }
+    return JsonResponse(context)
+
+def kanban_task_finished(request, id_project, id_sprint):
+    """
+    Finaliza el US cambiando su estado actual a finalizado
+
+    :param request:
+    :param id_project:
+    :param id_sprint:
+
+    :return: json
+    """
+
+    user_story_id = request.POST['user_story_id']
+    # get user story and attach task
+    user_story = UserStory.objects.get(id=user_story_id)
+    user_story.current_status = UUserStory.STATUS_FINISHED
+    user_story.save()
+
+    context = {
+        'status': 200,
+        'message': "Exito al finalizar la historia de usuario"
     }
     return JsonResponse(context)
 
