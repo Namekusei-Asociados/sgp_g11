@@ -73,6 +73,9 @@ INSTALLED_APPS = [
 
     # Historial de US
     'simple_history',
+
+    #Reuniones
+    'meetings',
 ]
 
 MIDDLEWARE = [
