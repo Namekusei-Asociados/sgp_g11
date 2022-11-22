@@ -1,1 +1,14 @@
 {% extends 'base/app.html' %}
+{% load static %}
+
+{% block title %}
+    | Reuniones
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="meetings"></span>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
