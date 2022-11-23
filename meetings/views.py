@@ -5,6 +5,9 @@ from django.urls import reverse
 from projects.models import Project
 from meetings.models import Meeting
 
+from projects.decorators import permission_proj_required
+from utilities.UPermissionsProj import UPermissionsProject
+
 
 def index(request, id_project):
     """
@@ -36,6 +39,7 @@ def details(request, id_project, id):
     return render(request, 'meetings/details.html', {'id_project': id_project, 'meeting': meeting})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_MEETING)
 def create(request, id_project):
     """
     Muestra el formulario para crear una reunión
@@ -48,6 +52,7 @@ def create(request, id_project):
     return render(request, 'meetings/create.html', {'id_project': id_project})
 
 
+@permission_proj_required(UPermissionsProject.CREATE_MEETING)
 def store(request, id_project):
     """
     Crea y guarda una reunión en la base de datos
@@ -70,6 +75,7 @@ def store(request, id_project):
     return redirect(reverse('meetings.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_MEETING)
 def edit(request, id_project, id):
     """
     Muetsra el formulario para editar una reunión
@@ -84,6 +90,7 @@ def edit(request, id_project, id):
     return render(request, 'meetings/edit.html', {'id_project': id_project, 'meeting': meeting})
 
 
+@permission_proj_required(UPermissionsProject.UPDATE_MEETING)
 def update(request, id_project, id):
     """
     Actualiza los detalles de una reunión en la base de datos
@@ -106,6 +113,7 @@ def update(request, id_project, id):
     return redirect(reverse('meetings.index', kwargs={'id_project': id_project}), request)
 
 
+@permission_proj_required(UPermissionsProject.DELETE_MEETING)
 def destroy(request, id_project, id):
     """
     Elimina una reunión de la base de datos
