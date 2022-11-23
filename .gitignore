@@ -8,6 +8,7 @@ conf/local_settings.py
 docs/_build/
 .env
 staticfiles/
+migrations/
 *.rst
 !index.rst
 static/us_attached_files
