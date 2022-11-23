@@ -1,282 +1,306 @@
 [
- {
+  {
     "model": "projects.PermissionsProj",
     "pk": 1,
     "fields": {
-      "name":"Assing role",
-      "description":"Puede gestionar roles"
+      "name": "Assing role",
+      "description": "Puede gestionar roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 2,
     "fields": {
-      "name":"Create role",
-      "description":"Puede crear roles"
+      "name": "Create role",
+      "description": "Puede crear roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 3,
     "fields": {
-      "name":"Read role",
-      "description":"Puede leer roles"
+      "name": "Read role",
+      "description": "Puede leer roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 4,
     "fields": {
-      "name":"Update role",
-      "description":"Puede actualizar roles"
+      "name": "Update role",
+      "description": "Puede actualizar roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 5,
     "fields": {
-      "name":"Delete role",
-      "description":"Puede eliminar roles"
+      "name": "Delete role",
+      "description": "Puede eliminar roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 6,
     "fields": {
-      "name":"Update project",
-      "description":"Puede actualizar proyectos"
+      "name": "Update project",
+      "description": "Puede actualizar proyectos"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 7,
     "fields": {
-      "name":"Cancel project",
-      "description":"Puede cancelar proyectos"
+      "name": "Cancel project",
+      "description": "Puede cancelar proyectos"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 8,
     "fields": {
-      "name":"Create projectmember",
-      "description":"Puede crear miembros"
+      "name": "Create projectmember",
+      "description": "Puede crear miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 9,
     "fields": {
-      "name":"Read projectmember",
-      "description":"Puede leer miembros"
+      "name": "Read projectmember",
+      "description": "Puede leer miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 10,
     "fields": {
-      "name":"Update projectmember",
-      "description":"Puede actualizar miembros"
+      "name": "Update projectmember",
+      "description": "Puede actualizar miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 11,
     "fields": {
-      "name":"Delete projectmember",
-      "description":"Puede eliminar miembros"
+      "name": "Delete projectmember",
+      "description": "Puede eliminar miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 12,
     "fields": {
-      "name":"Create typeus",
-      "description":"Puede crear typeus"
+      "name": "Create typeus",
+      "description": "Puede crear typeus"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 13,
     "fields": {
-      "name":"Read typeus",
-      "description":"Puede leer typeus"
+      "name": "Read typeus",
+      "description": "Puede leer typeus"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 14,
     "fields": {
-      "name":"Update typeus",
-      "description":"Puede actualizar typeus"
+      "name": "Update typeus",
+      "description": "Puede actualizar typeus"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 15,
     "fields": {
-      "name":"Delete typeus",
-      "description":"Puede eliminar typeus"
+      "name": "Delete typeus",
+      "description": "Puede eliminar typeus"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 16,
     "fields": {
-      "name":"Create user_story",
-      "description":"Puede crear us"
+      "name": "Create user_story",
+      "description": "Puede crear us"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 17,
     "fields": {
-      "name":"Read user_story",
-      "description":"Puede leer us"
+      "name": "Read user_story",
+      "description": "Puede leer us"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 18,
     "fields": {
-      "name":"Update user_story",
-      "description":"Puede actualizar us"
+      "name": "Update user_story",
+      "description": "Puede actualizar us"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 19,
     "fields": {
-      "name":"Cancel user_story",
-      "description":"Puede cancelar us"
+      "name": "Cancel user_story",
+      "description": "Puede cancelar us"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 20,
     "fields": {
-      "name":"Create sprint",
-      "description":"Puede crear sprint"
+      "name": "Create sprint",
+      "description": "Puede crear sprint"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 21,
     "fields": {
-      "name":"Read sprint",
-      "description":"Puede leer sprint"
+      "name": "Read sprint",
+      "description": "Puede leer sprint"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 22,
     "fields": {
-      "name":"Update sprint",
-      "description":"Puede actualizar sprint"
+      "name": "Update sprint",
+      "description": "Puede actualizar sprint"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 23,
     "fields": {
-      "name":"Cancel sprint",
-      "description":"Puede cancelar sprint"
+      "name": "Cancel sprint",
+      "description": "Puede cancelar sprint"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 24,
     "fields": {
-      "name":"Import role",
-      "description":"Puede importar roles"
+      "name": "Import role",
+      "description": "Puede importar roles"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 25,
     "fields": {
-      "name":"Import typeus",
-      "description":"Puede importar typeus"
+      "name": "Import typeus",
+      "description": "Puede importar typeus"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 26,
     "fields": {
-      "name":"Create sprintmember",
-      "description":"Puede crear miembros"
+      "name": "Create sprintmember",
+      "description": "Puede crear miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 27,
     "fields": {
-      "name":"Read sprintmember",
-      "description":"Puede leer miembros"
+      "name": "Read sprintmember",
+      "description": "Puede leer miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 28,
     "fields": {
-      "name":"Update sprintmember",
-      "description":"Puede actualizar miembros"
+      "name": "Update sprintmember",
+      "description": "Puede actualizar miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 29,
     "fields": {
-      "name":"Delete sprintmember",
-      "description":"Puede eliminar miembros"
+      "name": "Delete sprintmember",
+      "description": "Puede eliminar miembros"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 30,
     "fields": {
-      "name":"Create sprint_backlog",
-      "description":"Puede agregar us en el baklog"
+      "name": "Create sprint_backlog",
+      "description": "Puede agregar us en el baklog"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 31,
     "fields": {
-      "name":"Read sprint_backlog",
-      "description":"Puede leer los us en el baklog"
+      "name": "Read sprint_backlog",
+      "description": "Puede leer los us en el baklog"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 32,
     "fields": {
-      "name":"Update sprint_backlog",
-      "description":"Puede actualizar los us en el baklog"
+      "name": "Update sprint_backlog",
+      "description": "Puede actualizar los us en el baklog"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 33,
     "fields": {
-      "name":"Delete sprint_backlog",
-      "description":"Puede eliminar los us en el baklog"
+      "name": "Delete sprint_backlog",
+      "description": "Puede eliminar los us en el baklog"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 34,
     "fields": {
-      "name":"Initialize project",
-      "description":"Puede iniciar un proyecto"
+      "name": "Initialize project",
+      "description": "Puede iniciar un proyecto"
     }
   },
   {
     "model": "projects.PermissionsProj",
     "pk": 35,
     "fields": {
-      "name":"Initialize sprint",
-      "description":"Puede iniciar un sprint"
+      "name": "Initialize sprint",
+      "description": "Puede iniciar un sprint"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 36,
+    "fields": {
+      "name": "Create meeting",
+      "description": "Puede registrar una reunion"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 37,
+    "fields": {
+      "name": "Update meeting",
+      "description": "Puede editar una reunion"
+    }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 38,
+    "fields": {
+      "name": "Delete meeting",
+      "description": "Puede eliminar una reunion"
     }
   }
 ]
