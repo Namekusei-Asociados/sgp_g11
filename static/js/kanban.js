@@ -93,3 +93,51 @@ function saveTask(e) {
 
 
 }
+
+/**
+ * Finish User story
+ * */
+const btnFinishUS = document.getElementById('btn-finish-us')
+btnFinishUS.addEventListener('click', finishUS);
+let userStoryFinished = null;
+$('#modal-finish-us').on('shown.bs.modal', function (e) {
+    //get related target element
+    relatedButton = $(e.relatedTarget)
+    userStoryFinished = relatedButton[0].closest('div.user-story');
+    //get and send user story id attr to the input hidden into the modal
+    const userStoryId = relatedButton.data('user-story-id')
+    $(this).find('input[name="user_story_id"]').val(userStoryId)
+})
+
+function finishUS() {
+    const userStory = userStoryFinished
+     const modal = $('#modal-finish-us');
+     const url = modal.data('url');
+        const csrf_token = modal.data('csrf');
+    const btn = this;
+    //add us to the sprint backlog
+    $.ajax(url, {
+        type: 'POST',
+        data: {
+            user_story_id: $(userStory).data('user-story-id'),
+            csrfmiddlewaretoken: csrf_token
+        },
+        success: function (data, status, xhr) {
+            //move card to another status
+            if (data?.status === 200) {
+                userStory.querySelector('.us-options').classList.add('d-none')
+                toastr.success(data?.message)
+            }
+            if (data?.status === 500) {
+                toastr.warning('Error al finalizar la tarea')
+            }
+            modal.find('.btn-cancel').click()
+        },
+        error: function (jqXhr, textStatus, errorMessage) {
+            console.log(jqXhr)
+            //fire alert success
+            toastr.error("Error")
+            modal.find('.btn-cancel').click()
+        }
+    })
+}

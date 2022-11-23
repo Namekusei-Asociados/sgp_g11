@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from gestionar_roles.models import RoleSystem
 from projects.decorators import permission_proj_required
-from projects.models import Project, RoleProject
+from projects.models import Project, RoleProject, ProjectMember
 from type_us.models import TypeUS
 from user_story.models import UserStory, UserStoryTask
 from utilities.UPermissionsProj import UPermissionsProject
@@ -869,8 +869,8 @@ def kanban_index(request, id_project, id_sprint):
 
     # scrum master
     scrum_master = RoleProject.objects.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).first()
-    is_scrum_master = RoleSystem.objects.has_role(user_id=user.id, id_role=scrum_master.id)
-
+    is_scrum_master = ProjectMember.objects.filter(user_id=user.id, roles__role_name=scrum_master.role_name, project_id=id_project).exists()
+    #is_scrum_master=RoleProject.objects.get_member_roles(id_user=user.id,id_project=id_project).filter(role_name=scrum_master.role_name)
     context = {
         'sprint': Sprint.objects.get(id=id_sprint),
         'id_project': id_project,
@@ -984,7 +984,7 @@ def kanban_task_finished(request, id_project, id_sprint):
     user_story_id = request.POST['user_story_id']
     # get user story and attach task
     user_story = UserStory.objects.get(id=user_story_id)
-    user_story.current_status = UUserStory.STATUS_FINISHED
+    user_story.current_status = UUserStory.STATUS_IN_REVIEW
     user_story.save()
 
     context = {
