@@ -37,10 +37,19 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="chart">
-                    <div id="lineChart"
-                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></div>
-                </div>
+                <div id="line-chart" style="height: 300px;"></div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex" style="gap:10px">
+                  <div class="d-flex align-items-center" style="gap: 2px">
+                      <div class="rounded"  style="background-color: #3c8dbc;width: 30px;height: 20px"></div>
+                        <span>Horas trabajadas</span>
+                  </div>
+                  <div class="d-flex align-items-center" style="gap: 2px">
+                      <div class="rounded"  style="background-color: #00c0ef;width: 30px;height: 20px"></div>
+                        <span>Horas estimadas</span>
+                  </div>
+              </div>
             </div>
             <!-- /.card-body -->
         </div>
@@ -49,60 +58,101 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
-    <script src="{% static "lib/adminlte-3.2.0/plugins/uplot/uPlot.iife.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery/jquery.min.js" %}"></script>
     <script src="{% static "lib/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/jquery.flot.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.resize.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.pie.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.legend.js" %}"></script>
 
     <script defer>
         $(function () {
-            /* uPlot
-         * -------
-         * Here we will create a few charts using uPlot
-         */
-            function getSize(elementId) {
-                return {
-                    width: document.getElementById(elementId).offsetWidth,
-                    height: document.getElementById(elementId).offsetHeight,
-                }
+            /*
+     * LINE CHART
+     * ----------
+     */
+            //LINE randomly generated data
+
+            var worked_hours_array = [],
+                estimated_hours_array = []
+            var estimated_hours = JSON.parse("{{estimated_hours|safe }}");
+            var worked_hours = JSON.parse("{{worked_hours|safe }}");
+            var sprint_days = JSON.parse("{{sprint_days|safe }}".replace(/'/g, '"'));
+            console.log("sprint_days", estimated_hours.length);
+
+            sprint_days.forEach(myFunction)
+
+            function myFunction(item, i, arr) {
+                console.log(item)
+                worked_hours_array.push([i, worked_hours[i]]);
+                estimated_hours_array.push([i, estimated_hours[i]]);
             }
 
-            let data = [
-                [0, 1, 2, 3, 4, 5, 6],
-                [28, 48, 40, 19, 86, 27, 90],
-                [65, 59, 80, 81, 56, 55, 40]
-            ];
-            const optsLineChart = {
-                ...getSize('lineChart'),
-                scales: {
-                    x: {
-                        title: 'Dias',
-                        time: false,
-                    },
-                    y: {
-                        title: 'Estimacion',
-                        range: [0, 100],
-                    },
+            var line_data1 = {
+                data: worked_hours_array,
+                color: '#3c8dbc',
+                label: 'horas trabajadas'
+            }
+            var line_data2 = {
+                data: estimated_hours_array,
+                color: '#00c0ef',
+                label: 'horas estimadas'
+            }
+            var legendContainer = document.getElementById("legendContainer");
+            $.plot('#line-chart', [line_data1, line_data2], {
+                grid: {
+                    hoverable: true,
+                    borderColor: '#f3f3f3',
+                    borderWidth: 1,
+                    tickColor: '#f3f3f3'
                 },
-                series: [
-                    {},
-                    {
-                        fill: 'transparent',
-                        width: 5,
-                        stroke: 'rgba(60,141,188,1)',
+                series: {
+                    shadowSize: 0,
+                    lines: {
+                        show: true
                     },
-                    {
-                        stroke: '#c1c7d1',
-                        width: 5,
-                        fill: 'transparent',
-                    },
-                ],
-            };
+                    points: {
+                        show: true
+                    }
+                },
+                lines: {
+                    fill: false,
+                    color: ['#3c8dbc', '#f56954']
+                },
+                yaxis: {
+                    axisLabel: "Horas",
+                    show: true
+                },
+                xaxis: {
 
-            let lineChart = new uPlot(optsLineChart, data, document.getElementById('lineChart'));
+                    axisLabel: "Dia del sprint",
+                    show: true
+                }
+            })
+            //Initialize tooltip on hover
+            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+                position: 'absolute',
+                display: 'none',
+                opacity: 0.8
+            }).appendTo('body')
+            $('#line-chart').bind('plothover', function (event, pos, item) {
 
-            window.addEventListener("resize", e => {
-                lineChart.setSize(getSize('lineChart'));
-            });
+                if (item) {
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2)
+
+                    $('#line-chart-tooltip').html('Día del sprint: ' + x + '\nHoras restantes:' + y)
+                        .css({
+                            top: item.pageY + 5,
+                            left: item.pageX + 5
+                        })
+                        .fadeIn(200)
+                } else {
+                    $('#line-chart-tooltip').hide()
+                }
+
+            })
+            /* END LINE */
         })
     </script>
 {% endblock %}

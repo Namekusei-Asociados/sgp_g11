@@ -940,7 +940,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     context = {
         'status': status_response,
         'current_column': user_story.kanban_status,
-        'last_status':last_status,
+        'last_status': last_status,
         'message': message
     }
     return JsonResponse(context)
@@ -969,6 +969,7 @@ def kanban_task_store(request, id_project, id_sprint):
         'message': "Exito al guardar la tarea"
     }
     return JsonResponse(context)
+
 
 def kanban_task_finished(request, id_project, id_sprint):
     """
@@ -1023,34 +1024,29 @@ def is_visible_buttons(id_project=None, id_sprint=None):
 def burndown_chart(request, id_project, id_sprint):
     sprint = Sprint.objects.get(id=id_sprint)
     if sprint.status == USprint.STATUS_PENDING:
-        messages.warning(request, "No se puede visualizar el gráfico")
-        return redirect(reverse('sprints.dashboard', kwargs={"project_id": id_project, "sprint_id": id_sprint}))
+        messages.error(request, "No se puede visualizar el gráfico cuando el sprint no ha iniciado")
+        return redirect(reverse('sprints.dashboard', kwargs={"id_project": id_project, "id_sprint": id_sprint}),request)
 
     sprint = Sprint.objects.get(id=id_sprint)
     user_stories = UserStory.objects.filter(sprint_id=sprint.id)
     tasks = UserStoryTask.objects.filter(sprint_id=sprint.id)
 
     sprint_days = [sprint.start_at + timedelta(days=x) for x in range(sprint.duration)]
-    sprint_days_str = [x.strftime("%m/%d/%Y") for x in sprint_days]  # para pasarle a JS
+    sprint_days_str = [x.strftime("%Y/%m/%d") for x in sprint_days]  # para pasarle a JS
 
-    # horas estimadas que falta trabajar por dia
-    # agarra el total de horas estimadas y le va restando una cantidad constante por dia
+    #hallamos las horas ideales
     estimation_total_sprint = sum([us.estimation_time for us in user_stories])
     estimated_hours = []
+    m=(estimation_total_sprint / sprint.duration)
     for x in range(sprint.duration):
-        if sprint_days[x].weekday() > 4:
-            if x == 0:
-                estimated_hours.append(estimation_total_sprint)
-            else:
-                estimated_hours.append(estimated_hours[x - 1])
-        else:
-            estimated_hours.append(int(estimation_total_sprint - (estimation_total_sprint / sprint.duration) * (x + 1)))
+       estimated_hours.append(int(estimation_total_sprint - m * (x + 1)))
     print("estimation_total_sprint", estimation_total_sprint)
     days_worked = 0
-    # si está en progreso grafica hasta el dia actual
+    # si aun no esta conluido
     if sprint.status == USprint.STATUS_IN_EXECUTION:
         days_worked = (datetime.now().date() - sprint.start_at).days + 1
     else:
+        #si esta concluido
         days_worked = (sprint.end_at - sprint.start_at).days + 1
     # horas trabajadas por dia en base a tareas
     worked_hours = []
@@ -1063,7 +1059,7 @@ def burndown_chart(request, id_project, id_sprint):
         "sprint_days": sprint_days_str,
         "estimated_hours": estimated_hours,
         "worked_hours": worked_hours,
-        "sprint":sprint,
+        "sprint": sprint,
         "id_project": id_project,
         "id_sprint": id_sprint,
     }

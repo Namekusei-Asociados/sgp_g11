@@ -1,6 +1,7 @@
 from django import template
 from projects.models import RoleProject, ProjectMember, Project
 from projects.models import RoleProject, ProjectMember
+from sprints.models import Sprint
 from type_us.models import TypeUS
 from user_story.models import UserStory
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
@@ -28,6 +29,7 @@ def is_member(user, id_project):
 def get_project_name(id_project):
     return Project.objects.get(id=id_project).name
 
+
 @register.simple_tag
 def can_edit_type_us(type_us_id):
     """
@@ -39,6 +41,7 @@ def can_edit_type_us(type_us_id):
     """
     return not UserStory.objects.filter(us_type=type_us_id).exists()
 
+
 @register.simple_tag
 def can_delete_type_us(type_us_id):
     """
@@ -49,10 +52,18 @@ def can_delete_type_us(type_us_id):
     :return: boolean
     """
     return not UserStory.objects.filter(us_type=type_us_id).exists()
+
+
 @register.simple_tag
 def current_status(us_id):
     if UserStory.objects.is_initial_status(us_id):
-        return 'initial' #estado 1
+        return 'initial'  # estado 1
     elif UserStory.objects.is_final_status(us_id):
-        return 'final' #estado final
-    return 'middle' #estado intermedio
+        return 'final'  # estado final
+    return 'middle'  # estado intermedio
+
+
+@register.simple_tag
+def can_read_burndown_chart(id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    return sprint.status != 'pending' and not (sprint.status == 'canceled' and sprint.end_at == None)
