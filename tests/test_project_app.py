@@ -72,31 +72,31 @@ def test_get_edit_page(client, create_logged_user):
     response = client.get(reverse('projects.edit', kwargs={'id_project': project.id}))
     assert response.status_code == 200
 
-# @pytest.mark.django_db
-# def test_update_project(client, create_logged_user):
-#     # create users
-#     user = User.objects.create(username='test_user_1', password='password')
-#     user.save()
-#
-#     second_user = User.objects.create(username='test_user_2', password='password')
-#     second_user.save()
-#
-#     # create a project
-#     project = Project.objects.create(name='Shell', description='Big project')
-#
-#     Project.objects.add_member(user_id=user.id, roles=[],project=project)
-#     project.save()
-#
-#     data = {
-#         'name': 'Shell Lubricantes',
-#         'description': 'Small project',
-#         'users[]': [second_user.id],
-#         'id_project': project.id
-#     }
-#
-#     # update project
-#     response = client.post(reverse('projects.update'), data=data, follow=True)
-#     assert response.status_code == 200
+@pytest.mark.django_db
+def test_update_project(client, create_logged_user):
+    # create users
+    user = User.objects.create(username='test_user_1', password='password')
+    user.save()
+
+    second_user = User.objects.create(username='test_user_2', password='password')
+    second_user.save()
+
+    # create a project
+    project = Project.objects.create(name='Shell', description='Big project')
+
+    Project.objects.add_member(user_id=user.id, roles=[],project=project)
+    project.save()
+
+    data = {
+        'name': 'Shell Lubricantes',
+        'description': 'Small project',
+        'users[]': [second_user.id],
+        'id_project': project.id
+    }
+
+    # update project
+    response = client.post(reverse('projects.update', kwargs={'id_project': project.id}), data=data, follow=True)
+    assert response.status_code == 200
 #
 #     # verify updated data
 #     updated_project = Project.objects.get(name='Shell Lubricantes', description='Small project',members=second_user)

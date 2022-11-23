@@ -43,6 +43,15 @@
             </a>
         </li>
 
+        {% can_read_burndown_chart id_sprint as ban %}
+        {% if ban %}
+            <li class="nav-item">
+                <a href="{% url 'sprints.burndown_chart' id_project id_sprint %}" class="nav-link">
+                    <i class="nav-icon fas fa-chart-line"></i>
+                    <p>Burndown chart</p>
+                </a>
+            </li>
+        {% endif %}
         <span style="width:100%!important;height: 1px;border-bottom: 1px solid #4f5962"></span>
         <li class="nav-item">
             <a href="{% url 'sprints.index' id_project %}" class="nav-link">

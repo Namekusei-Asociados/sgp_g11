@@ -1,0 +1,157 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Burndown Chart
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/uplot/uPlot.min.css" %}">
+
+{% endblock %}
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="sprint"></span>
+{% endblock %}
+
+{% block content %}
+
+    <section class="content">
+        <!-- /.card -->
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Burndown Chart "{{ sprint.sprint_name }}" </h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="line-chart" style="height: 300px;"></div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex" style="gap:10px">
+                  <div class="d-flex align-items-center" style="gap: 2px">
+                      <div class="rounded"  style="background-color: #3c8dbc;width: 30px;height: 20px"></div>
+                        <span>Horas trabajadas</span>
+                  </div>
+                  <div class="d-flex align-items-center" style="gap: 2px">
+                      <div class="rounded"  style="background-color: #00c0ef;width: 30px;height: 20px"></div>
+                        <span>Horas estimadas</span>
+                  </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/jquery.flot.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.resize.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.pie.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/flot/plugins/jquery.flot.legend.js" %}"></script>
+
+    <script defer>
+        $(function () {
+            /*
+     * LINE CHART
+     * ----------
+     */
+            //LINE randomly generated data
+
+            var worked_hours_array = [],
+                estimated_hours_array = []
+            var estimated_hours = JSON.parse("{{estimated_hours|safe }}");
+            var worked_hours = JSON.parse("{{worked_hours|safe }}");
+            var sprint_days = JSON.parse("{{sprint_days|safe }}".replace(/'/g, '"'));
+
+            sprint_days.forEach(myFunction)
+
+            function myFunction(item, i, arr) {
+                console.log(item)
+                worked_hours_array.push([i, worked_hours[i]]);
+                estimated_hours_array.push([i, estimated_hours[i]]);
+            }
+
+            var line_data1 = {
+                data: worked_hours_array,
+                color: '#3c8dbc',
+                label: 'horas trabajadas'
+            }
+            var line_data2 = {
+                data: estimated_hours_array,
+                color: '#00c0ef',
+                label: 'horas estimadas'
+            }
+            var legendContainer = document.getElementById("legendContainer");
+            $.plot('#line-chart', [line_data1, line_data2], {
+                grid: {
+                    hoverable: true,
+                    borderColor: '#f3f3f3',
+                    borderWidth: 1,
+                    tickColor: '#f3f3f3'
+                },
+                series: {
+                    shadowSize: 0,
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                lines: {
+                    fill: false,
+                    color: ['#3c8dbc', '#f56954']
+                },
+                yaxis: {
+                    axisLabel: "Horas",
+                    show: true
+                },
+                xaxis: {
+
+                    axisLabel: "Dia del sprint",
+                    show: true
+                }
+            })
+            //Initialize tooltip on hover
+            $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+                position: 'absolute',
+                display: 'none',
+                opacity: 0.8
+            }).appendTo('body')
+            $('#line-chart').bind('plothover', function (event, pos, item) {
+
+                if (item) {
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2)
+
+                    $('#line-chart-tooltip').html('Día del sprint: ' + x + '\nHoras restantes:' + y)
+                        .css({
+                            top: item.pageY + 5,
+                            left: item.pageX + 5
+                        })
+                        .fadeIn(200)
+                } else {
+                    $('#line-chart-tooltip').hide()
+                }
+
+            })
+            /* END LINE */
+        })
+    </script>
+{% endblock %}

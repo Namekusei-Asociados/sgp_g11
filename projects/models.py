@@ -51,8 +51,8 @@ class RoleProjectManager(models.Manager):
         """
         Asignar rol a usuario
 
-        :param role: rol a ser asignado
-        :param user: usuario al cual sera asignado el rol
+        :param roles: rol a ser asignado
+        :param project_member: usuario al cual sera asignado el rol
         """
         for role in roles:
             project_member.roles.add(role)

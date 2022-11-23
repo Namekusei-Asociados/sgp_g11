@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta, datetime
 
 import pandas as pd
 from django.contrib import messages
@@ -224,6 +224,7 @@ def validate_cancel_sprint(request, id_project):
     sprint = Sprint.objects.get(id=id_sprint)
     sprint.status = USprint.STATUS_CANCELED
     sprint.cancellation_reason = cancellation_reason
+    sprint.end_at=datetime.now().date()
     sprint.save()
     messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
 
@@ -839,7 +840,7 @@ def switch_to_started_sprint(sprint):
     s = pd.date_range(start=sprint.start_at, periods=sprint.duration, freq='B')
     df = pd.DataFrame(s, columns=['fecha'])
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
-    sprint.end_at = end_at
+    sprint.estimated_end_at = end_at
     user_stories = sprint.userstory_set.all()
     for user_story in user_stories:
         user_story.current_status = UUserStory.STATUS_IN_EXECUTION
@@ -940,7 +941,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     context = {
         'status': status_response,
         'current_column': user_story.kanban_status,
-        'last_status':last_status,
+        'last_status': last_status,
         'message': message
     }
     return JsonResponse(context)
@@ -961,7 +962,7 @@ def kanban_task_store(request, id_project, id_sprint):
     user_story_id = request.POST['id_user_story']
 
     # get user story and attach task
-    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours,id_user_story=user_story_id)
+    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours, id_user_story=user_story_id)
 
     context = {
         'task_id': task.id,
@@ -969,6 +970,7 @@ def kanban_task_store(request, id_project, id_sprint):
         'message': "Exito al guardar la tarea"
     }
     return JsonResponse(context)
+
 
 def kanban_task_finished(request, id_project, id_sprint):
     """
@@ -1018,3 +1020,79 @@ def is_visible_buttons(id_project=None, id_sprint=None):
             return False
 
         return True
+
+
+def burndown_chart(request, id_project, id_sprint):
+    """
+    Grafico del burndown chart
+
+    :param request: request
+    :param id_project: id del proyecto actual
+    :param id_sprint: id del sprint actual
+
+    :return: documento HTML
+    """
+    sprint = Sprint.objects.get(id=id_sprint)
+    if sprint.status == USprint.STATUS_PENDING:
+        messages.error(request, "No se puede visualizar el gráfico cuando el sprint no ha iniciado")
+        return redirect(reverse('sprints.dashboard', kwargs={"id_project": id_project, "id_sprint": id_sprint}),
+                        request)
+    #obtenemos el sprint, uss y tareas
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = UserStory.objects.filter(sprint_id=sprint.id)
+    tasks = UserStoryTask.objects.filter(sprint_id=sprint.id)
+
+
+    estimated_real_duration=(sprint.estimated_end_at - sprint.start_at).days + 1
+    # hallamos las horas ideales
+    estimation_total_sprint = sum([us.estimation_time for us in user_stories])
+    estimated_hours = []
+    m = (estimation_total_sprint / estimated_real_duration)
+    print(m)
+    for x in range(estimated_real_duration):
+        estimated_hours.append(float(estimation_total_sprint - m * (x)))
+    print("estimated_hours", estimated_hours)
+
+    days_worked = 0
+    # si aun no esta conluido
+    if sprint.status == USprint.STATUS_IN_EXECUTION:
+        days_worked = (datetime.now().date() - sprint.start_at).days + 1
+    else:
+        # si esta concluido
+        days_worked = (sprint.end_at - sprint.start_at).days + 1
+
+    #establecemos el limite en eje x, la fecha mayor entre la estimada y la real
+    if sprint.status == USprint.STATUS_IN_EXECUTION:
+        if sprint.estimated_end_at > datetime.now().date():
+            real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
+        else:
+            real_duration = (datetime.now().date() - sprint.start_at).days + 1
+    else:
+        if sprint.estimated_end_at > sprint.end_at:
+            real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
+        else:
+            real_duration = (sprint.end_at - sprint.start_at).days + 1
+
+    sprint_days = [sprint.start_at + timedelta(days=x) for x in range(real_duration)]
+    sprint_days_str = [x.strftime("%Y/%m/%d") for x in sprint_days]  # para pasarle a JS
+
+
+    # horas trabajadas por dia en base a tareas
+    worked_hours = []
+    print(estimation_total_sprint)
+    print(real_duration)
+    for x in range(days_worked):
+        aux = estimation_total_sprint - sum(
+            [task.work_hours for task in tasks if task.created_at.date() <= sprint_days[x]])
+        worked_hours.append(aux if aux > 0 else 0)
+
+    context = {
+        "sprint_days": sprint_days_str,
+        "estimated_hours": estimated_hours,
+        "worked_hours": worked_hours,
+        "sprint": sprint,
+        "id_project": id_project,
+        "id_sprint": id_sprint,
+    }
+
+    return render(request, 'sprint/burndown_chart.html', context)

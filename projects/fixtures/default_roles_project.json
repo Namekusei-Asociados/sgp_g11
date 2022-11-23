@@ -14,7 +14,7 @@
     "fields": {
       "role_name": "Developer",
       "description": "Este rol es de Developer",
-      "perms":  [17, 18, 19, 20, 21, 22, 23]
+      "perms":  [17, 18, 19, 20, 21, 22]
     }
   }
 ]
