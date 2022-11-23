@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta, datetime
 
 import pandas as pd
 from django.contrib import messages
@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+import sprints.views
 from projects.decorators import permission_proj_required
 from projects.models import Project
 from type_us.models import TypeUS
@@ -837,7 +838,7 @@ def switch_to_started_sprint(sprint):
     s = pd.date_range(start=sprint.start_at, periods=sprint.duration, freq='B')
     df = pd.DataFrame(s, columns=['fecha'])
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
-    sprint.end_at = end_at
+    sprint.estimated_end_at = end_at
     user_stories = sprint.userstory_set.all()
     for user_story in user_stories:
         user_story.current_status = UUserStory.STATUS_IN_EXECUTION
@@ -948,7 +949,7 @@ def kanban_task_store(request, id_project, id_sprint):
     user_story_id = request.POST['id_user_story']
 
     # get user story and attach task
-    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours,id_user_story=user_story_id)
+    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours, id_user_story=user_story_id)
 
     context = {
         'task_id': task.id,
@@ -982,3 +983,54 @@ def is_visible_buttons(id_project=None, id_sprint=None):
             return False
 
         return True
+
+
+def burndown_chart(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    if sprint.status == USprint.STATUS_PENDING:
+        messages.warning(request, "No se puede visualizar el gráfico")
+        return redirect(reverse('sprints.dashboard', kwargs={"project_id": id_project, "sprint_id": id_sprint}))
+
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = UserStory.objects.filter(sprint_id=sprint.id)
+    tasks = UserStoryTask.objects.filter(sprint_id=sprint.id)
+
+    sprint_days = [sprint.start_at + timedelta(days=x) for x in range(sprint.duration)]
+    sprint_days_str = [x.strftime("%m/%d/%Y") for x in sprint_days]  # para pasarle a JS
+
+    # horas estimadas que falta trabajar por dia
+    # agarra el total de horas estimadas y le va restando una cantidad constante por dia
+    estimation_total_sprint = sum([us.estimation_time for us in user_stories])
+    estimated_hours = []
+    for x in range(sprint.duration):
+        if sprint_days[x].weekday() > 4:
+            if x == 0:
+                estimated_hours.append(estimation_total_sprint)
+            else:
+                estimated_hours.append(estimated_hours[x - 1])
+        else:
+            estimated_hours.append(int(estimation_total_sprint - (estimation_total_sprint / sprint.duration) * (x + 1)))
+    print("estimation_total_sprint", estimation_total_sprint)
+    days_worked = 0
+    # si está en progreso grafica hasta el dia actual
+    if sprint.status == USprint.STATUS_IN_EXECUTION:
+        days_worked = (datetime.now().date() - sprint.start_at).days + 1
+    else:
+        days_worked = (sprint.end_at - sprint.start_at).days + 1
+    # horas trabajadas por dia en base a tareas
+    worked_hours = []
+    for x in range(days_worked):
+        aux = estimation_total_sprint - sum(
+            [task.work_hours for task in tasks if task.created_at.date() <= sprint_days[x]])
+        worked_hours.append(aux if aux > 0 else 0)
+
+    context = {
+        "sprint_days": sprint_days_str,
+        "estimated_hours": estimated_hours,
+        "worked_hours": worked_hours,
+        "sprint":sprint,
+        "id_project": id_project,
+        "id_sprint": id_sprint,
+    }
+
+    return render(request, 'sprint/burndown_chart.html', context)

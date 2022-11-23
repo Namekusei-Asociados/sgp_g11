@@ -40,6 +40,8 @@ urlpatterns = [
     # Kanban
     path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index'),
     path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,name='sprints.kanban.user_story.change_status_kanban'),
-    path('<int:id_sprint>/user_story/task/store', views.kanban_task_store,name='sprints.kanban.user_story.task_store')
+    path('<int:id_sprint>/user_story/task/store', views.kanban_task_store,name='sprints.kanban.user_story.task_store'),
 
+    #burndown chart
+    path('<int:id_sprint>/burndown_chart', views.burndown_chart,name='sprints.burndown_chart')
 ]
