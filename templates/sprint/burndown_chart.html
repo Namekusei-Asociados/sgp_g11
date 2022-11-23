@@ -78,7 +78,6 @@
             var estimated_hours = JSON.parse("{{estimated_hours|safe }}");
             var worked_hours = JSON.parse("{{worked_hours|safe }}");
             var sprint_days = JSON.parse("{{sprint_days|safe }}".replace(/'/g, '"'));
-            console.log("sprint_days", estimated_hours.length);
 
             sprint_days.forEach(myFunction)
 
