@@ -130,6 +130,9 @@ class UserStory(models.Model):
     def __str__(self):
         return self.title
 
+    def has_been_finished(self):
+        return self.current_status == UUserStory.STATUS_FINISHED
+
 
 def us_directory_path(instance, filename):
     return f"static/us_attached_files/project{instance.user_story.project_id}/{instance.user_story.id}/{filename}"

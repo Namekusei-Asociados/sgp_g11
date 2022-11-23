@@ -5,20 +5,30 @@
             <div class="card-header">
                 <h3 class="card-title">{{ users_story.title }}</h3>
 
-                <div class="card-tools">
+                <div class="card-tools d-flex">
+                    {% if  users_story.assigned_to.user.id == user.id and users_story.has_been_finished == False %}
+                        <div class="us-options m-0">
+                            <button type="button" class="btn text-white btn-move-to-left" data-action="previous">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn text-white btn-move-to-right" data-action="next">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+
+                            <button type="button" class="btn text-white btn-finish-us
+                        {% if forloop.parentloop.last == False %}
+                            d-none
+                        {% endif %}
+                        ">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    {% endif %}
+
                     <button type="button" class="btn btn-tool"
                             data-card-widget="collapse"><i
                             class="fas fa-minus"></i>
                     </button>
-
-                    {% if  users_story.assigned_to.user.id == user.id %}
-                        <button type="button" class="btn text-white btn-move-to-left" data-action="previous">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn text-white btn-move-to-right" data-action="next">
-                            <i class="fa fa-arrow-right"></i>
-                        </button>
-                    {% endif %}
 
                 </div>
                 <!-- /.card-tools -->
@@ -73,9 +83,12 @@
                 <div class="my-3 task-section">
                     <div class="d-flex justify-content-between">
                         <b>Seguimiento de tareas</b>
-                        <button type="button" class="bg-transparent border-0 text-primary" data-toggle="modal" data-target="#modal-default" data-user-story-id="{{ users_story.id }}">
-                            <i class="fas fa-plus"></i>
-                        </button>
+                        {% if  users_story.assigned_to.user.id == user.id or is_scrum_master %}
+                            <button type="button" class="bg-transparent border-0 text-primary" data-toggle="modal"
+                                    data-target="#modal-default" data-user-story-id="{{ users_story.id }}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        {% endif %}
                     </div>
 
                     <ul class="list-group list-unstyled task-container">
