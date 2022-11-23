@@ -17,7 +17,6 @@ from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
-from django.http import JsonResponse
 
 
 # Create your views here.
@@ -508,7 +507,8 @@ def sprint_backlog(request, id_project, id_sprint):
 
     :return: Documento HTML con el backlog del sprint
     """
-    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
+    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None,
+                                                                                                  current_status=UUserStory.STATUS_PARTIALLY_FINISHED)
     sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
@@ -686,25 +686,25 @@ def update_sprint_backlog(request, id_project, id_sprint):
 
     new_available_capacity = sprint.available_capacity + user_story.estimation_time - estimation_time
 
-    if estimation_time > user_story.estimation_time:
-        if new_available_capacity < 0:
-            messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
-        else:
-            sprint.available_capacity = new_available_capacity
-            sprint.save()
+    # if estimation_time > user_story.estimation_time:
+    #     if new_available_capacity < 0:
+    #         messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
+    #     else:
+    #         sprint.available_capacity = new_available_capacity
+    #         sprint.save()
+    #
+    #         user_story.estimation_time = estimation_time
+    #         user_story.save()
+    #
+    #         messages.success(request, "Se actualizó correctamente")
+    # else:
+    sprint.available_capacity = new_available_capacity
+    sprint.save()
 
-            user_story.estimation_time = estimation_time
-            user_story.save()
+    user_story.estimation_time = estimation_time
+    user_story.save()
 
-            messages.success(request, "Se actualizó correctamente")
-    else:
-        sprint.available_capacity = new_available_capacity
-        sprint.save()
-
-        user_story.estimation_time = estimation_time
-        user_story.save()
-
-        messages.success(request, "Se actualizó correctamente")
+    messages.success(request, "Se actualizó correctamente")
 
     kwargs = {
         'id_project': id_project,
@@ -940,7 +940,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     context = {
         'status': status_response,
         'current_column': user_story.kanban_status,
-        'last_status':last_status,
+        'last_status': last_status,
         'message': message
     }
     return JsonResponse(context)
@@ -969,6 +969,7 @@ def kanban_task_store(request, id_project, id_sprint):
         'message': "Exito al guardar la tarea"
     }
     return JsonResponse(context)
+
 
 def kanban_task_finished(request, id_project, id_sprint):
     """
@@ -1063,7 +1064,7 @@ def burndown_chart(request, id_project, id_sprint):
         "sprint_days": sprint_days_str,
         "estimated_hours": estimated_hours,
         "worked_hours": worked_hours,
-        "sprint":sprint,
+        "sprint": sprint,
         "id_project": id_project,
         "id_sprint": id_sprint,
     }

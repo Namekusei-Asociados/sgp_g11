@@ -5,6 +5,7 @@ class UUserStory:
     STATUS_SUCCESS = "success"
     STATUS_PENDING = "pending"
     STATUS_FINISHED = "finished"
+    STATUS_PARTIALLY_FINISHED = "partially finished"
     STATUS_CANCELED = "canceled"
     STATUS_IN_EXECUTION = "in execution"
     # CUSTOM FIELDS LOGIC
