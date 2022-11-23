@@ -34,16 +34,29 @@ def store(request, id_project):
         meeting_date=meeting_date
     )
     messages.success(request, 'La reunión "' + meeting.meeting_name + '" se ha registrado correctamente')
-    return redirect(reverse('meetings.create', kwargs={'id_project': id_project}), request)
+    return redirect(reverse('meetings.index', kwargs={'id_project': id_project}), request)
 
 
 def edit(request, id_project, id):
-    return 0
+    meeting = Meeting.objects.get(id=id)
+    return render(request, 'meetings/edit.html', {'id_project': id_project, 'meeting': meeting})
 
 
 def update(request, id_project, id):
-    return 0
+    meeting_name = request.POST['name']
+    meeting_date = request.POST['date']
+    meeting_details = request.POST['details']
+    meeting = Meeting.objects.get(id=id)
+    meeting.meeting_name = meeting_name
+    meeting.meeting_date = meeting_date
+    meeting.meeting_details = meeting_details
+    meeting.save()
+    messages.success(request, 'La reunión "' + meeting.meeting_name + '" se ha actualizado correctamente')
+    return redirect(reverse('meetings.index', kwargs={'id_project': id_project}), request)
 
 
 def destroy(request, id_project, id):
-    return 0
+    meeting = Meeting.objects.get(id=id)
+    meeting.delete()
+    messages.success(request, 'La reunión "' + meeting.meeting_name + '" se ha eliminado correctamente')
+    return redirect(reverse('meetings.index', kwargs={'id_project': id_project}), request)
