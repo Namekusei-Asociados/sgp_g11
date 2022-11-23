@@ -19,6 +19,7 @@ def create_logged_user(client) -> User:
     call_command('loaddata', 'permissions')
     call_command('loaddata', 'permissionsProj')
     call_command('loaddata', 'default_roles_system')
+
     # call_command('loaddata', 'admin')
 
     data = {
@@ -66,7 +67,7 @@ def test_sprint_members_view(client, create_logged_user):
 # def kanban_index(request, id_project, id_sprint):
 @pytest.mark.django_db
 def test_sprint_kanban_index(client, create_logged_user):
-    project = Project.objects.create(name='proyecto de juan', description='test_project')
+    project = Project.objects.create_project(name='proyecto de juan', description='test_project',scrum_master=create_logged_user)
     assert project.name == 'proyecto de juan', 'Error al crar el proyecto'
     sprint = Sprint.objects.create(sprint_name='Sprint Test',
                                    start_at=datetime.strptime('2022/09/30', '%Y/%m/%d'),
