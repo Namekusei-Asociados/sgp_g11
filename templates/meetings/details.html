@@ -1,0 +1,66 @@
+{% extends 'base/app.html' %}
+{% load static %}
+
+{% block title %}
+    | Reuniones
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="meetings"></span>
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'projects/base/partials/nav.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Detalles de Reunión</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="callout callout-info">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>
+                                    <strong> {{ meeting.meeting_name }} </strong>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <br>
+                        <h5>
+                            <strong>En fecha: {{ meeting.meeting_date }}</strong>
+                        </h5>
+                        <br>
+                        <h5>
+                            <div class="row invoice-info">
+                                {{ meeting.meeting_details }}
+                            </div>
+                        </h5>
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <a href=" {% url 'meetings.index' id_project %} " class="btn btn-secondary mx-3">Volver</a>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}

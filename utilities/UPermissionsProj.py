@@ -49,3 +49,8 @@ class UPermissionsProject:
     READ_SPRINT_BACKLOG = 'Read sprint_backlog'
     UPDATE_SPRINT_BACKLOG = 'Update sprint_backlog'
     DELETE_SPRINT_BACKLOG = 'Delete sprint_backlog'
+
+    # MEETINGS
+    CREATE_MEETING = 'Create meeting'
+    UPDATE_MEETING = 'Update meeting'
+    DELETE_MEETING = 'Delete meeting'
