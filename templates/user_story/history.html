@@ -172,17 +172,19 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <form id="restore_us" class="m-0 p-0" method="post"
-                                              action="{% url 'user_story.history' id_project user_story.id %}">
-                                            {% csrf_token %}
-                                            <input type="hidden" id="id_history" name='id_history'
-                                                   value="{{ history.history_id }}">
-                                            <button type="submit" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-history">
-                                                </i>
-                                                Restaurar
-                                            </button>
-                                        </form>
+                                        {% if user_story.current_status != 'canceled' and user_story.current_status != 'finished' and user_story.current_status != 'partially finished'%}
+                                            <form id="restore_us" class="m-0 p-0" method="post"
+                                                  action="{% url 'user_story.history' id_project user_story.id %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" id="id_history" name='id_history'
+                                                       value="{{ history.history_id }}">
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-history">
+                                                    </i>
+                                                    Restaurar
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                     </td>
 
                                 {% endif %}

@@ -17,7 +17,6 @@ from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
-from django.http import JsonResponse
 
 
 # Create your views here.
@@ -224,7 +223,7 @@ def validate_cancel_sprint(request, id_project):
     sprint = Sprint.objects.get(id=id_sprint)
     sprint.status = USprint.STATUS_CANCELED
     sprint.cancellation_reason = cancellation_reason
-    sprint.end_at=datetime.now().date()
+    sprint.end_at = datetime.now().date()
     sprint.save()
     messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
 
@@ -509,7 +508,8 @@ def sprint_backlog(request, id_project, id_sprint):
 
     :return: Documento HTML con el backlog del sprint
     """
-    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
+    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None,
+                                                                                                  current_status=UUserStory.STATUS_PARTIALLY_FINISHED)
     sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
@@ -687,25 +687,25 @@ def update_sprint_backlog(request, id_project, id_sprint):
 
     new_available_capacity = sprint.available_capacity + user_story.estimation_time - estimation_time
 
-    if estimation_time > user_story.estimation_time:
-        if new_available_capacity < 0:
-            messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
-        else:
-            sprint.available_capacity = new_available_capacity
-            sprint.save()
+    # if estimation_time > user_story.estimation_time:
+    #     if new_available_capacity < 0:
+    #         messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
+    #     else:
+    #         sprint.available_capacity = new_available_capacity
+    #         sprint.save()
+    #
+    #         user_story.estimation_time = estimation_time
+    #         user_story.save()
+    #
+    #         messages.success(request, "Se actualizó correctamente")
+    # else:
+    sprint.available_capacity = new_available_capacity
+    sprint.save()
 
-            user_story.estimation_time = estimation_time
-            user_story.save()
+    user_story.estimation_time = estimation_time
+    user_story.save()
 
-            messages.success(request, "Se actualizó correctamente")
-    else:
-        sprint.available_capacity = new_available_capacity
-        sprint.save()
-
-        user_story.estimation_time = estimation_time
-        user_story.save()
-
-        messages.success(request, "Se actualizó correctamente")
+    messages.success(request, "Se actualizó correctamente")
 
     kwargs = {
         'id_project': id_project,
@@ -870,8 +870,9 @@ def kanban_index(request, id_project, id_sprint):
 
     # scrum master
     scrum_master = RoleProject.objects.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).first()
-    is_scrum_master = ProjectMember.objects.filter(user_id=user.id, roles__role_name=scrum_master.role_name, project_id=id_project).exists()
-    #is_scrum_master=RoleProject.objects.get_member_roles(id_user=user.id,id_project=id_project).filter(role_name=scrum_master.role_name)
+    is_scrum_master = ProjectMember.objects.filter(user_id=user.id, roles__role_name=scrum_master.role_name,
+                                                   project_id=id_project).exists()
+    # is_scrum_master=RoleProject.objects.get_member_roles(id_user=user.id,id_project=id_project).filter(role_name=scrum_master.role_name)
     context = {
         'sprint': Sprint.objects.get(id=id_sprint),
         'id_project': id_project,
@@ -1037,13 +1038,12 @@ def burndown_chart(request, id_project, id_sprint):
         messages.error(request, "No se puede visualizar el gráfico cuando el sprint no ha iniciado")
         return redirect(reverse('sprints.dashboard', kwargs={"id_project": id_project, "id_sprint": id_sprint}),
                         request)
-    #obtenemos el sprint, uss y tareas
+    # obtenemos el sprint, uss y tareas
     sprint = Sprint.objects.get(id=id_sprint)
     user_stories = UserStory.objects.filter(sprint_id=sprint.id)
     tasks = UserStoryTask.objects.filter(sprint_id=sprint.id)
 
-
-    estimated_real_duration=(sprint.estimated_end_at - sprint.start_at).days + 1
+    estimated_real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
     # hallamos las horas ideales
     estimation_total_sprint = sum([us.estimation_time for us in user_stories])
     estimated_hours = []
@@ -1061,7 +1061,7 @@ def burndown_chart(request, id_project, id_sprint):
         # si esta concluido
         days_worked = (sprint.end_at - sprint.start_at).days + 1
 
-    #establecemos el limite en eje x, la fecha mayor entre la estimada y la real
+    # establecemos el limite en eje x, la fecha mayor entre la estimada y la real
     if sprint.status == USprint.STATUS_IN_EXECUTION:
         if sprint.estimated_end_at > datetime.now().date():
             real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
@@ -1075,7 +1075,6 @@ def burndown_chart(request, id_project, id_sprint):
 
     sprint_days = [sprint.start_at + timedelta(days=x) for x in range(real_duration)]
     sprint_days_str = [x.strftime("%Y/%m/%d") for x in sprint_days]  # para pasarle a JS
-
 
     # horas trabajadas por dia en base a tareas
     worked_hours = []
@@ -1096,3 +1095,23 @@ def burndown_chart(request, id_project, id_sprint):
     }
 
     return render(request, 'sprint/burndown_chart.html', context)
+
+
+def finished_sprint(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = sprint.userstory_set.all()
+    initial_status = UserStory.objects.get_initial_status()
+    for user_story in user_stories:
+        if user_story.current_status == UUserStory.STATUS_IN_EXECUTION or user_story.current_status == UUserStory.STATUS_IN_REVIEW:
+            final_priority_initial = 0.6 * user_story.business_value + 0.4 * user_story.technical_priority
+            final_priority = user_story.final_priority
+            if final_priority == final_priority_initial:
+                final_priority += 3
+            us = UserStory.objects.create(
+                code=user_story.code,
+                title=user_story.title, description=user_story.description,
+                business_value=user_story.business_value, technical_priority=user_story.technical_priority,
+                estimation_time=user_story.estimation_time, final_priority=final_priority,
+                project_id=id_project, us_type_id=user_story.us_type, current_status=initial_status,
+            )
+
