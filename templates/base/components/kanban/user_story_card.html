@@ -80,13 +80,15 @@
                 <span class="border-bottom w-100"></span>
                 <!--Task-->
                 <div class="my-3 task-section">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-fleFFx justify-content-between">
                         <b>Seguimiento de tareas</b>
-                        {% if  users_story.assigned_to.user.id == user.id or is_scrum_master %}
-                            <button type="button" class="bg-transparent border-0 text-primary" data-toggle="modal"
-                                    data-target="#modal-default" data-user-story-id="{{ users_story.id }}">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                        {% if users_story.has_been_finished == False %}
+                            {% if users_story.assigned_to.user.id == user.id or is_scrum_master %}
+                                <button type="button" class="bg-transparent border-0 text-primary" data-toggle="modal"
+                                        data-target="#modal-default" data-user-story-id="{{ users_story.id }}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            {% endif %}
                         {% endif %}
                     </div>
 
