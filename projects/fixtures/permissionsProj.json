@@ -302,5 +302,13 @@
       "name": "Delete meeting",
       "description": "Puede eliminar una reunion"
     }
+  },
+  {
+    "model": "projects.PermissionsProj",
+    "pk": 39,
+    "fields": {
+      "name": "Finished sprint",
+      "description": "Puede finalizar un sprint"
+    }
   }
 ]

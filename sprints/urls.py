@@ -46,5 +46,8 @@ urlpatterns = [
          name='sprints.kanban.user_story.task_finished'),
 
     # Burn down chart
-    path('<int:id_sprint>/burndown_chart', views.burndown_chart, name='sprints.burndown_chart')
+    path('<int:id_sprint>/burndown_chart', views.burndown_chart, name='sprints.burndown_chart'),
+
+    #finalizar sprint
+    path('finished', views.finished_sprint, name="sprints.finished_sprint"),
 ]
