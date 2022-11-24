@@ -768,6 +768,13 @@ def get_available_capacity(sprint):
 
 
 def get_accumulated(sprint):
+    """
+    Obtiene la suma de las estimaciones de las historias de usuario de un sprint
+
+    :param sprint: Sprint del que se quiere obtener la suma de las estimaciones
+
+    :return: cantidad de horas estimadas de las historias de usuario del sprint
+    """
     user_stories = UserStory.objects.filter(sprint_id=sprint.id)
     accumulated = 0
     for user_story in user_stories:
@@ -817,6 +824,14 @@ def init_sprint(request, id_project, id_sprint):
 
 
 def get_exists_planning(id_project, sprints):
+    """
+    Verifica si existe un sprint en planning
+
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param sprints: lista de sprints del proyecto
+
+    :return: booleano que indica si existe un sprint en planning
+    """
     for sprint in sprints:
         if sprint.status == USprint.STATUS_PENDING:
             return True
@@ -825,6 +840,14 @@ def get_exists_planning(id_project, sprints):
 
 
 def get_exists_execution(id_project, sprints):
+    """
+    Verifica si existe un sprint en ejecución
+
+    :param id_project: id del proyecto
+    :param sprints: lista de sprints del proyecto
+
+    :return: booleano que indica si existe un sprint en ejecución
+    """
     exists_execution = False
     for sprint in sprints:
         if sprint.status == USprint.STATUS_IN_EXECUTION:
@@ -834,6 +857,13 @@ def get_exists_execution(id_project, sprints):
 
 
 def switch_to_started_sprint(sprint):
+    """
+    Cambia el estado de un sprint a iniciado
+
+    :param sprint: sprint a ser iniciado
+
+    :return: nada
+    """
     sprint.status = USprint.STATUS_IN_EXECUTION
     sprint.start_at = date.today()
     print(sprint.start_at)

@@ -150,6 +150,13 @@ def import_type_us(request, id_project):
 
 
 def is_visible_buttons(id_project):
+    """
+    Verifica si un proyecto esta en estado activo o no
+
+    :param id_project: id del proyecto actual
+
+    :return: booleano que indica si el proyecto esta activo o no
+    """
     project = Project.objects.get(id=id_project)
 
     if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:

@@ -62,7 +62,8 @@ class UserStoryTaskManager(models.Manager):
         :return: Task creado
         """
         user_story = UserStory.objects.get(id=id_user_story)
-        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours, sprint_id=user_story.sprint_id)
+        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours,
+                                               sprint_id=user_story.sprint_id)
         user_story.work_hours += int(work_hours)
         user_story.save()
         return us_task
@@ -131,7 +132,8 @@ class UserStory(models.Model):
         return self.title
 
     def has_been_finished(self):
-        return self.current_status == UUserStory.STATUS_FINISHED
+        return self.current_status == UUserStory.STATUS_FINISHED or self.current_status == UUserStory.STATUS_CANCELED \
+               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED
 
 
 def us_directory_path(instance, filename):
