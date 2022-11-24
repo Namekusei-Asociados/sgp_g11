@@ -1103,11 +1103,15 @@ def finished_sprint(request, id_project, id_sprint):
     initial_status = UserStory.objects.get_initial_status()
     for user_story in user_stories:
         if user_story.current_status == UUserStory.STATUS_IN_EXECUTION or user_story.current_status == UUserStory.STATUS_IN_REVIEW:
+            final_priority_initial = 0.6 * user_story.business_value + 0.4 * user_story.technical_priority
+            final_priority = user_story.final_priority
+            if final_priority == final_priority_initial:
+                final_priority += 3
             us = UserStory.objects.create(
                 code=user_story.code,
                 title=user_story.title, description=user_story.description,
                 business_value=user_story.business_value, technical_priority=user_story.technical_priority,
-                estimation_time=user_story.estimation_time, final_priority=user_story.final_priority,
+                estimation_time=user_story.estimation_time, final_priority=final_priority,
                 project_id=id_project, us_type_id=user_story.us_type, current_status=initial_status,
             )
 
