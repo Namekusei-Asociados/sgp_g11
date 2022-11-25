@@ -539,7 +539,8 @@ def add_sprint_backlog(request, id_project, id_sprint):
     if members.count() > 0:
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
-        backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint__isnull=True)
+        backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint__isnull=True).exclude(
+            current_status=UUserStory.STATUS_PARTIALLY_FINISHED)
         sprint_backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint_id=id_sprint)
 
         context = {
@@ -1109,13 +1110,10 @@ def burndown_chart(request, id_project, id_sprint):
 
     # horas trabajadas por dia en base a tareas
     worked_hours = []
-    print(estimation_total_sprint)
-    print(real_duration)
     for x in range(days_worked):
         aux = estimation_total_sprint - sum(
             [task.work_hours for task in tasks if task.created_at.date() <= sprint_days[x]])
-        worked_hours.append(aux if aux > 0 else 0)
-
+        worked_hours.append(aux)
     context = {
         "sprint_days": sprint_days_str,
         "estimated_hours": estimated_hours,

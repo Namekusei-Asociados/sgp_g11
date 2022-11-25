@@ -152,8 +152,8 @@
                                                   action="{% url 'sprints.finished_sprint' id_project %}">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="id_sprint" value="{{ sprint.id }}" >
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check">
                                                     </i>
                                                     Finalizar
                                                 </button>

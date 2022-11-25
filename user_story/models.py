@@ -134,8 +134,7 @@ class UserStory(models.Model):
 
     def has_been_finished(self):
         return self.current_status == UUserStory.STATUS_FINISHED or self.current_status == UUserStory.STATUS_CANCELED \
-               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status == USprint.STATUS_FINISHED \
-               or self.sprint.status == USprint.STATUS_CANCELED
+               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status != USprint.STATUS_IN_EXECUTION
 
 
 def us_directory_path(instance, filename):
