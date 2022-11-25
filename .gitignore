@@ -10,5 +10,6 @@ docs/_build/
 staticfiles/
 migrations/
 *.rst
+initial.json
 !index.rst
 static/us_attached_files
