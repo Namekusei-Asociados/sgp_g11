@@ -94,7 +94,7 @@ class RoleSystemManager(models.Manager):
         :param user: usuario al cual sera asignado el rol
         """
         try:
-            role = RoleSystem.objects.get(user=user)
+            role = RoleSystem.objects.filter(user=user).first()
             role.user.remove(user)
         except RoleSystem.DoesNotExist:
             pass

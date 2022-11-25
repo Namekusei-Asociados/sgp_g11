@@ -53,7 +53,7 @@ def edit_user(request, username):
     roles = RoleSystem.objects.all().exclude(role_name='Admin')
     user = User.objects.get(username=username)
     try:
-        role_system = RoleSystem.objects.get(user=user)
+        role_system = RoleSystem.objects.filter(user=user).first()
     except RoleSystem.DoesNotExist:
         role_system = None
 
