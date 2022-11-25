@@ -1,0 +1,4271 @@
+[
+{
+  "model": "projects.permissionsproj",
+  "pk": 1,
+  "fields": {
+    "name": "Assing role",
+    "description": "Puede gestionar roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 2,
+  "fields": {
+    "name": "Create role",
+    "description": "Puede crear roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 3,
+  "fields": {
+    "name": "Read role",
+    "description": "Puede leer roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 4,
+  "fields": {
+    "name": "Update role",
+    "description": "Puede actualizar roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 5,
+  "fields": {
+    "name": "Delete role",
+    "description": "Puede eliminar roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 6,
+  "fields": {
+    "name": "Update project",
+    "description": "Puede actualizar proyectos"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 7,
+  "fields": {
+    "name": "Cancel project",
+    "description": "Puede cancelar proyectos"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 8,
+  "fields": {
+    "name": "Create projectmember",
+    "description": "Puede crear miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 9,
+  "fields": {
+    "name": "Read projectmember",
+    "description": "Puede leer miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 10,
+  "fields": {
+    "name": "Update projectmember",
+    "description": "Puede actualizar miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 11,
+  "fields": {
+    "name": "Delete projectmember",
+    "description": "Puede eliminar miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 12,
+  "fields": {
+    "name": "Create typeus",
+    "description": "Puede crear typeus"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 13,
+  "fields": {
+    "name": "Read typeus",
+    "description": "Puede leer typeus"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 14,
+  "fields": {
+    "name": "Update typeus",
+    "description": "Puede actualizar typeus"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 15,
+  "fields": {
+    "name": "Delete typeus",
+    "description": "Puede eliminar typeus"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 16,
+  "fields": {
+    "name": "Create user_story",
+    "description": "Puede crear us"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 17,
+  "fields": {
+    "name": "Read user_story",
+    "description": "Puede leer us"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 18,
+  "fields": {
+    "name": "Update user_story",
+    "description": "Puede actualizar us"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 19,
+  "fields": {
+    "name": "Cancel user_story",
+    "description": "Puede cancelar us"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 20,
+  "fields": {
+    "name": "Create sprint",
+    "description": "Puede crear sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 21,
+  "fields": {
+    "name": "Read sprint",
+    "description": "Puede leer sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 22,
+  "fields": {
+    "name": "Update sprint",
+    "description": "Puede actualizar sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 23,
+  "fields": {
+    "name": "Cancel sprint",
+    "description": "Puede cancelar sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 24,
+  "fields": {
+    "name": "Import role",
+    "description": "Puede importar roles"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 25,
+  "fields": {
+    "name": "Import typeus",
+    "description": "Puede importar typeus"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 26,
+  "fields": {
+    "name": "Create sprintmember",
+    "description": "Puede crear miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 27,
+  "fields": {
+    "name": "Read sprintmember",
+    "description": "Puede leer miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 28,
+  "fields": {
+    "name": "Update sprintmember",
+    "description": "Puede actualizar miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 29,
+  "fields": {
+    "name": "Delete sprintmember",
+    "description": "Puede eliminar miembros"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 30,
+  "fields": {
+    "name": "Create sprint_backlog",
+    "description": "Puede agregar us en el baklog"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 31,
+  "fields": {
+    "name": "Read sprint_backlog",
+    "description": "Puede leer los us en el baklog"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 32,
+  "fields": {
+    "name": "Update sprint_backlog",
+    "description": "Puede actualizar los us en el baklog"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 33,
+  "fields": {
+    "name": "Delete sprint_backlog",
+    "description": "Puede eliminar los us en el baklog"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 34,
+  "fields": {
+    "name": "Initialize project",
+    "description": "Puede iniciar un proyecto"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 35,
+  "fields": {
+    "name": "Initialize sprint",
+    "description": "Puede iniciar un sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 36,
+  "fields": {
+    "name": "Create meeting",
+    "description": "Puede registrar una reunion"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 37,
+  "fields": {
+    "name": "Update meeting",
+    "description": "Puede editar una reunion"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 38,
+  "fields": {
+    "name": "Delete meeting",
+    "description": "Puede eliminar una reunion"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 39,
+  "fields": {
+    "name": "Finished sprint",
+    "description": "Puede finalizar un sprint"
+  }
+},
+{
+  "model": "projects.permissionsproj",
+  "pk": 40,
+  "fields": {
+    "name": "Finished project",
+    "description": "Puede finalizar un proyecto"
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 1,
+  "fields": {
+    "name": "Proyecto Pendiente",
+    "description": "Este es un proyecto en fase de planificación",
+    "created_at": "2022-11-25T13:39:46.551Z",
+    "updated_at": "2022-11-25T13:39:46.551Z",
+    "ended_at": null,
+    "status": "pending",
+    "cancellation_reason": null
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 2,
+  "fields": {
+    "name": "Proyecto en Ejecución",
+    "description": "Este es un proyecto en fase de ejecución",
+    "created_at": "2022-11-25T13:40:24.329Z",
+    "updated_at": "2022-11-25T13:42:43.564Z",
+    "ended_at": null,
+    "status": "in execution",
+    "cancellation_reason": null
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 3,
+  "fields": {
+    "name": "Proyecto por Finalizar",
+    "description": "Este es un proyecto que está cerca de finalizar",
+    "created_at": "2022-11-25T13:40:51.174Z",
+    "updated_at": "2022-11-25T13:42:37.404Z",
+    "ended_at": null,
+    "status": "in execution",
+    "cancellation_reason": null
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 1,
+  "fields": {
+    "role_name": "Scrum Master",
+    "description": "Este rol es de Scrum Master",
+    "project": 1,
+    "perms": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ]
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 2,
+  "fields": {
+    "role_name": "Developer",
+    "description": "Este rol es de Developer",
+    "project": 1,
+    "perms": [
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ]
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 3,
+  "fields": {
+    "role_name": "Scrum Master",
+    "description": "Este rol es de Scrum Master",
+    "project": 2,
+    "perms": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ]
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 4,
+  "fields": {
+    "role_name": "Developer",
+    "description": "Este rol es de Developer",
+    "project": 2,
+    "perms": [
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ]
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 5,
+  "fields": {
+    "role_name": "Scrum Master",
+    "description": "Este rol es de Scrum Master",
+    "project": 3,
+    "perms": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ]
+  }
+},
+{
+  "model": "projects.roleproject",
+  "pk": 6,
+  "fields": {
+    "role_name": "Developer",
+    "description": "Este rol es de Developer",
+    "project": 3,
+    "perms": [
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      27,
+      31
+    ]
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 1,
+  "fields": {
+    "prefix": "rep",
+    "name": "Reportes",
+    "created_at": "2022-11-25T13:44:52.892Z",
+    "updated_at": "2022-11-25T13:44:52.892Z",
+    "flow": "[\"To do\", \"Doing\", \"Done\"]",
+    "project": 3
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 2,
+  "fields": {
+    "prefix": "esc",
+    "name": "Escuela",
+    "created_at": "2022-11-25T13:45:47.233Z",
+    "updated_at": "2022-11-25T13:45:47.233Z",
+    "flow": "[\"To do\", \"An\\u00e1lisis\", \"Doing\", \"Done\"]",
+    "project": 3
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 3,
+  "fields": {
+    "prefix": "red",
+    "name": "Los redonditos de ricota",
+    "created_at": "2022-11-25T13:46:26.812Z",
+    "updated_at": "2022-11-25T13:46:26.812Z",
+    "flow": "[\"To do\", \"Doing\", \"Done\", \"Testing\"]",
+    "project": 3
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 4,
+  "fields": {
+    "prefix": "rep",
+    "name": "Reportes",
+    "created_at": "2022-11-25T14:10:54.562Z",
+    "updated_at": "2022-11-25T14:10:54.562Z",
+    "flow": "[\"To do\", \"Doing\", \"Done\"]",
+    "project": 2
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 5,
+  "fields": {
+    "prefix": "esc",
+    "name": "Escuela",
+    "created_at": "2022-11-25T14:10:54.572Z",
+    "updated_at": "2022-11-25T14:10:54.572Z",
+    "flow": "[\"To do\", \"An\\u00e1lisis\", \"Doing\", \"Done\"]",
+    "project": 2
+  }
+},
+{
+  "model": "type_us.typeus",
+  "pk": 6,
+  "fields": {
+    "prefix": "red",
+    "name": "Los redonditos de ricota",
+    "created_at": "2022-11-25T14:10:54.575Z",
+    "updated_at": "2022-11-25T14:10:54.575Z",
+    "flow": "[\"To do\", \"Doing\", \"Done\", \"Testing\"]",
+    "project": 2
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 1,
+  "fields": {
+    "name": "Assing role",
+    "description": "Puede gestionar roles"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 2,
+  "fields": {
+    "name": "Create role",
+    "description": "Puede crear roles"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 3,
+  "fields": {
+    "name": "Read role",
+    "description": "Puede leer roles"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 4,
+  "fields": {
+    "name": "Update role",
+    "description": "Puede actualizar roles"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 5,
+  "fields": {
+    "name": "Delete role",
+    "description": "Puede eliminar roles"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 6,
+  "fields": {
+    "name": "Create project",
+    "description": "Puede crear proyectos"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 7,
+  "fields": {
+    "name": "Create user",
+    "description": "Puede crear usuarios"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 8,
+  "fields": {
+    "name": "Read user",
+    "description": "Puede leer usuarios"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 9,
+  "fields": {
+    "name": "Update user",
+    "description": "Puede actualizar usuarios"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 10,
+  "fields": {
+    "name": "Delete user",
+    "description": "Puede eliminar usuarios"
+  }
+},
+{
+  "model": "gestionar_roles.permissions",
+  "pk": 11,
+  "fields": {
+    "name": "Read all project",
+    "description": "Puede leer todos los proyectos"
+  }
+},
+{
+  "model": "gestionar_roles.rolesystem",
+  "pk": 1,
+  "fields": {
+    "role_name": "Admin",
+    "description": "Posee todos los permisos a nivel sistema",
+    "user": [
+      [
+        "cristhian"
+      ]
+    ],
+    "perms": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "gestionar_roles.rolesystem",
+  "pk": 2,
+  "fields": {
+    "role_name": "Visitante",
+    "description": "Es un visitante del sistema",
+    "user": [],
+    "perms": []
+  }
+},
+{
+  "model": "gestionar_roles.rolesystem",
+  "pk": 3,
+  "fields": {
+    "role_name": "Usuario",
+    "description": "Puede ver sus proyectos",
+    "user": [
+      [
+        "cristhian_daniel"
+      ]
+    ],
+    "perms": []
+  }
+},
+{
+  "model": "sprints.sprint",
+  "pk": 1,
+  "fields": {
+    "number": 1,
+    "project": 3,
+    "sprint_name": "Sprint reparaciones",
+    "description": "En este sprint se busca realizar reparaciones del colegio",
+    "capacity": 63,
+    "available_capacity": 12,
+    "duration": 7,
+    "start_at": "2022-11-25",
+    "estimated_end_at": "2022-12-05",
+    "end_at": "2022-11-25",
+    "status": "finished",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:50:23.974Z",
+    "updated_at": "2022-11-25T14:09:33.495Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprint",
+  "pk": 2,
+  "fields": {
+    "number": 2,
+    "project": 3,
+    "sprint_name": "Sprint reportes",
+    "description": "En este sprint se realizarán algunos reportes",
+    "capacity": 120,
+    "available_capacity": 70,
+    "duration": 12,
+    "start_at": "2022-11-25",
+    "estimated_end_at": "2022-12-12",
+    "end_at": null,
+    "status": "in execution",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:55:25.142Z",
+    "updated_at": "2022-11-25T14:09:46.366Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprint",
+  "pk": 3,
+  "fields": {
+    "number": 1,
+    "project": 2,
+    "sprint_name": "Sprint 1",
+    "description": "Esta es la descripcion del sprint 1",
+    "capacity": 100,
+    "available_capacity": 100,
+    "duration": 10,
+    "start_at": null,
+    "estimated_end_at": null,
+    "end_at": null,
+    "status": "pending",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:12:34.686Z",
+    "updated_at": "2022-11-25T14:12:51.541Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "projects",
+    "model": "permissionsproj"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "projects",
+    "model": "project"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "projects",
+    "model": "roleproject"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "projects",
+    "model": "projectmember"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "type_us",
+    "model": "typeus"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "gestionar_roles",
+    "model": "permissions"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "gestionar_roles",
+    "model": "rolesystem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sprints",
+    "model": "sprint"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sprints",
+    "model": "sprintmember"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sites",
+    "model": "site"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "account",
+    "model": "emailaddress"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "account",
+    "model": "emailconfirmation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "socialaccount",
+    "model": "socialaccount"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "socialaccount",
+    "model": "socialapp"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "socialaccount",
+    "model": "socialtoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "user_story",
+    "model": "userstory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "user_story",
+    "model": "userstorytask"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "user_story",
+    "model": "userstoryattachment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "user_story",
+    "model": "historicaluserstory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "meetings",
+    "model": "meeting"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "84x6o6i4qyqt4f7iuw411f7tiff2ppd5",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAURP-FtWnKG9zpj5DL4wZiQxOBlfHfpaYLXc6ZmfMiDkbPbrT0dCWSK6Hk8ss8hEeqRwHbduAFQthH7ct3c9Ztuc2Uai8Betnr_Xz9qTK0PD1JRxvRKwM6Mc41h6gseogQ2HQbVMZyqakSFOWKnnKpklhRcSa1EUDeH98lPIY:1oyZrK:k0DzI2GyRjeS-3mrWEbtt3Ei1P5glpfFvlFWZJ4Ywx8",
+    "expire_date": "2022-12-09T14:39:18.833Z"
+  }
+},
+{
+  "model": "sites.site",
+  "fields": {
+    "domain": "example.com",
+    "name": "example.com"
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 1,
+  "fields": {
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 22,
+    "status": "pending",
+    "current_status": "finished",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T14:09:16.029Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 2,
+  "fields": {
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "finished",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:09:18.749Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 3,
+  "fields": {
+    "code": "esc-3",
+    "title": "Coregir formulario",
+    "description": "El formulario de inscripciones tiene varios errores",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 14,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:54.302Z",
+    "updated_at": "2022-11-25T14:09:46.373Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 4,
+  "fields": {
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 19,
+    "status": "pending",
+    "current_status": "review",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:38:35.113Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 5,
+  "fields": {
+    "code": "rep-5",
+    "title": "Actualizar documentación",
+    "description": "Revisar los documentos de los alumnos",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 24,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:54.682Z",
+    "updated_at": "2022-11-25T14:09:46.378Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 6,
+  "fields": {
+    "code": "red-1",
+    "title": "Historia 1",
+    "description": "Esta es la descripcion de la historia 1",
+    "business_value": 10,
+    "technical_priority": 5,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:21.526Z",
+    "updated_at": "2022-11-25T14:11:21.526Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 7,
+  "fields": {
+    "code": "red-2",
+    "title": "Historia 2",
+    "description": "Esta es la descripcion de la historia 2",
+    "business_value": 7,
+    "technical_priority": 10,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:38.767Z",
+    "updated_at": "2022-11-25T14:11:38.767Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null
+  }
+},
+{
+  "model": "user_story.userstory",
+  "pk": 8,
+  "fields": {
+    "code": "red-3",
+    "title": "Historia 3",
+    "description": "Esta es la descripcion de la historia 3",
+    "business_value": 7,
+    "technical_priority": 9,
+    "estimation_time": 16,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:57.781Z",
+    "updated_at": "2022-11-25T14:11:57.781Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permissions proj",
+    "content_type": [
+      "projects",
+      "permissionsproj"
+    ],
+    "codename": "add_permissionsproj"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permissions proj",
+    "content_type": [
+      "projects",
+      "permissionsproj"
+    ],
+    "codename": "change_permissionsproj"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permissions proj",
+    "content_type": [
+      "projects",
+      "permissionsproj"
+    ],
+    "codename": "delete_permissionsproj"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permissions proj",
+    "content_type": [
+      "projects",
+      "permissionsproj"
+    ],
+    "codename": "view_permissionsproj"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add project",
+    "content_type": [
+      "projects",
+      "project"
+    ],
+    "codename": "add_project"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change project",
+    "content_type": [
+      "projects",
+      "project"
+    ],
+    "codename": "change_project"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete project",
+    "content_type": [
+      "projects",
+      "project"
+    ],
+    "codename": "delete_project"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view project",
+    "content_type": [
+      "projects",
+      "project"
+    ],
+    "codename": "view_project"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add role project",
+    "content_type": [
+      "projects",
+      "roleproject"
+    ],
+    "codename": "add_roleproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change role project",
+    "content_type": [
+      "projects",
+      "roleproject"
+    ],
+    "codename": "change_roleproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete role project",
+    "content_type": [
+      "projects",
+      "roleproject"
+    ],
+    "codename": "delete_roleproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view role project",
+    "content_type": [
+      "projects",
+      "roleproject"
+    ],
+    "codename": "view_roleproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add project member",
+    "content_type": [
+      "projects",
+      "projectmember"
+    ],
+    "codename": "add_projectmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change project member",
+    "content_type": [
+      "projects",
+      "projectmember"
+    ],
+    "codename": "change_projectmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete project member",
+    "content_type": [
+      "projects",
+      "projectmember"
+    ],
+    "codename": "delete_projectmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view project member",
+    "content_type": [
+      "projects",
+      "projectmember"
+    ],
+    "codename": "view_projectmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add type us",
+    "content_type": [
+      "type_us",
+      "typeus"
+    ],
+    "codename": "add_typeus"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change type us",
+    "content_type": [
+      "type_us",
+      "typeus"
+    ],
+    "codename": "change_typeus"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete type us",
+    "content_type": [
+      "type_us",
+      "typeus"
+    ],
+    "codename": "delete_typeus"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view type us",
+    "content_type": [
+      "type_us",
+      "typeus"
+    ],
+    "codename": "view_typeus"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permissions",
+    "content_type": [
+      "gestionar_roles",
+      "permissions"
+    ],
+    "codename": "add_permissions"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permissions",
+    "content_type": [
+      "gestionar_roles",
+      "permissions"
+    ],
+    "codename": "change_permissions"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permissions",
+    "content_type": [
+      "gestionar_roles",
+      "permissions"
+    ],
+    "codename": "delete_permissions"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permissions",
+    "content_type": [
+      "gestionar_roles",
+      "permissions"
+    ],
+    "codename": "view_permissions"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add role system",
+    "content_type": [
+      "gestionar_roles",
+      "rolesystem"
+    ],
+    "codename": "add_rolesystem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change role system",
+    "content_type": [
+      "gestionar_roles",
+      "rolesystem"
+    ],
+    "codename": "change_rolesystem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete role system",
+    "content_type": [
+      "gestionar_roles",
+      "rolesystem"
+    ],
+    "codename": "delete_rolesystem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view role system",
+    "content_type": [
+      "gestionar_roles",
+      "rolesystem"
+    ],
+    "codename": "view_rolesystem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add sprint",
+    "content_type": [
+      "sprints",
+      "sprint"
+    ],
+    "codename": "add_sprint"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change sprint",
+    "content_type": [
+      "sprints",
+      "sprint"
+    ],
+    "codename": "change_sprint"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete sprint",
+    "content_type": [
+      "sprints",
+      "sprint"
+    ],
+    "codename": "delete_sprint"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view sprint",
+    "content_type": [
+      "sprints",
+      "sprint"
+    ],
+    "codename": "view_sprint"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add sprint member",
+    "content_type": [
+      "sprints",
+      "sprintmember"
+    ],
+    "codename": "add_sprintmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change sprint member",
+    "content_type": [
+      "sprints",
+      "sprintmember"
+    ],
+    "codename": "change_sprintmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete sprint member",
+    "content_type": [
+      "sprints",
+      "sprintmember"
+    ],
+    "codename": "delete_sprintmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view sprint member",
+    "content_type": [
+      "sprints",
+      "sprintmember"
+    ],
+    "codename": "view_sprintmember"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add site",
+    "content_type": [
+      "sites",
+      "site"
+    ],
+    "codename": "add_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change site",
+    "content_type": [
+      "sites",
+      "site"
+    ],
+    "codename": "change_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete site",
+    "content_type": [
+      "sites",
+      "site"
+    ],
+    "codename": "delete_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view site",
+    "content_type": [
+      "sites",
+      "site"
+    ],
+    "codename": "view_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add email address",
+    "content_type": [
+      "account",
+      "emailaddress"
+    ],
+    "codename": "add_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change email address",
+    "content_type": [
+      "account",
+      "emailaddress"
+    ],
+    "codename": "change_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete email address",
+    "content_type": [
+      "account",
+      "emailaddress"
+    ],
+    "codename": "delete_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view email address",
+    "content_type": [
+      "account",
+      "emailaddress"
+    ],
+    "codename": "view_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add email confirmation",
+    "content_type": [
+      "account",
+      "emailconfirmation"
+    ],
+    "codename": "add_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change email confirmation",
+    "content_type": [
+      "account",
+      "emailconfirmation"
+    ],
+    "codename": "change_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete email confirmation",
+    "content_type": [
+      "account",
+      "emailconfirmation"
+    ],
+    "codename": "delete_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view email confirmation",
+    "content_type": [
+      "account",
+      "emailconfirmation"
+    ],
+    "codename": "view_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add social account",
+    "content_type": [
+      "socialaccount",
+      "socialaccount"
+    ],
+    "codename": "add_socialaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change social account",
+    "content_type": [
+      "socialaccount",
+      "socialaccount"
+    ],
+    "codename": "change_socialaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete social account",
+    "content_type": [
+      "socialaccount",
+      "socialaccount"
+    ],
+    "codename": "delete_socialaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view social account",
+    "content_type": [
+      "socialaccount",
+      "socialaccount"
+    ],
+    "codename": "view_socialaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add social application",
+    "content_type": [
+      "socialaccount",
+      "socialapp"
+    ],
+    "codename": "add_socialapp"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change social application",
+    "content_type": [
+      "socialaccount",
+      "socialapp"
+    ],
+    "codename": "change_socialapp"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete social application",
+    "content_type": [
+      "socialaccount",
+      "socialapp"
+    ],
+    "codename": "delete_socialapp"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view social application",
+    "content_type": [
+      "socialaccount",
+      "socialapp"
+    ],
+    "codename": "view_socialapp"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add social application token",
+    "content_type": [
+      "socialaccount",
+      "socialtoken"
+    ],
+    "codename": "add_socialtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change social application token",
+    "content_type": [
+      "socialaccount",
+      "socialtoken"
+    ],
+    "codename": "change_socialtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete social application token",
+    "content_type": [
+      "socialaccount",
+      "socialtoken"
+    ],
+    "codename": "delete_socialtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view social application token",
+    "content_type": [
+      "socialaccount",
+      "socialtoken"
+    ],
+    "codename": "view_socialtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user story",
+    "content_type": [
+      "user_story",
+      "userstory"
+    ],
+    "codename": "add_userstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user story",
+    "content_type": [
+      "user_story",
+      "userstory"
+    ],
+    "codename": "change_userstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user story",
+    "content_type": [
+      "user_story",
+      "userstory"
+    ],
+    "codename": "delete_userstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user story",
+    "content_type": [
+      "user_story",
+      "userstory"
+    ],
+    "codename": "view_userstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user story task",
+    "content_type": [
+      "user_story",
+      "userstorytask"
+    ],
+    "codename": "add_userstorytask"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user story task",
+    "content_type": [
+      "user_story",
+      "userstorytask"
+    ],
+    "codename": "change_userstorytask"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user story task",
+    "content_type": [
+      "user_story",
+      "userstorytask"
+    ],
+    "codename": "delete_userstorytask"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user story task",
+    "content_type": [
+      "user_story",
+      "userstorytask"
+    ],
+    "codename": "view_userstorytask"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user story attachment",
+    "content_type": [
+      "user_story",
+      "userstoryattachment"
+    ],
+    "codename": "add_userstoryattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user story attachment",
+    "content_type": [
+      "user_story",
+      "userstoryattachment"
+    ],
+    "codename": "change_userstoryattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user story attachment",
+    "content_type": [
+      "user_story",
+      "userstoryattachment"
+    ],
+    "codename": "delete_userstoryattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user story attachment",
+    "content_type": [
+      "user_story",
+      "userstoryattachment"
+    ],
+    "codename": "view_userstoryattachment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add historical user story",
+    "content_type": [
+      "user_story",
+      "historicaluserstory"
+    ],
+    "codename": "add_historicaluserstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change historical user story",
+    "content_type": [
+      "user_story",
+      "historicaluserstory"
+    ],
+    "codename": "change_historicaluserstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete historical user story",
+    "content_type": [
+      "user_story",
+      "historicaluserstory"
+    ],
+    "codename": "delete_historicaluserstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view historical user story",
+    "content_type": [
+      "user_story",
+      "historicaluserstory"
+    ],
+    "codename": "view_historicaluserstory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add meeting",
+    "content_type": [
+      "meetings",
+      "meeting"
+    ],
+    "codename": "add_meeting"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change meeting",
+    "content_type": [
+      "meetings",
+      "meeting"
+    ],
+    "codename": "change_meeting"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete meeting",
+    "content_type": [
+      "meetings",
+      "meeting"
+    ],
+    "codename": "delete_meeting"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view meeting",
+    "content_type": [
+      "meetings",
+      "meeting"
+    ],
+    "codename": "view_meeting"
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "!QTNSYAgMvn3ScnwUpJpLXcI7nnF672pXodHaQaRr",
+    "last_login": "2022-11-25T14:39:18.827Z",
+    "is_superuser": false,
+    "username": "cristhian",
+    "first_name": "Cristhian",
+    "last_name": "Ortellado",
+    "email": "breideworld@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-11-25T13:38:26.943Z",
+    "created_at": "2022-11-25T13:38:26.964Z",
+    "updated_at": "2022-11-25T13:38:26.964Z",
+    "deleted_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "!gnatq1AM9X9SGYuSQKaLSDJnUBPLQWMLNcYIxYV0",
+    "last_login": "2022-11-25T14:37:44.375Z",
+    "is_superuser": false,
+    "username": "cristhian_daniel",
+    "first_name": "Cristhian Daniel",
+    "last_name": "Ortellado Fernández",
+    "email": "breideworld@fpuna.edu.py",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-11-25T13:38:36.830Z",
+    "created_at": "2022-11-25T13:38:36.848Z",
+    "updated_at": "2022-11-25T14:36:40.750Z",
+    "deleted_at": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 1,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:47:12.096Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:47:12.102Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 2,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T13:48:08.827Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:48:08.830Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 3,
+  "fields": {
+    "id": 3,
+    "code": "esc-3",
+    "title": "Coregir formulario",
+    "description": "El formulario de inscripciones tiene varios errores",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 14,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:54.302Z",
+    "updated_at": "2022-11-25T13:48:54.302Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:48:54.304Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 4,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T13:49:30.484Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:49:30.486Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 5,
+  "fields": {
+    "id": 5,
+    "code": "rep-5",
+    "title": "Actualizar documentación",
+    "description": "Revisar los documentos de los alumnos",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 24,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:54.682Z",
+    "updated_at": "2022-11-25T13:49:54.682Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:49:54.684Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 6,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:51:36.553Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:51:36.562Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 7,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T13:51:55.183Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T13:51:55.192Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 8,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:54:22.929Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:54:22.930Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 9,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T13:54:22.932Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T13:54:22.934Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 10,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:54:22.941Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:54:22.942Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 11,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T13:54:22.945Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T13:54:22.946Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 12,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T13:56:01.024Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T13:56:01.033Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 13,
+  "fields": {
+    "id": 3,
+    "code": "esc-3",
+    "title": "Coregir formulario",
+    "description": "El formulario de inscripciones tiene varios errores",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 14,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:54.302Z",
+    "updated_at": "2022-11-25T13:56:05.779Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T13:56:05.789Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 14,
+  "fields": {
+    "id": 5,
+    "code": "rep-5",
+    "title": "Actualizar documentación",
+    "description": "Revisar los documentos de los alumnos",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 24,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:54.682Z",
+    "updated_at": "2022-11-25T13:56:11.498Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T13:56:11.507Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 15,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T13:56:13.652Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T13:56:13.660Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 16,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T13:56:14.854Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T13:56:14.863Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 17,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Análisis",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:56:54.502Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:56:54.511Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 18,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:56:56.260Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:56:56.269Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 19,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 4,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:57:13.994Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:57:13.996Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 20,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 12,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:57:27.478Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:57:27.480Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 21,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 22,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:57:54.262Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:57:54.264Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 22,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 22,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:57:58.717Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:57:58.726Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 23,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 22,
+    "status": "pending",
+    "current_status": "review",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T13:58:04.241Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T13:58:04.250Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 24,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 8,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T13:59:54.885Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T13:59:54.887Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 25,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 16,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:00:12.709Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:00:12.711Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 26,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:00:29.795Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:00:29.796Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 27,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Análisis",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:00:58.451Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:00:58.459Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 28,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:00:59.519Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:00:59.528Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 29,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:01:04.167Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:01:04.176Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 30,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "review",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:01:06.514Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:01:06.522Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 31,
+  "fields": {
+    "id": 1,
+    "code": "esc-1",
+    "title": "Reparar baños",
+    "description": "Necesita reparaciones",
+    "business_value": 10,
+    "technical_priority": 6,
+    "estimation_time": 23,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 22,
+    "status": "pending",
+    "current_status": "finished",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:47:12.096Z",
+    "updated_at": "2022-11-25T14:09:16.029Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 1,
+    "history_date": "2022-11-25T14:09:16.038Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 32,
+  "fields": {
+    "id": 2,
+    "code": "esc-2",
+    "title": "Reparar colegio",
+    "description": "Todo el colegio necesita varias reparaciones... tal cosa, tal cosa...",
+    "business_value": 9,
+    "technical_priority": 7,
+    "estimation_time": 28,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 27,
+    "status": "pending",
+    "current_status": "finished",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:08.827Z",
+    "updated_at": "2022-11-25T14:09:18.749Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 1,
+    "assigned_to": 2,
+    "history_date": "2022-11-25T14:09:18.761Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 33,
+  "fields": {
+    "id": 3,
+    "code": "esc-3",
+    "title": "Coregir formulario",
+    "description": "El formulario de inscripciones tiene varios errores",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 14,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:54.302Z",
+    "updated_at": "2022-11-25T14:09:46.351Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T14:09:46.353Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 34,
+  "fields": {
+    "id": 5,
+    "code": "rep-5",
+    "title": "Actualizar documentación",
+    "description": "Revisar los documentos de los alumnos",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 24,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:54.682Z",
+    "updated_at": "2022-11-25T14:09:46.356Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T14:09:46.358Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 35,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:09:46.361Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:09:46.363Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 36,
+  "fields": {
+    "id": 3,
+    "code": "esc-3",
+    "title": "Coregir formulario",
+    "description": "El formulario de inscripciones tiene varios errores",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 14,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:48:54.302Z",
+    "updated_at": "2022-11-25T14:09:46.373Z",
+    "us_type": 2,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T14:09:46.374Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 37,
+  "fields": {
+    "id": 5,
+    "code": "rep-5",
+    "title": "Actualizar documentación",
+    "description": "Revisar los documentos de los alumnos",
+    "business_value": 8,
+    "technical_priority": 7,
+    "estimation_time": 24,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:54.682Z",
+    "updated_at": "2022-11-25T14:09:46.378Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 3,
+    "history_date": "2022-11-25T14:09:46.381Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 38,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:09:46.386Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:09:46.389Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 39,
+  "fields": {
+    "id": 6,
+    "code": "red-1",
+    "title": "Historia 1",
+    "description": "Esta es la descripcion de la historia 1",
+    "business_value": 10,
+    "technical_priority": 5,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:21.526Z",
+    "updated_at": "2022-11-25T14:11:21.526Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T14:11:21.529Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 40,
+  "fields": {
+    "id": 7,
+    "code": "red-2",
+    "title": "Historia 2",
+    "description": "Esta es la descripcion de la historia 2",
+    "business_value": 7,
+    "technical_priority": 10,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:38.767Z",
+    "updated_at": "2022-11-25T14:11:38.767Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T14:11:38.770Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 41,
+  "fields": {
+    "id": 8,
+    "code": "red-3",
+    "title": "Historia 3",
+    "description": "Esta es la descripcion de la historia 3",
+    "business_value": 7,
+    "technical_priority": 9,
+    "estimation_time": 16,
+    "final_priority": 7,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 0,
+    "status": "pending",
+    "current_status": "pending",
+    "kanban_status": null,
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T14:11:57.781Z",
+    "updated_at": "2022-11-25T14:11:57.781Z",
+    "us_type": 6,
+    "project": 2,
+    "sprint": null,
+    "assigned_to": null,
+    "history_date": "2022-11-25T14:11:57.785Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": [
+      "cristhian"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 42,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 1,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "To do",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:32:31.193Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:32:31.198Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 43,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 1,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Doing",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:38:11.529Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:38:11.531Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 44,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 1,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:38:20.331Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:38:20.332Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 45,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 19,
+    "status": "pending",
+    "current_status": "in execution",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:38:32.546Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:38:32.548Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.historicaluserstory",
+  "pk": 46,
+  "fields": {
+    "id": 4,
+    "code": "rep-4",
+    "title": "Reportes de notas",
+    "description": "Revisar las notas de los alumnos",
+    "business_value": 10,
+    "technical_priority": 7,
+    "estimation_time": 12,
+    "final_priority": 8,
+    "old_estimation_time": 0,
+    "previous_work": 0,
+    "work_hours": 19,
+    "status": "pending",
+    "current_status": "review",
+    "kanban_status": "Done",
+    "cancellation_reason": null,
+    "created_at": "2022-11-25T13:49:30.484Z",
+    "updated_at": "2022-11-25T14:38:35.113Z",
+    "us_type": 1,
+    "project": 3,
+    "sprint": 2,
+    "assigned_to": 4,
+    "history_date": "2022-11-25T14:38:35.115Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": [
+      "cristhian_daniel"
+    ]
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 1,
+  "fields": {
+    "task": "Actividad 1 realizada con exito",
+    "work_hours": 4,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T13:57:13.992Z",
+    "updated_at": "2022-11-25T13:57:13.992Z",
+    "user_story": 1
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 2,
+  "fields": {
+    "task": "Actividad 2 realizada",
+    "work_hours": 8,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T13:57:27.476Z",
+    "updated_at": "2022-11-25T13:57:27.476Z",
+    "user_story": 1
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 3,
+  "fields": {
+    "task": "Actividad finalizada",
+    "work_hours": 10,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T13:57:54.260Z",
+    "updated_at": "2022-11-25T13:57:54.260Z",
+    "user_story": 1
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 4,
+  "fields": {
+    "task": "Actividad iniciada",
+    "work_hours": 8,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T13:59:54.883Z",
+    "updated_at": "2022-11-25T13:59:54.883Z",
+    "user_story": 2
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 5,
+  "fields": {
+    "task": "Las reparaciones van bastante bien",
+    "work_hours": 8,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T14:00:12.707Z",
+    "updated_at": "2022-11-25T14:00:12.708Z",
+    "user_story": 2
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 6,
+  "fields": {
+    "task": "Reparaciones listas",
+    "work_hours": 11,
+    "sprint": 1,
+    "user": null,
+    "created_at": "2022-11-25T14:00:29.792Z",
+    "updated_at": "2022-11-25T14:00:29.792Z",
+    "user_story": 2
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 7,
+  "fields": {
+    "task": "Tarea empezada",
+    "work_hours": 1,
+    "sprint": 2,
+    "user": null,
+    "created_at": "2022-11-25T14:32:31.183Z",
+    "updated_at": "2022-11-25T14:32:31.183Z",
+    "user_story": 4
+  }
+},
+{
+  "model": "user_story.userstorytask",
+  "pk": 8,
+  "fields": {
+    "task": "Actividad finalizada",
+    "work_hours": 18,
+    "sprint": 2,
+    "user": null,
+    "created_at": "2022-11-25T14:38:32.543Z",
+    "updated_at": "2022-11-25T14:38:32.543Z",
+    "user_story": 4
+  }
+},
+{
+  "model": "socialaccount.socialaccount",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "cristhian"
+    ],
+    "provider": "google",
+    "uid": "115936979671202773596",
+    "last_login": "2022-11-25T14:39:18.820Z",
+    "date_joined": "2022-11-25T13:38:26.976Z",
+    "extra_data": "{\"id\": \"115936979671202773596\", \"email\": \"breideworld@gmail.com\", \"verified_email\": true, \"name\": \"Cristhian Ortellado\", \"given_name\": \"Cristhian\", \"family_name\": \"Ortellado\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu3boa6Fu0cCuH3zBcJL2ZswaO4U0mnsJCSYeknC=s96-c\", \"locale\": \"es\"}"
+  }
+},
+{
+  "model": "socialaccount.socialaccount",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "cristhian_daniel"
+    ],
+    "provider": "google",
+    "uid": "103580374616327140629",
+    "last_login": "2022-11-25T14:37:44.367Z",
+    "date_joined": "2022-11-25T13:38:36.861Z",
+    "extra_data": "{\"id\": \"103580374616327140629\", \"email\": \"breideworld@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Cristhian Daniel Ortellado Fern\\u00e1ndez\", \"given_name\": \"Cristhian Daniel\", \"family_name\": \"Ortellado Fern\\u00e1ndez\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu1A4u9q2_W5Vj9rjVfzGzErODr9bOWVSgdoloda=s96-c\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "cristhian"
+    ],
+    "email": "breideworld@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "cristhian_daniel"
+    ],
+    "email": "breideworld@fpuna.edu.py",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 1,
+  "fields": {
+    "sprint": 1,
+    "user": [
+      "cristhian"
+    ],
+    "workload": 4,
+    "created_at": "2022-11-25T13:50:47.920Z",
+    "updated_at": "2022-11-25T13:50:47.920Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 2,
+  "fields": {
+    "sprint": 1,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "workload": 5,
+    "created_at": "2022-11-25T13:51:16.483Z",
+    "updated_at": "2022-11-25T13:51:16.483Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 3,
+  "fields": {
+    "sprint": 2,
+    "user": [
+      "cristhian"
+    ],
+    "workload": 6,
+    "created_at": "2022-11-25T13:55:38.511Z",
+    "updated_at": "2022-11-25T13:55:38.512Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 4,
+  "fields": {
+    "sprint": 2,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "workload": 4,
+    "created_at": "2022-11-25T13:55:45.115Z",
+    "updated_at": "2022-11-25T13:55:45.115Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 5,
+  "fields": {
+    "sprint": 3,
+    "user": [
+      "cristhian"
+    ],
+    "workload": 6,
+    "created_at": "2022-11-25T14:12:46.556Z",
+    "updated_at": "2022-11-25T14:12:46.556Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "sprints.sprintmember",
+  "pk": 6,
+  "fields": {
+    "sprint": 3,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "workload": 4,
+    "created_at": "2022-11-25T14:12:51.530Z",
+    "updated_at": "2022-11-25T14:12:51.530Z",
+    "deleted_at": null
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 1,
+  "fields": {
+    "project": 1,
+    "user": [
+      "cristhian"
+    ],
+    "updated_at": "2022-11-25T13:39:46.568Z",
+    "roles": [
+      1
+    ]
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 2,
+  "fields": {
+    "project": 2,
+    "user": [
+      "cristhian"
+    ],
+    "updated_at": "2022-11-25T13:40:24.345Z",
+    "roles": [
+      3
+    ]
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 3,
+  "fields": {
+    "project": 3,
+    "user": [
+      "cristhian"
+    ],
+    "updated_at": "2022-11-25T13:40:51.191Z",
+    "roles": [
+      5
+    ]
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 4,
+  "fields": {
+    "project": 3,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "updated_at": "2022-11-25T13:41:18.575Z",
+    "roles": [
+      6
+    ]
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 5,
+  "fields": {
+    "project": 2,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "updated_at": "2022-11-25T13:41:52.944Z",
+    "roles": [
+      4
+    ]
+  }
+},
+{
+  "model": "projects.projectmember",
+  "pk": 6,
+  "fields": {
+    "project": 1,
+    "user": [
+      "cristhian_daniel"
+    ],
+    "updated_at": "2022-11-25T13:42:14.918Z",
+    "roles": [
+      2
+    ]
+  }
+}
+]
