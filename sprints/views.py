@@ -1220,7 +1220,7 @@ def us_review_reject(request, id_project, id_sprint):
 
     # Sent email
     member = user_story.assigned_to.user.email
-    subject = 'Tarea Lista'
+    subject = 'Tarea Rechazada'
     body = f"La tarea {user_story.title} fue rechazada por el siguiente motivo : \n{reason}"
     to = member
 
