@@ -5,6 +5,7 @@ from accounts.models import User
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
+from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 
 
@@ -133,7 +134,8 @@ class UserStory(models.Model):
 
     def has_been_finished(self):
         return self.current_status == UUserStory.STATUS_FINISHED or self.current_status == UUserStory.STATUS_CANCELED \
-               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED
+               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status == USprint.STATUS_FINISHED \
+               or self.sprint.status == USprint.STATUS_CANCELED
 
 
 def us_directory_path(instance, filename):
