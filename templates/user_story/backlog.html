@@ -93,7 +93,7 @@
                                                     </i>
                                                     Ver
                                                 </a>
-                                                {% if user_story.current_status != 'canceled' %}
+                                                {% if user_story.current_status != 'canceled' and user_story.current_status != 'finished' %}
                                                     {% if can_update_us and is_visible %}
                                                         <form id="edit_user_story" class="m-0 p-0" method="post"
                                                               action="{% url 'user_story.edit_user_story' id_project user_story.id %}">
