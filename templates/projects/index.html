@@ -85,7 +85,7 @@
                                 </td>
                                 <td>
                                     <span class="badge
-                                    {% if project.status == 'success' %}
+                                    {% if project.status == 'finished' %}
                                         badge-success
                                     {% elif project.status == 'pending' %}
                                         badge-warning
@@ -136,15 +136,15 @@
                                             </button>
                                         </form>
                                     {% endif %}
-                                    {#                                    {% has_perm_project user project.id 'Finished project' as ban %}#}
-                                    {% if ban and project.status != 'canceled' and project.status != 'finished' %}
+                                    {% has_perm_project user project.id 'Finished project' as ban %}
+                                    {% if ban and project.status == 'in execution' %}
                                         <button type="button" class="btn btn-success btn-sm"
                                                 data-toggle="modal"
                                                 data-target="#modal-finish-project"
                                                 data-id-project="{{ project.id }}">
                                             <i class="fas fa-check">
                                             </i>
-                                            Finalizar {{ project.id }}
+                                            Finalizar
                                         </button>
                                     {% endif %}
                                 </td>

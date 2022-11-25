@@ -202,7 +202,7 @@ def finished(request):
 def validate_project_finished(id_project):
     sprints = Sprint.objects.filter(project_id=id_project)
     for sprint in sprints:
-        if sprint.status != USprint.STATUS_FINISHED or sprint.status != USprint.STATUS_CANCELED:
+        if sprint.status != USprint.STATUS_FINISHED and sprint.status != USprint.STATUS_CANCELED:
             return False
     return True
 

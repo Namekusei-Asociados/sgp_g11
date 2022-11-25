@@ -11,6 +11,7 @@ class UPermissionsProject:
     UPDATE_PROJECT = 'Update project'
     CANCEL_PROJECT = 'Cancel project'
     INIT_PROJECT = 'Initialize project'
+    FINISHED_PROJECT = 'Finished project'
 
     # Project Member
     CREATE_PROJECTMEMBER = 'Create projectmember'

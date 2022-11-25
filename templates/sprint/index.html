@@ -147,7 +147,7 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        {% if can_finished_sprint and is_visible and sprint.status != "canceled" and sprint.status != "finished" and sprint.status != "pending" %}
+                                        {% if can_finished_sprint and is_visible and sprint.status == "in execution" %}
                                             <button type="button" class="btn btn-success btn-sm"
                                                     data-toggle="modal"
                                                     data-target="#modal-finish-sprint"
