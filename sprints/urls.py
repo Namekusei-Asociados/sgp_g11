@@ -50,4 +50,10 @@ urlpatterns = [
 
     #finalizar sprint
     path('finished', views.finished_sprint, name="sprints.finished_sprint"),
+
+    # US review
+    path('<int:id_sprint>/us_review', views.us_review, name='sprints.us_review'),
+    path('<int:id_sprint>/us_review/confirm', views.us_review_confirm, name='sprints.us_review.confirm'),
+    path('<int:id_sprint>/us_review/reject', views.us_review_reject, name='sprints.us_review.reject')
+
 ]

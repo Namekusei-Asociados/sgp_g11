@@ -11,12 +11,14 @@ from projects.decorators import permission_proj_required
 from projects.models import Project, RoleProject, ProjectMember
 from type_us.models import TypeUS
 from user_story.models import UserStory, UserStoryTask
+from utilities.UMail import UMail
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
+import threading
 
 
 # Create your views here.
@@ -1015,12 +1017,20 @@ def kanban_task_finished(request, id_project, id_sprint):
 
     :return: json
     """
-
+    user = request.user
     user_story_id = request.POST['user_story_id']
     # get user story and attach task
     user_story = UserStory.objects.get(id=user_story_id)
     user_story.current_status = UUserStory.STATUS_IN_REVIEW
     user_story.save()
+
+    # Sent email
+    subject = 'Tarea Lista'
+    body = f"El usuario {user.username} ha finalizado la tarea y esta lista para su revision"
+    to = user.email
+
+    sending_email = threading.Thread(target=UMail.sent_email, args=(subject, body, to))
+    sending_email.start()
 
     context = {
         'status': 200,
@@ -1161,3 +1171,64 @@ def finished_sprint(request, id_project):
                 )
         # volvemos al backlog
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
+
+def us_review(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = UserStory.objects.filter(sprint_id=id_sprint, current_status=UUserStory.STATUS_IN_REVIEW)
+
+    context = {
+        "sprint": sprint,
+        "id_project": id_project,
+        "id_sprint": id_sprint,
+        "user_stories": user_stories,
+        "user":request.user
+    }
+    return render(request, 'sprint/us_review/index.html', context)
+
+
+def us_review_confirm(request, id_project, id_sprint):
+
+    user_story_id = request.POST['user_story_id']
+
+    # get user story and change status
+    user_story = UserStory.objects.filter(id=user_story_id).first()
+    user_story.current_status = UUserStory.STATUS_FINISHED
+    user_story.save()
+    context = {
+        'status': 200,
+        'message': "Exito al finalizar la historia de usuario"
+    }
+    return JsonResponse(context)
+def us_review_reject(request, id_project, id_sprint):
+
+    user_story_id = request.POST['user_story_id']
+    reason = request.POST['reason']
+
+    if len(reason) == 0:
+        context = {
+            'status': 500,
+            'message': "El motivo del rechazo es obligatorio"
+        }
+        return JsonResponse(context)
+
+
+    # get user story and rollback to old status
+    user_story = UserStory.objects.filter(id=user_story_id).first()
+    user_story.current_status = UUserStory.STATUS_IN_EXECUTION
+    user_story.kanban_status = user_story.us_type.array_flow[0]
+    user_story.save()
+
+    # Sent email
+    member = user_story.assigned_to.user.email
+    subject = 'Tarea Lista'
+    body = f"La tarea {user_story.title} fue rechazada por el siguiente motivo : \n{reason}"
+    to = member
+
+    sending_email = threading.Thread(target=UMail.sent_email, args=(subject, body, to))
+    sending_email.start()
+
+    context = {
+        'status': 200,
+        'message': "Exito al rechazar la historia de usuario, se ha enviado un correo al encargado de la tarea!"
+    }
+    return JsonResponse(context)

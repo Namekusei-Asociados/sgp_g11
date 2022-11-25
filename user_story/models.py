@@ -133,8 +133,13 @@ class UserStory(models.Model):
         return self.title
 
     def has_been_finished(self):
+        """
+        Determina si el encargado de la tarea ya dio por finalizada esta tarea o si de alguna
+        manera esta tarea se ha deshabilitado para su modificacion
+        :return:
+        """
         return self.current_status == UUserStory.STATUS_FINISHED or self.current_status == UUserStory.STATUS_CANCELED \
-               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status != USprint.STATUS_IN_EXECUTION
+               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status != USprint.STATUS_IN_EXECUTION or self.current_status == UUserStory.STATUS_IN_REVIEW
 
 
 def us_directory_path(instance, filename):

@@ -1,0 +1,353 @@
+{% extends 'base/app.html' %}
+
+{% load static %}
+
+{% block title %}
+    | Kanban
+{% endblock %}
+
+{% block styles %}
+    {# SELECT2   #}
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/select2/css/select2.min.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" %}">
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.css" %}">
+    <link rel="stylesheet"
+          href="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'sprint/base/partials/nav.html' %}
+{% endblock %}
+
+{% block active_section %}
+    <span id="active-section" data-value="review"></span>
+{% endblock %}
+
+{% block content_class %}
+
+{% endblock %}
+{% block content %}
+    {% include 'base/components/success-message.html' %}
+
+    <div class="content-wrapper kanban">
+        <div class="row m-2">
+            <div class="col-sm-6">
+                <h1>Revision de Historias de Usuarios</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Proyecto | Sprint | Kanban | Review</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <!--US-->
+
+        <div class="p-5">
+            {% for users_story in user_stories %}
+                <div class="card card-primary user-story collapsed-card" data-user-story-id="{{ users_story.id }}">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ users_story.title }}</h3>
+
+                        <div class="card-tools d-flex">
+
+                            <div class="us-options m-0">
+                                <button type="button"
+                                        class="btn-finish-us btn text-white"
+                                        data-toggle="modal"
+                                        data-target="#modal-finish-us" data-user-story-id="{{ users_story.id }}">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="btn-rollback-us btn text-white"
+                                        data-toggle="modal"
+                                        data-target="#modal-rollback-us" data-user-story-id="{{ users_story.id }}">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+
+                            <button type="button" class="btn btn-tool"
+                                    data-card-widget="collapse"><i
+                                    class="fas fa-plus"></i>
+                            </button>
+
+                        </div>
+                        <!-- /.card-tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <b>Descripcion</b>
+                            <p class="text-black-50">
+                                {{ users_story.description }}
+                            </p>
+                        </div>
+
+                        <div class="my-3">
+                            <b>Prioridad Final</b>
+                            <p class="text-black-50">
+                                {{ users_story.final_priority }}
+                            </p>
+                        </div>
+                        <div class="my-3">
+                            <b>Encargado</b>
+                            <div class="border rounded d-block text-black-50 justify-content-start py-2"
+                                 style="gap:10px">
+                                <img alt="Avatar" class="rounded-pill" width="40px" height="40px"
+                                     src="{% static "lib/adminlte-3.2.0/img/avatar.png" %}">
+                                {{ users_story.assigned_to.user.username }}
+                            </div>
+                        </div>
+                        <!--FILES-->
+                        {% if users_story.userstoryattachment_set.all.count > 0 %}
+                            <div class="my-3">
+                                <b>Archivos adjuntos</b>
+                                <ul class="list-group list-group-flush">
+                                    {% for file in  users_story.userstoryattachment_set.all %}
+                                        <li class="list-group-item text-black-50 border rounded py-2">
+                                            {{ file.filename }}
+                                            <span class="badge text-black-50">{{ file.size }}</span>
+                                            <a href="{% url 'user_story.download_us_attachment' id_project users_story.id file.id %}"
+                                               class="btn float-right text-primary" title="Download">
+                                                <i class="fa fa-cloud-download-alt"></i>
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item text-danger">Sin archivos adjuntos</li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!--Task-->
+                        <div class="my-3 task-section">
+                            <div class="">
+                                <b>Tipo de Historia de usuario</b>
+                            </div>
+
+                            <p class="text-black-50">{{ users_story.us_type.name }}</p>
+
+                        </div>
+
+                        <span class="border-bottom w-100"></span>
+                        <!--Task-->
+                        <div class="my-3 task-section">
+                            <div class="d-fleFFx justify-content-between">
+                                <b>Seguimiento de tareas</b>
+                            </div>
+
+                            <ul class="list-group list-unstyled task-container">
+                                {% for task in users_story.userstorytask_set.all %}
+                                    <li class="text-black-50">- {{ task.task }} | {{ task.work_hours }} horas</li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                        <!--Task-->
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            {% endfor %}
+
+            {% if user_stories.count == 0 %}
+                <h4 class="text-danger">No hay tareas en revision!</h4>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+    <!--Modal Finish-->
+    <div class="modal fade" id="modal-finish-us" data-csrf="{{ csrf_token }}"
+         data-url="{% url 'sprints.kanban.user_story.task_store' id_project id_sprint %}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Culminar tarea</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" id="task-form">
+                    <div class="modal-body">
+                        <input type="hidden" name="user_story_id">
+                        <p>Estas seguro que desea dar por terminada esta tarea?</p>
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn-finish-us">Finalizar tarea</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <!--Modal Rollback-->
+    <div class="modal fade" id="modal-rollback-us" data-csrf="{{ csrf_token }}"
+         data-url="{% url 'sprints.us_review.reject' id_project id_sprint %}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Rechazar Tarea</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" id="task-form">
+                    <div class="modal-body">
+                        <input type="hidden" name="user_story_id">
+                        <p>Estas seguro que desea rechazar esta historia de usuario?</p>
+
+                        <b>Motivo</b>
+                        <div class="form-group">
+                            <input name="reason" type="text" class="form-control"
+                                   placeholder="Razon de rechazo"
+                                   minlength="5">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="btn-rollback-us">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- Select2 -->
+    <script src="{% static "lib/adminlte-3.2.0/plugins/select2/js/select2.full.min.js" %}"></script>
+    <script src="{% static 'lib/adminlte-3.2.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/jquery-validation/additional-methods.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/ekko-lightbox/ekko-lightbox.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+    <script src="{% static "lib/adminlte-3.2.0/plugins/filterizr/jquery.filterizr.min.js" %}"></script>
+    <script defer>
+        //validations rules
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            /**
+             * validations for widget
+             * YA NO HAY TIEMPO PARA EL ORDEN :)
+             **/
+            let userStoryFinished = null;
+            const spanError = document.createElement('span');
+            const btnFinishUS = document.getElementById('btn-finish-us')
+            const btnRollback = document.getElementById('btn-rollback-us')
+            spanError.classList.add('text-danger', 'invalid-feedback')
+            btnFinishUS.addEventListener('click', finishUS);
+            btnRollback.addEventListener('click', rollbackUS);
+            let relatedButton = null
+            let Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+
+            $('#modal-finish-us').on('shown.bs.modal', function (e) {
+                //get related target element
+                relatedButton = $(e.relatedTarget)
+                userStoryFinished = relatedButton[0].closest('div.user-story');
+                //get and send user story id attr to the input hidden into the modal
+                const userStoryId = relatedButton.data('user-story-id')
+                $(this).find('input[name="user_story_id"]').val(userStoryId)
+            })
+
+            $('#modal-rollback-us').on('shown.bs.modal', function (e) {
+                //get related target element
+                relatedButton = $(e.relatedTarget)
+                userStoryFinished = relatedButton[0].closest('div.user-story');
+                //get and send user story id attr to the input hidden into the modal
+                const userStoryId = relatedButton.data('user-story-id')
+                $(this).find('input[name="user_story_id"]').val(userStoryId)
+            })
+
+
+            function finishUS() {
+                const userStory = userStoryFinished
+                const btn = this;
+                const modal = $('#modal-finish-us');
+
+                //add us to the sprint backlog
+                $.ajax("{% url 'sprints.us_review.confirm' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        user_story_id: $(userStory).data('user-story-id'),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to another status
+                        if (data?.status === 200) {
+                            toastr.success(data?.message)
+                            userStory.remove()
+                        }
+                        if (data?.status === 500) {
+                            toastr.warning(data?.message)
+                        }
+                        modal.find('.btn-cancel').click()
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("Error")
+                    }
+                })
+            }
+
+            function rollbackUS() {
+                const userStory = userStoryFinished
+                const btn = this;
+                const reason = document.querySelector('input[name="reason"]')
+                const modal = $('#modal-rollback-us');
+                //add us to the sprint backlog
+                $.ajax("{% url 'sprints.us_review.reject' id_project id_sprint %}", {
+                    type: 'POST',
+                    data: {
+                        user_story_id: $(userStory).data('user-story-id'),
+                        reason: reason.value,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data, status, xhr) {
+                        //move card to another status
+                        if (data?.status === 200) {
+                            reason.value = '';
+                            toastr.success(data?.message);
+                            userStory.remove();
+                        }
+                        if (data?.status === 500) {
+                            toastr.warning(data?.message)
+                        }
+                        modal.find('.btn-cancel').click()
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        console.log(jqXhr)
+                        //fire alert success
+                        toastr.error("Error")
+                    }
+                })
+            }
+
+
+        });
+    </script>
+
+{% endblock %}
