@@ -806,9 +806,10 @@ def init_sprint(request, id_project, id_sprint):
                 # Add first state of the kanban to each us attached to this sprint
                 user_stories = sprint.userstory_set.all()
                 for user_story in user_stories:
-                    type_us = user_story.us_type.array_flow
-                    user_story.kanban_status = type_us[0]
-                    user_story.save()
+                    if user_story.kanban_status is None:
+                        type_us = user_story.us_type.array_flow
+                        user_story.kanban_status = type_us[0]
+                        user_story.save()
             else:
                 messages.error(request, 'El sprint no puede iniciar hasta que tenga al menos un US')
         else:
@@ -1047,7 +1048,7 @@ def is_visible_buttons(id_project=None, id_sprint=None):
     else:
         sprint = Sprint.objects.get(id=id_sprint)
 
-        if sprint.status == UProject.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
+        if sprint.status == USprint.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
             return False
 
         return True
@@ -1128,34 +1129,37 @@ def burndown_chart(request, id_project, id_sprint):
 
 
 def finished_sprint(request, id_project):
-    id_sprint=request.POST['id_sprint']
-    print('Finalizando sprint...')
-    sprint = Sprint.objects.get(id=id_sprint)
-    sprint.status = USprint.STATUS_FINISHED
-    sprint.end_date = datetime.now()
-    sprint.save()
+    if request.method == 'POST':
+        id_sprint = request.POST.get('id_sprint')
+        print('Finalizando sprint...')
+        sprint = Sprint.objects.get(id=id_sprint)
+        sprint.status = USprint.STATUS_FINISHED
+        sprint.end_date = datetime.now()
+        sprint.save()
 
-    if sprint.status == USprint.STATUS_FINISHED:
-        messages.success(request,f"Sprint {sprint.name} finalizado con exito")
-    else:
-        messages.success(request,f"No se pudo finalizar el sprint {sprint.name}")
+        if sprint.status == USprint.STATUS_FINISHED:
+            messages.success(request, f"Sprint {sprint.sprint_name} finalizado con exito")
+        else:
+            messages.success(request, f"No se pudo finalizar el sprint {sprint.sprint_name}")
 
-    user_stories = sprint.userstory_set.all()
-    initial_status = UserStory.objects.get_initial_status()
-    for user_story in user_stories:
-        # si el US no esta finalizado
-        if not user_story.current_status == UUserStory.STATUS_FINISHED:
-            final_priority_initial = 0.6 * user_story.business_value + 0.4 * user_story.technical_priority
-            final_priority = user_story.final_priority
-            if final_priority == final_priority_initial:
-                final_priority += 3
-            us = UserStory.objects.create(
-                code=user_story.code,
-                title=user_story.title, description=user_story.description,
-                business_value=user_story.business_value, technical_priority=user_story.technical_priority,
-                estimation_time=user_story.estimation_time, final_priority=final_priority,
-                project_id=id_project, us_type_id=user_story.us_type, current_status=initial_status,
-                kanban_status=user_story.kanban_status
-            )
-    #volvemos al backlog
+        user_stories = sprint.userstory_set.all()
+        initial_status = UserStory.objects.get_initial_status()
+        for user_story in user_stories:
+            # si el US no esta finalizado
+            if not user_story.current_status == UUserStory.STATUS_FINISHED:
+                final_priority_initial = 0.6 * user_story.business_value + 0.4 * user_story.technical_priority
+                final_priority = user_story.final_priority
+                user_story.current_status = UUserStory.STATUS_PARTIALLY_FINISHED
+                user_story.save()
+                if final_priority == final_priority_initial:
+                    final_priority += 3
+                us = UserStory.objects.create(
+                    code=user_story.code,
+                    title=user_story.title, description=user_story.description,
+                    business_value=user_story.business_value, technical_priority=user_story.technical_priority,
+                    estimation_time=user_story.estimation_time, final_priority=final_priority,
+                    project_id=id_project, us_type=user_story.us_type, current_status=initial_status,
+                    kanban_status=user_story.kanban_status
+                )
+        # volvemos al backlog
     return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)

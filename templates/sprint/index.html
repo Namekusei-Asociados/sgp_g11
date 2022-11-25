@@ -95,7 +95,7 @@
 
                                 <td>
                                     <span class="badge
-                                    {% if sprint.status == 'success' %}
+                                    {% if sprint.status == 'finished' %}
                                         badge-success
                                     {% elif sprint.status == 'pending' %}
                                         badge-warning
@@ -148,14 +148,16 @@
                                             </form>
                                         {% endif %}
                                         {% if can_finished_sprint and is_visible %}
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                    data-toggle="modal"
-                                                    data-target="#modal-finish-sprint"
-                                                    data-id-sprint="{{ sprint.id }}">
-                                                <i class="fas fa-check">
-                                                </i>
-                                                Finalizar
-                                            </button>
+                                            <form class="m-0 p-0" method="post"
+                                                  action="{% url 'sprints.finished_sprint' id_project %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="id_sprint" value="{{ sprint.id }}" >
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Finalizar
+                                                </button>
+                                            </form>
 
                                         {% endif %}
                                     {% endif %}
