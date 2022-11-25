@@ -1142,7 +1142,7 @@ def finished_sprint(request, id_project):
         print('Finalizando sprint...')
         sprint = Sprint.objects.get(id=id_sprint)
         sprint.status = USprint.STATUS_FINISHED
-        sprint.end_date = datetime.now()
+        sprint.end_at = datetime.now()
         sprint.save()
 
         if sprint.status == USprint.STATUS_FINISHED:
