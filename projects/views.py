@@ -7,11 +7,13 @@ from django.urls import reverse
 from accounts.models import User
 from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem
+from sprints.models import Sprint
 from user_story.models import UserStory
 from utilities.UPermissions import UPermissions
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from utilities.USprint import USprint
 from .decorators import permission_proj_required
 from .forms import ImportRole
 from .models import Project, RoleProject, PermissionsProj, ProjectMember
@@ -179,6 +181,30 @@ def init_project(request, id_project):
     project.save()
     messages.success(request, 'El proyecto "' + project.name + '" se ha iniciado')
     return redirect(reverse('projects.index'), request)
+
+
+def finished(request):
+    if request.method == 'POST':
+        id_project = request.POST.get('id_project')
+        print('Finalizando project...')
+        is_finished = validate_project_finished(id_project)
+        project = Project.objects.get(id=id_project)
+
+        if is_finished:
+            project.status = UProject.STATUS_FINISHED
+            project.save()
+            messages.success(request, 'El proyecto "' + project.name + '" se finilizó correctamente')
+        else:
+            messages.error(request, 'El proyecto "' + project.name + '" no puede finalizar porque tiene un sprint pendiente o en ejecución')
+    return redirect(reverse('projects.index'), request)
+
+
+def validate_project_finished(id_project):
+    sprints = Sprint.objects.filter(project_id=id_project)
+    for sprint in sprints:
+        if sprint.status != USprint.STATUS_FINISHED or sprint.status != USprint.STATUS_CANCELED:
+            return False
+    return True
 
 
 def dashboard(request, id_project):
