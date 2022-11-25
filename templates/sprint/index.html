@@ -23,7 +23,7 @@
     {% has_perm_project user id_project 'Update sprint' as can_update_sprint %}
     {% has_perm_project user id_project 'Read sprint' as can_read_sprint %}
     {% has_perm_project user id_project 'Initialize sprint' as can_initialize_sprint %}
-
+    {% has_perm_project user id_project 'Finished sprint' as can_finished_sprint %}
 
     <!-- Main content -->
     <section class="content">
@@ -95,7 +95,7 @@
 
                                 <td>
                                     <span class="badge
-                                    {% if sprint.status == 'success' %}
+                                    {% if sprint.status == 'finished' %}
                                         badge-success
                                     {% elif sprint.status == 'pending' %}
                                         badge-warning
@@ -136,7 +136,7 @@
                                                 </button>
                                             </form>
                                         {% endif %}
-                                        {% if can_cancel_sprint and is_visible %}
+                                        {% if can_finished_sprint and is_visible and sprint.status != "canceled" and sprint.status != "finished" %}
                                             <form class="m-0 p-0"
                                                   action="{% url 'sprints.cancel_sprint' id_project sprint.id %}">
                                                 {% csrf_token %}
@@ -146,6 +146,16 @@
                                                     Cancelar
                                                 </button>
                                             </form>
+                                        {% endif %}
+                                        {% if can_finished_sprint and is_visible and sprint.status == "in execution" %}
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#modal-finish-sprint"
+                                                    data-id-sprint="{{ sprint.id }}">
+                                                <i class="fas fa-check">
+                                                </i>
+                                                Finalizar
+                                            </button>
                                         {% endif %}
                                     {% endif %}
                                 </td>
@@ -163,4 +173,45 @@
 
     </section>
 
+    <!--Modal Finish US-->
+    <div class="modal fade" id="modal-finish-sprint" data-csrf="{{ csrf_token }}"
+         data-url="{% url 'sprints.finished_sprint' id_project %}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Finalizar Sprint</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'sprints.finished_sprint' id_project %}" id="task-form" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" name="id_sprint">
+                        <p>Esta seguro que desea finalizar el sprint?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="btn-finish-sprint">Finalizar</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function () {
+            $('#modal-finish-sprint').on('shown.bs.modal', function (e) {
+                //get related target element
+                relatedButton = $(e.relatedTarget)
+                //get and send user story id attr to the input hidden into the modal
+                const sprintId = relatedButton.data('id-sprint')
+                $(this).find('input[name="id_sprint"]').val(sprintId)
+            });
+        });
+    </script>
 {% endblock %}

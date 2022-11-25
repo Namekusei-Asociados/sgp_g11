@@ -7,11 +7,13 @@ from django.urls import reverse
 from accounts.models import User
 from gestionar_roles.decorators import permission_sys_required
 from gestionar_roles.models import RoleSystem
+from sprints.models import Sprint
 from user_story.models import UserStory
 from utilities.UPermissions import UPermissions
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
 from utilities.UProjectDefaultRoles import UProjectDefaultRoles
+from utilities.USprint import USprint
 from .decorators import permission_proj_required
 from .forms import ImportRole
 from .models import Project, RoleProject, PermissionsProj, ProjectMember
@@ -181,7 +183,39 @@ def init_project(request, id_project):
     return redirect(reverse('projects.index'), request)
 
 
+def finished(request):
+    if request.method == 'POST':
+        id_project = request.POST.get('id_project')
+        print('Finalizando project...')
+        is_finished = validate_project_finished(id_project)
+        project = Project.objects.get(id=id_project)
+
+        if is_finished:
+            project.status = UProject.STATUS_FINISHED
+            project.save()
+            messages.success(request, 'El proyecto "' + project.name + '" se finilizó correctamente')
+        else:
+            messages.error(request, 'El proyecto "' + project.name + '" no puede finalizar porque tiene un sprint pendiente o en ejecución')
+    return redirect(reverse('projects.index'), request)
+
+
+def validate_project_finished(id_project):
+    sprints = Sprint.objects.filter(project_id=id_project)
+    for sprint in sprints:
+        if sprint.status != USprint.STATUS_FINISHED and sprint.status != USprint.STATUS_CANCELED:
+            return False
+    return True
+
+
 def dashboard(request, id_project):
+    """
+    Retorna la vista del dashboard del proyecto actual
+
+    :param request:
+    :param id_project: id del proyecto actual
+
+    :return: Documento html del dashboard del proyecto
+    """
     if request.user.project_set.filter(id=id_project).exists():
         project = Project.objects.get(id=id_project)
         return render(request, 'projects/dashboard.html', {'id_project': id_project, 'project': project})
@@ -266,6 +300,15 @@ def edit_member(request, id_project, member_id):
 
 @permission_proj_required(UPermissionsProject.UPDATE_PROJECTMEMBER)
 def update_member(request, id_project, member_id):
+    """
+    Actualiza los datos de un miembro del proyecto
+
+    :param request:
+    :param id_project: id del proyecto
+    :param member_id: id del miembro a editar
+
+    :return: Documento HTML
+    """
     roles_id = request.POST.getlist('roles[]')
 
     # attach new members to the project
@@ -492,6 +535,13 @@ def import_role(request, id_project):
 
 
 def is_visible_buttons(id_project):
+    """
+    Verifica si el proyecto esta activo para mostrar los botones
+
+    :param id_project: id del proyecto actual
+
+    :return: booleano que indica si el proyecto esta activo
+    """
     project = Project.objects.get(id=id_project)
 
     if project.status == UProject.STATUS_CANCELED or project.status == UProject.STATUS_FINISHED:

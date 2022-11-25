@@ -48,6 +48,9 @@ urlpatterns = [
     # Burn down chart
     path('<int:id_sprint>/burndown_chart', views.burndown_chart, name='sprints.burndown_chart'),
 
+    #finalizar sprint
+    path('finished', views.finished_sprint, name="sprints.finished_sprint"),
+
     # US review
     path('<int:id_sprint>/us_review', views.us_review, name='sprints.us_review'),
     path('<int:id_sprint>/us_review/confirm', views.us_review_confirm, name='sprints.us_review.confirm'),
