@@ -1,4 +1,6 @@
 from django import template
+
+from accounts.models import User
 from projects.models import RoleProject, ProjectMember, Project
 from projects.models import RoleProject, ProjectMember
 from sprints.models import Sprint
@@ -19,6 +21,10 @@ def has_perm_project(user, id_project, perms):
 def is_scrum_master(member):
     return member.roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
 
+@register.simple_tag
+def is_auth_user_scrum_master(user,project_id):
+    member = ProjectMember.objects.get(user_id=user.id, project_id=project_id)
+    return member.roles.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).exists()
 
 @register.simple_tag
 def is_member(user, id_project):
