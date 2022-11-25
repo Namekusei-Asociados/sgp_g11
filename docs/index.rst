@@ -17,6 +17,7 @@ Welcome to SGP's documentation!
    projects
    gestionar_roles
    accounts
+   meetings
 
 
 

@@ -5,6 +5,7 @@ from accounts.models import User
 from projects.models import Project
 from sprints.models import Sprint, SprintMember
 from type_us.models import TypeUS
+from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 
 
@@ -62,7 +63,8 @@ class UserStoryTaskManager(models.Manager):
         :return: Task creado
         """
         user_story = UserStory.objects.get(id=id_user_story)
-        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours, sprint_id=user_story.sprint_id)
+        us_task = UserStoryTask.objects.create(user_story_id=id_user_story, task=task, work_hours=work_hours,
+                                               sprint_id=user_story.sprint_id)
         user_story.work_hours += int(work_hours)
         user_story.save()
         return us_task
@@ -129,6 +131,15 @@ class UserStory(models.Model):
     # def _get_is_
     def __str__(self):
         return self.title
+
+    def has_been_finished(self):
+        """
+        Determina si el encargado de la tarea ya dio por finalizada esta tarea o si de alguna
+        manera esta tarea se ha deshabilitado para su modificacion
+        :return:
+        """
+        return self.current_status == UUserStory.STATUS_FINISHED or self.current_status == UUserStory.STATUS_CANCELED \
+               or self.current_status == UUserStory.STATUS_PARTIALLY_FINISHED or self.sprint.status != USprint.STATUS_IN_EXECUTION or self.current_status == UUserStory.STATUS_IN_REVIEW
 
 
 def us_directory_path(instance, filename):

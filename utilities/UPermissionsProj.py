@@ -11,6 +11,7 @@ class UPermissionsProject:
     UPDATE_PROJECT = 'Update project'
     CANCEL_PROJECT = 'Cancel project'
     INIT_PROJECT = 'Initialize project'
+    FINISHED_PROJECT = 'Finished project'
 
     # Project Member
     CREATE_PROJECTMEMBER = 'Create projectmember'
@@ -37,6 +38,7 @@ class UPermissionsProject:
     UPDATE_SPRINT = 'Update sprint'
     DELETE_SPRINT = 'Cancel sprint'
     INIT_SPRINT = 'Initialize sprint'
+    FINISHED_SPRINT = 'Finished sprint'
 
     # SPRINT MEMBER
     CREATE_SPRINTMEMBER = 'Create sprintmember'
@@ -49,3 +51,8 @@ class UPermissionsProject:
     READ_SPRINT_BACKLOG = 'Read sprint_backlog'
     UPDATE_SPRINT_BACKLOG = 'Update sprint_backlog'
     DELETE_SPRINT_BACKLOG = 'Delete sprint_backlog'
+
+    # MEETINGS
+    CREATE_MEETING = 'Create meeting'
+    UPDATE_MEETING = 'Update meeting'
+    DELETE_MEETING = 'Delete meeting'

@@ -35,11 +35,25 @@ urlpatterns = [
     path('<int:id_sprint>/sprint_backlog/edit/<int:id_user_story>', views.edit_sprint_backlog,
          name='sprints.sprint_backlog.edit'),
     path('<int:id_sprint>/sprint_bakclog/update', views.update_sprint_backlog, name='sprints.sprint_backlog.update'),
-    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog,name='sprints.sprint_backlog.delete'),
+    path('<int:id_sprint>/sprint_backlog/destroy', views.delete_sprint_backlog, name='sprints.sprint_backlog.delete'),
 
     # Kanban
-    path('<int:id_sprint>/kanban', views.kanban_index,name='sprints.kanban.index'),
-    path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,name='sprints.kanban.user_story.change_status_kanban'),
-    path('<int:id_sprint>/user_story/task/store', views.kanban_task_store,name='sprints.kanban.user_story.task_store')
+    path('<int:id_sprint>/kanban', views.kanban_index, name='sprints.kanban.index'),
+    path('<int:id_sprint>/user_story/status', views.kanban_user_story_change_status,
+         name='sprints.kanban.user_story.change_status_kanban'),
+    path('<int:id_sprint>/user_story/task/store', views.kanban_task_store, name='sprints.kanban.user_story.task_store'),
+    path('<int:id_sprint>/user_story/task/finished', views.kanban_task_finished,
+         name='sprints.kanban.user_story.task_finished'),
+
+    # Burn down chart
+    path('<int:id_sprint>/burndown_chart', views.burndown_chart, name='sprints.burndown_chart'),
+
+    #finalizar sprint
+    path('finished', views.finished_sprint, name="sprints.finished_sprint"),
+
+    # US review
+    path('<int:id_sprint>/us_review', views.us_review, name='sprints.us_review'),
+    path('<int:id_sprint>/us_review/confirm', views.us_review_confirm, name='sprints.us_review.confirm'),
+    path('<int:id_sprint>/us_review/reject', views.us_review_reject, name='sprints.us_review.reject')
 
 ]

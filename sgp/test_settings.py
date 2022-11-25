@@ -71,7 +71,10 @@ INSTALLED_APPS = [
 
 
     # App of the User Story
-    'user_story'
+    'user_story',
+
+    #Reuniones
+    'meetings',
 ]
 
 MIDDLEWARE = [

@@ -79,6 +79,7 @@
             const backlog = document.querySelector('.backlog');
             const sprint_backlog = document.querySelector('.sprint_backlog');
             const capacity = document.querySelector('#sprint-capacity');
+            const btnFinish = document.querySelectorAll('.btn-finish-us');
             let Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -87,7 +88,10 @@
             });
 
             spanError.classList.add('text-danger', 'invalid-feedback')
-
+            console.log('fini',btnFinish)
+            /*btnFinish.forEach(e => {
+                e.addEventListener('click', finishUS);
+            });*/
             btnLeft.forEach(e => {
                 e.addEventListener('click', moveUserStory);
             });
@@ -116,6 +120,11 @@
                         if (data?.status === 200) {
                             const column = columnStatuses.querySelector(`[data-flow-name="${data?.current_column}"].status-column`)
                             column.appendChild(userStory)
+
+                            if (data.last_status == true)
+                                userStory.querySelector('.btn-finish-us').classList.remove('d-none')
+                            else
+                                userStory.querySelector('.btn-finish-us').classList.add('d-none')
                         }
                         if (data?.status === 500) {
                             toastr.warning(data?.message)
@@ -129,6 +138,8 @@
                     }
                 })
             }
+
+
 
         });
     </script>

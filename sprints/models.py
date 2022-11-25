@@ -24,6 +24,7 @@ class Sprint(models.Model):
     available_capacity = models.IntegerField(verbose_name='Capacidad en horas restantes', null=True)
     duration = models.IntegerField(verbose_name='Duración en días')
     start_at = models.DateField(null=True, verbose_name='Fecha de inicio')
+    estimated_end_at = models.DateField(null=True, verbose_name='Fecha de finalización estimada')
     end_at = models.DateField(null=True, verbose_name='Fecha de finalización')
     status = models.CharField(max_length=20, choices=SPRINT_STATUSES, default=USprint.STATUS_PENDING, verbose_name='Estado')
     cancellation_reason = models.TextField(max_length=500, null=True)

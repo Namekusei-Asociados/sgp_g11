@@ -1,29 +1,28 @@
 # Sistema de Gestión de Proyectos
 
-#### Sigue los pasos para ejecutar el proyecto
+## Requerimientos
+* Lenguaje de programación: Python 3.10
+* Framework: Django 4.1.2
+* PostgreSQL 14.5
+* Heroku CLI 7.66.4
+* Poseer sesión activa en los mismos
 
-* Instale las dependecias que están en requirements.txt 
 
-Para ejecutar, siga los sigueientes comandos
+### Sigue los pasos para ejecutar el proyecto
+
+Para ejecutar, ejecuta el siguiente comando en la terminal:
 
 ```
-  python3 manage.py makemigrations
-  python3 manage.py migrate
-  python3 manage.py runserver
+./install.sh [tag] [entorno de ejecución]
 ```
-
-!Remember to add your `.env` file for your local environment!
-
-# Sistema de Gestión de Proyectos 
-
 
 ## Testeo
-Para ejecutar el testeo ejecutar el comando 
+Para ejecutar las pruebas unitarias debe posicionarse en la raíz del proyecto y ejecutar el comando: 
 ```
 pytest
 ```
 
 ## Documentación
-Para generar la documentación automática, ejecutar
+Para generar la documentación automática, posicionarse en la raíz del proyecto y ejecutar el comando: 
 ```
 ./scripts/doc.sh

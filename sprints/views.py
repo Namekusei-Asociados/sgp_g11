@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta, datetime
 
 import pandas as pd
 from django.contrib import messages
@@ -6,16 +6,19 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from gestionar_roles.models import RoleSystem
 from projects.decorators import permission_proj_required
-from projects.models import Project
+from projects.models import Project, RoleProject, ProjectMember
 from type_us.models import TypeUS
 from user_story.models import UserStory, UserStoryTask
+from utilities.UMail import UMail
 from utilities.UPermissionsProj import UPermissionsProject
 from utilities.UProject import UProject
+from utilities.UProjectDefaultRoles import UProjectDefaultRoles
 from utilities.USprint import USprint
 from utilities.UUserStory import UUserStory
 from .models import Sprint, SprintMember
-from django.http import JsonResponse
+import threading
 
 
 # Create your views here.
@@ -222,6 +225,7 @@ def validate_cancel_sprint(request, id_project):
     sprint = Sprint.objects.get(id=id_sprint)
     sprint.status = USprint.STATUS_CANCELED
     sprint.cancellation_reason = cancellation_reason
+    sprint.end_at = datetime.now().date()
     sprint.save()
     messages.success(request, f'Se canceló el sprint {sprint.sprint_name} con éxito')
 
@@ -506,7 +510,8 @@ def sprint_backlog(request, id_project, id_sprint):
 
     :return: Documento HTML con el backlog del sprint
     """
-    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None)
+    sprint_backlog = UserStory.objects.filter(project_id=id_project, sprint_id=id_sprint).exclude(assigned_to=None,
+                                                                                                  current_status=UUserStory.STATUS_PARTIALLY_FINISHED)
     sprint = Sprint.objects.get(id=id_sprint)
 
     context = {
@@ -536,7 +541,8 @@ def add_sprint_backlog(request, id_project, id_sprint):
     if members.count() > 0:
         sprint = Sprint.objects.get(id=id_sprint)
         # user_stories = UserStory.objects.get_us_no_assigned(id_project, id_sprint)
-        backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint__isnull=True)
+        backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint__isnull=True).exclude(
+            current_status=UUserStory.STATUS_PARTIALLY_FINISHED)
         sprint_backlog = UserStory.objects.get_us_non_finished(id_project).filter(sprint_id=id_sprint)
 
         context = {
@@ -684,25 +690,25 @@ def update_sprint_backlog(request, id_project, id_sprint):
 
     new_available_capacity = sprint.available_capacity + user_story.estimation_time - estimation_time
 
-    if estimation_time > user_story.estimation_time:
-        if new_available_capacity < 0:
-            messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
-        else:
-            sprint.available_capacity = new_available_capacity
-            sprint.save()
+    # if estimation_time > user_story.estimation_time:
+    #     if new_available_capacity < 0:
+    #         messages.error(request, "No se puede actualizar a una estimación que consuma toda la capacidad del sprint")
+    #     else:
+    #         sprint.available_capacity = new_available_capacity
+    #         sprint.save()
+    #
+    #         user_story.estimation_time = estimation_time
+    #         user_story.save()
+    #
+    #         messages.success(request, "Se actualizó correctamente")
+    # else:
+    sprint.available_capacity = new_available_capacity
+    sprint.save()
 
-            user_story.estimation_time = estimation_time
-            user_story.save()
+    user_story.estimation_time = estimation_time
+    user_story.save()
 
-            messages.success(request, "Se actualizó correctamente")
-    else:
-        sprint.available_capacity = new_available_capacity
-        sprint.save()
-
-        user_story.estimation_time = estimation_time
-        user_story.save()
-
-        messages.success(request, "Se actualizó correctamente")
+    messages.success(request, "Se actualizó correctamente")
 
     kwargs = {
         'id_project': id_project,
@@ -765,6 +771,13 @@ def get_available_capacity(sprint):
 
 
 def get_accumulated(sprint):
+    """
+    Obtiene la suma de las estimaciones de las historias de usuario de un sprint
+
+    :param sprint: Sprint del que se quiere obtener la suma de las estimaciones
+
+    :return: cantidad de horas estimadas de las historias de usuario del sprint
+    """
     user_stories = UserStory.objects.filter(sprint_id=sprint.id)
     accumulated = 0
     for user_story in user_stories:
@@ -796,9 +809,10 @@ def init_sprint(request, id_project, id_sprint):
                 # Add first state of the kanban to each us attached to this sprint
                 user_stories = sprint.userstory_set.all()
                 for user_story in user_stories:
-                    type_us = user_story.us_type.array_flow
-                    user_story.kanban_status = type_us[0]
-                    user_story.save()
+                    if user_story.kanban_status is None:
+                        type_us = user_story.us_type.array_flow
+                        user_story.kanban_status = type_us[0]
+                        user_story.save()
             else:
                 messages.error(request, 'El sprint no puede iniciar hasta que tenga al menos un US')
         else:
@@ -814,6 +828,14 @@ def init_sprint(request, id_project, id_sprint):
 
 
 def get_exists_planning(id_project, sprints):
+    """
+    Verifica si existe un sprint en planning
+
+    :param id_project: id del proyecto al que pertenece el sprint
+    :param sprints: lista de sprints del proyecto
+
+    :return: booleano que indica si existe un sprint en planning
+    """
     for sprint in sprints:
         if sprint.status == USprint.STATUS_PENDING:
             return True
@@ -822,6 +844,14 @@ def get_exists_planning(id_project, sprints):
 
 
 def get_exists_execution(id_project, sprints):
+    """
+    Verifica si existe un sprint en ejecución
+
+    :param id_project: id del proyecto
+    :param sprints: lista de sprints del proyecto
+
+    :return: booleano que indica si existe un sprint en ejecución
+    """
     exists_execution = False
     for sprint in sprints:
         if sprint.status == USprint.STATUS_IN_EXECUTION:
@@ -831,13 +861,20 @@ def get_exists_execution(id_project, sprints):
 
 
 def switch_to_started_sprint(sprint):
+    """
+    Cambia el estado de un sprint a iniciado
+
+    :param sprint: sprint a ser iniciado
+
+    :return: nada
+    """
     sprint.status = USprint.STATUS_IN_EXECUTION
     sprint.start_at = date.today()
     print(sprint.start_at)
     s = pd.date_range(start=sprint.start_at, periods=sprint.duration, freq='B')
     df = pd.DataFrame(s, columns=['fecha'])
     end_at = str(df.iloc[-1]["fecha"]).split(' ')[0]
-    sprint.end_at = end_at
+    sprint.estimated_end_at = end_at
     user_stories = sprint.userstory_set.all()
     for user_story in user_stories:
         user_story.current_status = UUserStory.STATUS_IN_EXECUTION
@@ -865,12 +902,18 @@ def kanban_index(request, id_project, id_sprint):
     # getting all type us in order to display in the kanban
     types_us = TypeUS.objects.filter(id__in=types_us_ids)
 
+    # scrum master
+    scrum_master = RoleProject.objects.filter(role_name=UProjectDefaultRoles.SCRUM_MASTER).first()
+    is_scrum_master = ProjectMember.objects.filter(user_id=user.id, roles__role_name=scrum_master.role_name,
+                                                   project_id=id_project).exists()
+    # is_scrum_master=RoleProject.objects.get_member_roles(id_user=user.id,id_project=id_project).filter(role_name=scrum_master.role_name)
     context = {
         'sprint': Sprint.objects.get(id=id_sprint),
         'id_project': id_project,
         'id_sprint': id_sprint,
         'users_stories': users_stories,
-        'types_us': types_us
+        'types_us': types_us,
+        'is_scrum_master': is_scrum_master
     }
     return render(request, 'sprint/kanban.html', context)
 
@@ -897,11 +940,16 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     # return 200 if the status change was successful
     status_response = 200
     message = "Success"
+    # verify if we are in the last status
+    last_status = False
     for status in flow:
         # current column in the kanban
         if status == user_story.kanban_status:
             # ask if we want to move to the next step or just get back
             if change_to_status == 'next':
+                # verify if the next status is the last status
+                if column_position + 1 == number_of_columns:
+                    last_status = True
                 # verify if we can move to the next column
                 if column_position + 1 <= number_of_columns:
                     user_story.kanban_status = flow[column_position]
@@ -928,6 +976,7 @@ def kanban_user_story_change_status(request, id_project, id_sprint):
     context = {
         'status': status_response,
         'current_column': user_story.kanban_status,
+        'last_status': last_status,
         'message': message
     }
     return JsonResponse(context)
@@ -948,12 +997,44 @@ def kanban_task_store(request, id_project, id_sprint):
     user_story_id = request.POST['id_user_story']
 
     # get user story and attach task
-    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours,id_user_story=user_story_id)
+    task = UserStoryTask.objects.create_us_task(task=description, work_hours=total_hours, id_user_story=user_story_id)
 
     context = {
         'task_id': task.id,
         'status': 200,
         'message': "Exito al guardar la tarea"
+    }
+    return JsonResponse(context)
+
+
+def kanban_task_finished(request, id_project, id_sprint):
+    """
+    Finaliza el US cambiando su estado actual a finalizado
+
+    :param request:
+    :param id_project:
+    :param id_sprint:
+
+    :return: json
+    """
+    user = request.user
+    user_story_id = request.POST['user_story_id']
+    # get user story and attach task
+    user_story = UserStory.objects.get(id=user_story_id)
+    user_story.current_status = UUserStory.STATUS_IN_REVIEW
+    user_story.save()
+
+    # Sent email
+    subject = 'Tarea Lista'
+    body = f"El usuario {user.username} ha finalizado la tarea y esta lista para su revision"
+    to = user.email
+
+    sending_email = threading.Thread(target=UMail.sent_email, args=(subject, body, to))
+    sending_email.start()
+
+    context = {
+        'status': 200,
+        'message': "Exito al finalizar la historia de usuario"
     }
     return JsonResponse(context)
 
@@ -978,7 +1059,176 @@ def is_visible_buttons(id_project=None, id_sprint=None):
     else:
         sprint = Sprint.objects.get(id=id_sprint)
 
-        if sprint.status == UProject.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
+        if sprint.status == USprint.STATUS_CANCELED or sprint.status == USprint.STATUS_FINISHED:
             return False
 
         return True
+
+
+def burndown_chart(request, id_project, id_sprint):
+    """
+    Grafico del burndown chart
+
+    :param request: request
+    :param id_project: id del proyecto actual
+    :param id_sprint: id del sprint actual
+
+    :return: documento HTML
+    """
+    sprint = Sprint.objects.get(id=id_sprint)
+    if sprint.status == USprint.STATUS_PENDING:
+        messages.error(request, "No se puede visualizar el gráfico cuando el sprint no ha iniciado")
+        return redirect(reverse('sprints.dashboard', kwargs={"id_project": id_project, "id_sprint": id_sprint}),
+                        request)
+    # obtenemos el sprint, uss y tareas
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = UserStory.objects.filter(sprint_id=sprint.id)
+    tasks = UserStoryTask.objects.filter(sprint_id=sprint.id)
+
+    estimated_real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
+    # hallamos las horas ideales
+    estimation_total_sprint = sum([us.estimation_time for us in user_stories])
+    estimated_hours = []
+    m = (estimation_total_sprint / estimated_real_duration)
+    print(m)
+    for x in range(estimated_real_duration):
+        estimated_hours.append(float(estimation_total_sprint - m * (x)))
+    print("estimated_hours", estimated_hours)
+
+    days_worked = 0
+    # si aun no esta conluido
+    if sprint.status == USprint.STATUS_IN_EXECUTION:
+        days_worked = (datetime.now().date() - sprint.start_at).days + 1
+    else:
+        # si esta concluido
+        days_worked = (sprint.end_at - sprint.start_at).days + 1
+
+    # establecemos el limite en eje x, la fecha mayor entre la estimada y la real
+    if sprint.status == USprint.STATUS_IN_EXECUTION:
+        if sprint.estimated_end_at > datetime.now().date():
+            real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
+        else:
+            real_duration = (datetime.now().date() - sprint.start_at).days + 1
+    else:
+        if sprint.estimated_end_at > sprint.end_at:
+            real_duration = (sprint.estimated_end_at - sprint.start_at).days + 1
+        else:
+            real_duration = (sprint.end_at - sprint.start_at).days + 1
+
+    sprint_days = [sprint.start_at + timedelta(days=x) for x in range(real_duration)]
+    sprint_days_str = [x.strftime("%Y/%m/%d") for x in sprint_days]  # para pasarle a JS
+
+    # horas trabajadas por dia en base a tareas
+    worked_hours = []
+    for x in range(days_worked):
+        aux = estimation_total_sprint - sum(
+            [task.work_hours for task in tasks if task.created_at.date() <= sprint_days[x]])
+        worked_hours.append(aux)
+    context = {
+        "sprint_days": sprint_days_str,
+        "estimated_hours": estimated_hours,
+        "worked_hours": worked_hours,
+        "sprint": sprint,
+        "id_project": id_project,
+        "id_sprint": id_sprint,
+    }
+
+    return render(request, 'sprint/burndown_chart.html', context)
+
+
+def finished_sprint(request, id_project):
+    if request.method == 'POST':
+        id_sprint = request.POST.get('id_sprint')
+        print('Finalizando sprint...')
+        sprint = Sprint.objects.get(id=id_sprint)
+        sprint.status = USprint.STATUS_FINISHED
+        sprint.end_at = datetime.now()
+        sprint.save()
+
+        if sprint.status == USprint.STATUS_FINISHED:
+            messages.success(request, f"Sprint {sprint.sprint_name} finalizado con exito")
+        else:
+            messages.success(request, f"No se pudo finalizar el sprint {sprint.sprint_name}")
+
+        user_stories = sprint.userstory_set.all()
+        initial_status = UserStory.objects.get_initial_status()
+        for user_story in user_stories:
+            # si el US no esta finalizado
+            if not user_story.current_status == UUserStory.STATUS_FINISHED:
+                final_priority_initial = 0.6 * user_story.business_value + 0.4 * user_story.technical_priority
+                final_priority = user_story.final_priority
+                user_story.current_status = UUserStory.STATUS_PARTIALLY_FINISHED
+                user_story.save()
+                if final_priority == final_priority_initial:
+                    final_priority += 3
+                us = UserStory.objects.create(
+                    code=user_story.code,
+                    title=user_story.title, description=user_story.description,
+                    business_value=user_story.business_value, technical_priority=user_story.technical_priority,
+                    estimation_time=user_story.estimation_time, final_priority=final_priority,
+                    project_id=id_project, us_type=user_story.us_type, current_status=initial_status,
+                    kanban_status=user_story.kanban_status
+                )
+        # volvemos al backlog
+    return redirect(reverse('sprints.index', kwargs={'id_project': id_project}), request)
+
+def us_review(request, id_project, id_sprint):
+    sprint = Sprint.objects.get(id=id_sprint)
+    user_stories = UserStory.objects.filter(sprint_id=id_sprint, current_status=UUserStory.STATUS_IN_REVIEW)
+
+    context = {
+        "sprint": sprint,
+        "id_project": id_project,
+        "id_sprint": id_sprint,
+        "user_stories": user_stories,
+        "user":request.user
+    }
+    return render(request, 'sprint/us_review/index.html', context)
+
+
+def us_review_confirm(request, id_project, id_sprint):
+
+    user_story_id = request.POST['user_story_id']
+
+    # get user story and change status
+    user_story = UserStory.objects.filter(id=user_story_id).first()
+    user_story.current_status = UUserStory.STATUS_FINISHED
+    user_story.save()
+    context = {
+        'status': 200,
+        'message': "Exito al finalizar la historia de usuario"
+    }
+    return JsonResponse(context)
+def us_review_reject(request, id_project, id_sprint):
+
+    user_story_id = request.POST['user_story_id']
+    reason = request.POST['reason']
+
+    if len(reason) == 0:
+        context = {
+            'status': 500,
+            'message': "El motivo del rechazo es obligatorio"
+        }
+        return JsonResponse(context)
+
+
+    # get user story and rollback to old status
+    user_story = UserStory.objects.filter(id=user_story_id).first()
+    user_story.current_status = UUserStory.STATUS_IN_EXECUTION
+    user_story.kanban_status = user_story.us_type.array_flow[0]
+    user_story.save()
+
+    # Sent email
+    member = user_story.assigned_to.user.email
+    subject = 'Tarea Rechazada'
+    body = f"La tarea {user_story.title} fue rechazada por el siguiente motivo : \n{reason}"
+    to = member
+
+    sending_email = threading.Thread(target=UMail.sent_email, args=(subject, body, to))
+    sending_email.start()
+
+    context = {
+        'status': 200,
+        'message': "Exito al rechazar la historia de usuario, se ha enviado un correo al encargado de la tarea!"
+    }
+    return JsonResponse(context)

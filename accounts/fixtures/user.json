@@ -6,6 +6,7 @@
       "password": "!YulyKkmt8C5BMx5FbEvtDH1Io459za9ub7UgPqgM",
       "last_login": "2022-11-03T21:32:34.191Z",
       "is_superuser": false,
+      "username": "Cristhian_Principal",
       "first_name": "Cristhian",
       "last_name": "Ortellado",
       "email": "breideworld@gmail.com",
@@ -38,6 +39,7 @@
       "password": "!tIq6mqIMk5zW7XKTtWZViYwpyuvgF9JEzv28df4W",
       "last_login": "2022-11-03T05:09:59.856Z",
       "is_superuser": false,
+      "username": "cristhian_daniel",
       "first_name": "Cristhian Daniel",
       "last_name": "Ortellado Fernández",
       "email": "breideworld@fpuna.edu.py",
@@ -57,10 +59,10 @@
     "fields": {
       "user": 2,
       "provider": "google",
-      "uid": "103580374616327140629",
+      "uid": "103580374616327140629333",
       "last_login": "2022-11-03T05:09:59.831Z",
       "date_joined": "2022-11-03T05:09:59.831Z",
-      "extra_data": "{\"id\": \"103580374616327140629\", \"email\": \"breideworld@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Cristhian Daniel Ortellado Fern\\u00e1ndez\", \"given_name\": \"Cristhian Daniel\", \"family_name\": \"Ortellado Fern\\u00e1ndez\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu1A4u9q2_W5Vj9rjVfzGzErODr9bOWVSgdoloda=s96-c\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
+      "extra_data": "{\"id\": \"103580374616327140629333\", \"email\": \"breideworld@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Cristhian Daniel Ortellado Fern\\u00e1ndez\", \"given_name\": \"Cristhian Daniel\", \"family_name\": \"Ortellado Fern\\u00e1ndez\", \"picture\": \"https://lh3.googleusercontent.com/a/ALm5wu1A4u9q2_W5Vj9rjVfzGzErODr9bOWVSgdoloda=s96-c\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
     }
   }
 ]
